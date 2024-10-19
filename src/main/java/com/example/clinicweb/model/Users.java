@@ -32,13 +32,13 @@ public class Users implements UserDetails {
     private String email;
 
     @Column(nullable = true)
-    private String phone;
+    private String phone_number;
 
     @Column(nullable = true)
     private String gender;
 
     @Column(nullable = true)
-    private String daybirth;
+    private String date_of_birth;
 
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)

@@ -1,6 +1,7 @@
 package com.example.clinicweb.controller;
 
-import com.example.clinicweb.dto.RegisterUserDTO;
+import com.example.clinicweb.dto.PatientDTO;
+import com.example.clinicweb.dto.UsersDTO;
 import com.example.clinicweb.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,21 +19,27 @@ public class RegisterController {
     // Hiển thị form đăng ký
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
-        model.addAttribute("registerUser", new RegisterUserDTO()); // Gán DTO vào model cho form
+        model.addAttribute("user", new UsersDTO());  // Khởi tạo UsersDTO cho form
+        model.addAttribute("patient", new PatientDTO());  // Khởi tạo PatientDTO cho form
         return "register"; // Điều hướng đến trang register.html
     }
 
     // Xử lý đăng ký
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute("registerUser") RegisterUserDTO registerUserDTO) {
-        userService.register(registerUserDTO); // Gọi service để đăng ký người dùng
-        return "redirect:/login"; // Sau khi đăng ký thành công, chuyển hướng đến trang login
+    public String registerUser(
+            @ModelAttribute("user") UsersDTO usersDTO,
+            @ModelAttribute("patient") PatientDTO patientDTO) {
+
+        // Gọi service để đăng ký người dùng và bệnh nhân
+        userService.register(usersDTO, patientDTO);
+
+        // Sau khi đăng ký thành công, chuyển hướng đến trang login
+        return "redirect:/login";
     }
 
     // Hiển thị form đăng nhập
-    @GetMapping("/login")
+    @GetMapping("/user-login")
     public String loginPage() {
         return "login"; // Điều hướng đến trang login.html
     }
 }
-
