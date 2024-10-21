@@ -13,9 +13,9 @@ public class HomeController {
         return "admin"; // Đảm bảo rằng admin.html tồn tại trong templates/admin
     }
 
-    @GetMapping("/homepage")
+    @GetMapping("/index")
     public String homepage(Model model) {
         model.addAttribute("title", "Home Page");
-        return "homepage"; // Đảm bảo rằng homepage.html tồn tại trong templates
+        return "index"; // Đảm bảo rằng homepage.html tồn tại trong templates
     }
 }

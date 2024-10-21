@@ -14,7 +14,7 @@ public class LoginController {
         if (role.equals("ROLE_ADMIN")) {
             return "redirect:/admin";
         } else {
-            return "redirect:/homepage";
+            return "redirect:/index";
         }
     }
 
