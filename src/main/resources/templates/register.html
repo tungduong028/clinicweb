@@ -4,45 +4,77 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Register</title>
+
+  <!-- Link tới stylelogin.css -->
+  <link rel="stylesheet" href="/css/stylelogin.css" />
+
+  <!-- Font Awesome CDN để sử dụng các icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 </head>
 <body>
-<h2>Register</h2>
-<form th:action="@{/register}" method="post">
-  <label for="username">Username:</label>
-  <input type="text" id="username" name="username" required><br><br>
+<div class="wrapper">
+  <div class="title">
+    <span>Register</span>
+  </div>
+  <form th:action="@{/register}" method="post">
+    <div class="form-grid">
+      <div class="row">
+        <i class="fas fa-user"></i>
+        <input type="text" id="username" name="username" placeholder="Username" required>
+      </div>
 
-  <label for="password">Password:</label>
-  <input type="password" id="password" name="password" required><br><br>
+      <div class="row">
+        <i class="fas fa-lock"></i>
+        <input type="password" id="password" name="password" placeholder="Password" required>
+      </div>
 
-  <label for="fullName">Full Name:</label>
-  <input type="text" id="fullName" name="fullName" required><br><br>
+      <div class="row">
+        <i class="fas fa-user-tag"></i>
+        <input type="text" id="fullName" name="fullName" placeholder="Full Name" required>
+      </div>
 
-  <label for="email">Email:</label>
-  <input type="email" id="email" name="email" required><br><br>
+      <div class="row">
+        <i class="fas fa-envelope"></i>
+        <input type="email" id="email" name="email" placeholder="Email" required>
+      </div>
 
-  <label for="phoneNumber">Phone Number:</label>
-  <input type="text" id="phoneNumber" name="phoneNumber" required><br><br>
+      <div class="row">
+        <i class="fas fa-phone"></i>
+        <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Phone Number" required>
+      </div>
 
-  <label for="gender">Gender:</label>
-  <select id="gender" name="gender">
-    <option value="MALE">Male</option>
-    <option value="FEMALE">Female</option>
-  </select><br><br>
+      <div class="row">
+        <i class="fas fa-venus-mars"></i>
+        <select id="gender" name="gender" required>
+          <option value="MALE">Male</option>
+          <option value="FEMALE">Female</option>
+        </select>
+      </div>
 
-  <label for="dateOfBirth">Date of Birth:</label>
-  <input type="date" id="dateOfBirth" name="dateOfBirth" required><br><br>
+      <div class="row">
+        <i class="fas fa-calendar-alt"></i>
+        <input type="date" id="dateOfBirth" name="dateOfBirth" required>
+      </div>
 
-  <label for="address">Address:</label>
-  <input type="text" id="address" name="address" required><br><br>
+      <div class="row">
+        <i class="fas fa-home"></i>
+        <input type="text" id="address" name="address" placeholder="Address" required>
+      </div>
 
-  <label for="medicalHistory">Medical History:</label>
-  <textarea id="medicalHistory" name="medicalHistory"></textarea><br><br>
+      <div class="row full-width">
+        <i class="fas fa-notes-medical"></i>
+        <textarea id="medicalHistory" name="medicalHistory" placeholder="Medical History" rows="3"></textarea>
+      </div>
+    </div>
 
-  <button type="submit">Register</button>
-</form>
+    <div class="button row">
+      <input type="submit" value="Register">
+    </div>
 
-<p>Đã có tài khoản?
-  <a th:href="@{/user-login}">Đăng nhập</a>
-</p>
+  </form>
+  <div class="signup-link">
+    Already have an account? <a th:href="@{/user-login}">Login</a>
+  </div>
+</div>
 </body>
 </html>
