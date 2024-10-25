@@ -31,34 +31,54 @@
 </head>
 
 <body>
+<!-- Topbar Start -->
+<div class="container-fluid py-2 border-bottom d-none d-lg-block">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 text-center text-lg-start mb-2 mb-lg-0">
+                <div class="d-inline-flex align-items-center">
+                    <a class="text-decoration-none text-body pe-3" href=""><i class="bi bi-telephone me-2"></i>+84 123456789</a>
+                    <span class="text-body">|</span>
+                    <a class="text-decoration-none text-body px-3" href=""><i class="bi bi-envelope me-2"></i>PhongKham12345@gmail.com</a>
+                </div>
+            </div>
+            <div class="col-md-6 text-center text-lg-end">
+                <div class="d-inline-flex align-items-center">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Topbar End -->
 
     <!-- Navbar Start -->
     <div class="container-fluid sticky-top bg-white shadow-sm">
         <div class="container">
             <nav class="navbar navbar-expand-lg bg-white navbar-light py-3 py-lg-0">
-                <a href="index.html" class="navbar-brand">
-                    <h1 class="m-0 text-uppercase text-primary"><i class="fa fa-clinic-medical me-2"></i>Medinova</h1>
+                <a th:href="@{/index}" class="navbar-brand">
+                    <h1 class="m-0 text-uppercase text-primary"><i class="fa fa-clinic-medical me-2"></i>Nha Khoa Nova</h1>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto py-0">
-                        <a th:href="@{/index}" class="nav-item nav-link active">Home</a>
-                        <a th:href="@{/about}" class="nav-item nav-link">About</a>
-                        <a th:href="@{/service}" class="nav-item nav-link">Service</a>
+                        <a th:href="@{/index}" class="nav-item nav-link active">Trang chủ</a>
+                        <a th:href="@{/about}" class="nav-item nav-link">Giới thiệu</a>
+                        <a th:href="@{/service}" class="nav-item nav-link">Dịch vụ</a>
 
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                             <div class="dropdown-menu m-0">
 
-                                <a th:href="@{/team}" class="dropdown-item">The Team</a>
+                                <a th:href="@{/team}" class="dropdown-item">Đội ngũ bác sĩ</a>
 
-                                <a th:href="@{/appointment}" class="dropdown-item">Appointment</a>
-                                <a th:href="@{/search}" class="dropdown-item">Search</a>
+                                <a th:href="@{/appointment}" class="dropdown-item">Đặt lịch khám</a>
+                                <a th:href="@{/search}" class="dropdown-item">Tìm kiếm</a>
                             </div>
                         </div>
-                        <a th:href="@{/contact}" class="nav-item nav-link">Contact</a>
+                        <a th:href="@{/contact}" class="nav-item nav-link">Liên hệ</a>
                     </div>
                 </div>
             </nav>
@@ -72,11 +92,11 @@
         <div class="container py-5">
             <div class="row justify-content-start">
                 <div class="col-lg-8 text-center text-lg-start">
-                    <h5 class="d-inline-block text-primary text-uppercase border-bottom border-5" style="border-color: rgba(256, 256, 256, .3) !important;">Welcome To Medinova</h5>
-                    <h1 class="display-1 text-white mb-md-4">Best Healthcare Solution In Your City</h1>
+                    <h5 class="d-inline-block text-primary text-uppercase border-bottom border-5" style="border-color: rgba(256, 256, 256, .3) !important;">Chào Mừng Đến Với Nha Khoa NOVA</h5>
+                    <h1 class="display-1 text-white mb-md-4">Những giải pháp tốt nhất cho răng của bạn</h1>
                     <div class="pt-2">
-                        <a href="" class="btn btn-light rounded-pill py-md-3 px-md-5 mx-2">Find Doctor</a>
-                        <a href="" class="btn btn-outline-light rounded-pill py-md-3 px-md-5 mx-2">Appointment</a>
+                        <a href="" class="btn btn-light rounded-pill py-md-3 px-md-5 mx-2">Tìm bác sĩ phù hợp</a>
+                        <a href="" class="btn btn-outline-light rounded-pill py-md-3 px-md-5 mx-2">Lịch Khám</a>
                     </div>
                 </div>
             </div>
@@ -96,8 +116,8 @@
                 </div>
                 <div class="col-lg-7">
                     <div class="mb-4">
-                        <h5 class="d-inline-block text-primary text-uppercase border-bottom border-5">About Us</h5>
-                        <h1 class="display-4">Best Medical Care For Yourself and Your Family</h1>
+                        <h5 class="d-inline-block text-primary text-uppercase border-bottom border-5">Về chúng tôi</h5>
+                        <h1 class="display-4">Những Dịch Vụ Tốt Nhất Cho Bạn Và Gia Đình Của Bạn</h1>
                     </div>
                     <p>Tempor erat elitr at rebum at at clita aliquyam consetetur. Diam dolor diam ipsum et, tempor voluptua sit consetetur sit. Aliquyam diam amet diam et eos sadipscing labore. Clita erat ipsum et lorem et sit, sed stet no labore lorem sit. Sanctus clita duo justo et tempor consetetur takimata eirmod, dolores takimata consetetur invidunt magna dolores aliquyam dolores dolore. Amet erat amet et magna</p>
                     <div class="row g-3 pt-3">
@@ -137,8 +157,8 @@
     <div class="container-fluid py-5">
         <div class="container">
             <div class="text-center mx-auto mb-5" style="max-width: 500px;">
-                <h5 class="d-inline-block text-primary text-uppercase border-bottom border-5">Services</h5>
-                <h1 class="display-4">Excellent Medical Services</h1>
+                <h5 class="d-inline-block text-primary text-uppercase border-bottom border-5">Dịch Vụ</h5>
+                <h1 class="display-4">Những Dịch Vụ Y Tế Xuất Sắc</h1>
             </div>
             <div class="row g-5">
                 <div class="col-lg-4 col-md-6">
@@ -225,15 +245,15 @@
             <div class="row gx-5">
                 <div class="col-lg-6 mb-5 mb-lg-0">
                     <div class="mb-4">
-                        <h5 class="d-inline-block text-white text-uppercase border-bottom border-5">Appointment</h5>
-                        <h1 class="display-4">Make An Appointment For Your Family</h1>
+                        <h5 class="d-inline-block text-white text-uppercase border-bottom border-5">Lịch Khám</h5>
+                        <h1 class="display-4">Hãy Đặt Lịch Khám Vì Sức Khỏe Của Bạn</h1>
                     </div>
                     <p class="text-white mb-5">Eirmod sed tempor lorem ut dolores. Aliquyam sit sadipscing kasd ipsum. Dolor ea et dolore et at sea ea at dolor, justo ipsum duo rebum sea invidunt voluptua. Eos vero eos vero ea et dolore eirmod et. Dolores diam duo invidunt lorem. Elitr ut dolores magna sit. Sea dolore sanctus sed et. Takimata takimata sanctus sed.</p>
-                    <a class="btn btn-dark rounded-pill py-3 px-5 me-3" th:href="@{/team}">Find Doctor</a>
+                    <a class="btn btn-dark rounded-pill py-3 px-5 me-3" th:href="@{/team}">Tìm Bác Sĩ Phù Hợp</a>
                 </div>
                 <div class="col-lg-6">
                     <div class="bg-white text-center rounded p-5">
-                        <h1 class="mb-4">Book An Appointment</h1>
+                        <h1 class="mb-4">Đặt Lịch Khám</h1>
                         <form>
                             <div class="row g-3">
                                 <div class="col-12 col-sm-6">
@@ -290,8 +310,8 @@
     <div class="container-fluid py-5">
         <div class="container">
             <div class="text-center mx-auto mb-5" style="max-width: 500px;">
-                <h5 class="d-inline-block text-primary text-uppercase border-bottom border-5">Our Doctors</h5>
-                <h1 class="display-4">Qualified Healthcare Professionals</h1>
+                <h5 class="d-inline-block text-primary text-uppercase border-bottom border-5">Đội Ngũ Bác Sĩ Của Chúng Tôi</h5>
+                <h1 class="display-4">Những Chuyên Gia Có Bằng Chứng Nhận</h1>
             </div>
             <div class="owl-carousel team-carousel position-relative">
                 <div class="team-item">
@@ -362,7 +382,7 @@
         <div class="container py-5">
             <div class="text-center mx-auto mb-5" style="max-width: 500px;">
                 <h5 class="d-inline-block text-white text-uppercase border-bottom border-5">Find A Doctor</h5>
-                <h1 class="display-4 mb-4">Find A Healthcare Professionals</h1>
+                <h1 class="display-4 mb-4">Tìm Bác Sĩ Phù Hợp Cho Bạn</h1>
                 <h5 class="text-white fw-normal">Duo ipsum erat stet dolor sea ut nonumy tempor. Tempor duo lorem eos sit sed ipsum takimata ipsum sit est. Ipsum ea voluptua ipsum sit justo</h5>
             </div>
             <div class="mx-auto" style="width: 100%; max-width: 600px;">
@@ -373,8 +393,8 @@
                         <option value="2">Department 2</option>
                         <option value="3">Department 3</option>
                     </select>
-                    <input type="text" class="form-control border-primary w-50" placeholder="Keyword">
-                    <button class="btn btn-dark border-0 w-25">Search</button>
+                    <input type="text" class="form-control border-primary w-50" placeholder="Từ Khóa">
+                    <button class="btn btn-dark border-0 w-25">Tìm Kiếm</button>
                 </div>
             </div>
         </div>
@@ -390,30 +410,30 @@
                 <div class="col-lg-3 col-md-6">
                     <h4 class="d-inline-block text-primary text-uppercase border-bottom border-5 border-secondary mb-4">Get In Touch</h4>
                     <p class="mb-4">No dolore ipsum accusam no lorem. Invidunt sed clita kasd clita et et dolor sed dolor</p>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>123 Street, New York, USA</p>
-                    <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>info@example.com</p>
-                    <p class="mb-0"><i class="fa fa-phone-alt text-primary me-3"></i>+012 345 67890</p>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>123 Street, Ho Chi Minh, VietNam</p>
+                    <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>PhongKham12345@gmail.com</p>
+                    <p class="mb-0"><i class="fa fa-phone-alt text-primary me-3"></i>+84 123456789</p>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h4 class="d-inline-block text-primary text-uppercase border-bottom border-5 border-secondary mb-4">Quick Links</h4>
                     <div class="d-flex flex-column justify-content-start">
-                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Home</a>
-                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>About Us</a>
-                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Our Services</a>
-                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Meet The Team</a>
-                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Latest Blog</a>
-                        <a class="text-light" href="#"><i class="fa fa-angle-right me-2"></i>Contact Us</a>
+                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Trang Chủ</a>
+                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Giới Thiệu</a>
+                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Dịch Vụ</a>
+                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Đội Ngũ Bác Sĩ</a>
+                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Đặt Lịch Khám</a>
+                        <a class="text-light" href="#"><i class="fa fa-angle-right me-2"></i>Liên Hệ</a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h4 class="d-inline-block text-primary text-uppercase border-bottom border-5 border-secondary mb-4">Popular Links</h4>
                     <div class="d-flex flex-column justify-content-start">
-                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Home</a>
-                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>About Us</a>
-                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Our Services</a>
-                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Meet The Team</a>
-                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Latest Blog</a>
-                        <a class="text-light" href="#"><i class="fa fa-angle-right me-2"></i>Contact Us</a>
+                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Trang Chủ</a>
+                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Giới Thiệu</a>
+                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Dịch Vụ</a>
+                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Đội Ngũ Bác Sĩ</a>
+                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Đặt Lịch Khám</a>
+                        <a class="text-light" href="#"><i class="fa fa-angle-right me-2"></i>Liên Hệ</a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
@@ -439,7 +459,7 @@
         <div class="container">
             <div class="row g-5">
                 <div class="col-md-6 text-center text-md-start">
-                    <p class="mb-md-0">&copy; <a class="text-primary" href="#">Your Site Name</a>. All Rights Reserved.</p>
+                    <p class="mb-md-0">&copy; <a class="text-primary" href="#">Phong Kham Nha Khoa</a>. All Rights Reserved.</p>
                 </div>
                 <div class="col-md-6 text-center text-md-end">
                     <p class="mb-0">Designed by <a class="text-primary" href="https://htmlcodex.com">HTML Codex</a></p>

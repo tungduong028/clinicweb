@@ -31,69 +31,55 @@
 </head>
 
 <body>
-    <!-- Topbar Start -->
-    <div class="container-fluid py-2 border-bottom d-none d-lg-block">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 text-center text-lg-start mb-2 mb-lg-0">
-                    <div class="d-inline-flex align-items-center">
-                        <a class="text-decoration-none text-body pe-3" href=""><i class="bi bi-telephone me-2"></i>+012 345 6789</a>
-                        <span class="text-body">|</span>
-                        <a class="text-decoration-none text-body px-3" href=""><i class="bi bi-envelope me-2"></i>info@example.com</a>
-                    </div>
+<!-- Topbar Start -->
+<div class="container-fluid py-2 border-bottom d-none d-lg-block">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 text-center text-lg-start mb-2 mb-lg-0">
+                <div class="d-inline-flex align-items-center">
+                    <a class="text-decoration-none text-body pe-3" href=""><i class="bi bi-telephone me-2"></i>+84 123456789</a>
+                    <span class="text-body">|</span>
+                    <a class="text-decoration-none text-body px-3" href=""><i class="bi bi-envelope me-2"></i>PhongKham12345@gmail.com</a>
                 </div>
-                <div class="col-md-6 text-center text-lg-end">
-                    <div class="d-inline-flex align-items-center">
-                        <a class="text-body px-2" href="">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a class="text-body px-2" href="">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a class="text-body px-2" href="">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                        <a class="text-body px-2" href="">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a class="text-body ps-2" href="">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                    </div>
+            </div>
+            <div class="col-md-6 text-center text-lg-end">
+                <div class="d-inline-flex align-items-center">
+
                 </div>
             </div>
         </div>
     </div>
-    <!-- Topbar End -->
+</div>
+<!-- Topbar End -->
 
 
     <!-- Navbar Start -->
     <div class="container-fluid sticky-top bg-white shadow-sm">
         <div class="container">
             <nav class="navbar navbar-expand-lg bg-white navbar-light py-3 py-lg-0">
-                <a href="index.html" class="navbar-brand">
-                    <h1 class="m-0 text-uppercase text-primary"><i class="fa fa-clinic-medical me-2"></i>Medinova</h1>
+                <a th:href="@{/index}" class="navbar-brand">
+                    <h1 class="m-0 text-uppercase text-primary"><i class="fa fa-clinic-medical me-2"></i>Nha Khoa Nova</h1>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto py-0">
-                        <a th:href="@{/index}" class="nav-item nav-link active">Home</a>
-                        <a th:href="@{/about}" class="nav-item nav-link">About</a>
-                        <a th:href="@{/service}" class="nav-item nav-link">Service</a>
+                        <a th:href="@{/index}" class="nav-item nav-link active">Trang chủ</a>
+                        <a th:href="@{/about}" class="nav-item nav-link">Giới thiệu</a>
+                        <a th:href="@{/service}" class="nav-item nav-link">Dịch vụ</a>
 
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                             <div class="dropdown-menu m-0">
 
-                                <a th:href="@{/team}" class="dropdown-item">The Team</a>
+                                <a th:href="@{/team}" class="dropdown-item">Đội ngũ bác sĩ</a>
 
-                                <a th:href="@{/appointment}" class="dropdown-item">Appointment</a>
-                                <a th:href="@{/search}" class="dropdown-item">Search</a>
+                                <a th:href="@{/appointment}" class="dropdown-item">Đặt lịch khám</a>
+                                <a th:href="@{/search}" class="dropdown-item">Tìm kiếm</a>
                             </div>
                         </div>
-                        <a th:href="@{/contact}" class="nav-item nav-link">Contact</a>
+                        <a th:href="@{/contact}" class="nav-item nav-link">Liên hệ</a>
                     </div>
                 </div>
             </nav>
@@ -115,7 +101,7 @@
                         <div class="d-flex align-items-center justify-content-center bg-primary rounded-circle mb-4" style="width: 100px; height: 70px; transform: rotate(-15deg);">
                             <i class="fa fa-2x fa-location-arrow text-white" style="transform: rotate(15deg);"></i>
                         </div>
-                        <h6 class="mb-0">123 Street, New York, USA</h6>
+                        <h6 class="mb-0">123 Street, Ho Chi Minh, Viet Nam</h6>
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -123,7 +109,7 @@
                         <div class="d-flex align-items-center justify-content-center bg-primary rounded-circle mb-4" style="width: 100px; height: 70px; transform: rotate(-15deg);">
                             <i class="fa fa-2x fa-phone text-white" style="transform: rotate(15deg);"></i>
                         </div>
-                        <h6 class="mb-0">+012 345 6789</h6>
+                        <h6 class="mb-0">+84 123456789</h6>
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -131,7 +117,7 @@
                         <div class="d-flex align-items-center justify-content-center bg-primary rounded-circle mb-4" style="width: 100px; height: 70px; transform: rotate(-15deg);">
                             <i class="fa fa-2x fa-envelope-open text-white" style="transform: rotate(15deg);"></i>
                         </div>
-                        <h6 class="mb-0">info@example.com</h6>
+                        <h6 class="mb-0">PhongKham12345@gmail.com</h6>
                     </div>
                 </div>
             </div>
@@ -139,7 +125,7 @@
                 <div class="col-12" style="height: 500px;">
                     <div class="position-relative h-100">
                         <iframe class="position-relative w-100 h-100"
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3001156.4288297426!2d-78.01371936852176!3d42.72876761954724!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4ccc4bf0f123a5a9%3A0xddcfc6c1de189567!2sNew%20York%2C%20USA!5e0!3m2!1sen!2sbd!4v1603794290143!5m2!1sen!2sbd"
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.0168679932754!2d106.67480431526007!3d10.762622492330642!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752ecbb61a22b9%3A0xd085f0e1e6d5c4d!2zVGjhuqFuaCBwaOG7kSBI4buNYyBDaMOtIE1pbmggKEhvIENoaSBNaW5oIENpdHkp!5e0!3m2!1svi!2s!4v1698234903007!5m2!1svi!2s"
                             frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false"
                             tabindex="0"></iframe>
                     </div>
@@ -174,7 +160,6 @@
     </div>
     <!-- Contact End -->
 
-
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-light mt-5 py-5">
         <div class="container py-5">
@@ -182,30 +167,30 @@
                 <div class="col-lg-3 col-md-6">
                     <h4 class="d-inline-block text-primary text-uppercase border-bottom border-5 border-secondary mb-4">Get In Touch</h4>
                     <p class="mb-4">No dolore ipsum accusam no lorem. Invidunt sed clita kasd clita et et dolor sed dolor</p>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>123 Street, New York, USA</p>
-                    <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>info@example.com</p>
-                    <p class="mb-0"><i class="fa fa-phone-alt text-primary me-3"></i>+012 345 67890</p>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>123 Street, Ho Chi Minh, VietNam</p>
+                    <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>PhongKham12345@gmail.com</p>
+                    <p class="mb-0"><i class="fa fa-phone-alt text-primary me-3"></i>+84 123456789</p>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h4 class="d-inline-block text-primary text-uppercase border-bottom border-5 border-secondary mb-4">Quick Links</h4>
                     <div class="d-flex flex-column justify-content-start">
-                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Home</a>
-                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>About Us</a>
-                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Our Services</a>
-                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Meet The Team</a>
-                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Latest Blog</a>
-                        <a class="text-light" href="#"><i class="fa fa-angle-right me-2"></i>Contact Us</a>
+                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Trang Chủ</a>
+                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Giới Thiệu</a>
+                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Dịch Vụ</a>
+                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Đội Ngũ Bác Sĩ</a>
+                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Đặt Lịch Khám</a>
+                        <a class="text-light" href="#"><i class="fa fa-angle-right me-2"></i>Liên Hệ</a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h4 class="d-inline-block text-primary text-uppercase border-bottom border-5 border-secondary mb-4">Popular Links</h4>
                     <div class="d-flex flex-column justify-content-start">
-                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Home</a>
-                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>About Us</a>
-                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Our Services</a>
-                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Meet The Team</a>
-                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Latest Blog</a>
-                        <a class="text-light" href="#"><i class="fa fa-angle-right me-2"></i>Contact Us</a>
+                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Trang Chủ</a>
+                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Giới Thiệu</a>
+                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Dịch Vụ</a>
+                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Đội Ngũ Bác Sĩ</a>
+                        <a class="text-light mb-2" href="#"><i class="fa fa-angle-right me-2"></i>Đặt Lịch Khám</a>
+                        <a class="text-light" href="#"><i class="fa fa-angle-right me-2"></i>Liên Hệ</a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
@@ -231,7 +216,7 @@
         <div class="container">
             <div class="row g-5">
                 <div class="col-md-6 text-center text-md-start">
-                    <p class="mb-md-0">&copy; <a class="text-primary" href="#">Your Site Name</a>. All Rights Reserved.</p>
+                    <p class="mb-md-0">&copy; <a class="text-primary" href="#">Phong Kham Nha Khoa</a>. All Rights Reserved.</p>
                 </div>
                 <div class="col-md-6 text-center text-md-end">
                     <p class="mb-0">Designed by <a class="text-primary" href="https://htmlcodex.com">HTML Codex</a></p>
@@ -249,15 +234,15 @@
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/tempusdominus/js/moment.min.js"></script>
-    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="/lib/easing/easing.min.js"></script>
+    <script src="/lib/waypoints/waypoints.min.js"></script>
+    <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="/lib/tempusdominus/js/moment.min.js"></script>
+    <script src="/lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 
     <!-- Template Javascript -->
-    <script src="js/main.js"></script>
+    <script src="/js/main.js"></script>
 </body>
 
 </html>
