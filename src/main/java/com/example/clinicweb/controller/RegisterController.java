@@ -37,9 +37,4 @@ public class RegisterController {
         return "redirect:/login";
     }
 
-    // Hiển thị form đăng nhập
-    @GetMapping("/user-login")
-    public String loginPage() {
-        return "login"; // Điều hướng đến trang login.html
-    }
 }

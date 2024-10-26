@@ -18,6 +18,4 @@ public class Admin {
     @JoinColumn(name = "user_id", nullable = false)
     private Users user;
 
-    @Column(name = "created_at", nullable = false)
-    private java.time.LocalDateTime createdAt = java.time.LocalDateTime.now();
 }
