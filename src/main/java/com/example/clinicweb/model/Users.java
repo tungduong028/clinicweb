@@ -25,30 +25,15 @@ public class Users implements UserDetails {
     @Column(nullable = false)
     private String passwordHash;
 
-    @Column(nullable = false)
-    private String fullName;
-
-    @Column(nullable = true)
-    private String email;
-
-    @Column(nullable = true)
-    private String phone_number;
-
-    @Column(nullable = true)
-    private String gender;
-
-    @Column(nullable = true)
-    private String date_of_birth;
 
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
     // Constructor có tham số
-    public Users(String username, String passwordHash, String fullName, Role role) {
+    public Users(String username, String passwordHash, Role role) {
         this.username = username;
         this.passwordHash = passwordHash;
-        this.fullName = fullName;
         this.role = role;
     }
 

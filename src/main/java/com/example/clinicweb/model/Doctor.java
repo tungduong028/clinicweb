@@ -21,6 +21,20 @@ public class Doctor {
     private String specialization;
     private int experienceYears;
 
+    @Column(nullable = false)
+    private String fullName;
+
+    @Column(nullable = true)
+    private String email;
+
+    @Column(nullable = true)
+    private String phone_number;
+
+    @Column(nullable = true)
+    private String gender;
+
+    @Column(nullable = true)
+    private String date_of_birth;
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room room;

@@ -15,10 +15,25 @@ public class Patient {
     private Long patientId;
 
     @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = true)
     private Users user;
 
     private String medicalHistory;
     private String address;
+
+    @Column(nullable = false)
+    private String fullName;
+
+    @Column(nullable = true)
+    private String email;
+
+    @Column(nullable = true)
+    private String phone_number;
+
+    @Column(nullable = true)
+    private String gender;
+
+    @Column(nullable = true)
+    private String date_of_birth;
 }
 

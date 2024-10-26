@@ -61,21 +61,22 @@ public class UserServiceImpl implements UserService {
         Users user = new Users();
         user.setUsername(userDto.getUsername());
         user.setPasswordHash(passwordEncoder.encode(userDto.getPassword())); // Mã hóa mật khẩu
-        user.setFullName(userDto.getFullName());
         user.setRole(patientRole);
-        user.setEmail(userDto.getEmail());
-        user.setPhone_number(userDto.getPhoneNumber());
-        user.setGender(userDto.getGender());
-        user.setDate_of_birth(userDto.getDateOfBirth());
 
-        Users savedUser = userRepository.save(user); // Lưu và nhận lại user đã lưu
+        Users savedUser = userRepository.save(user);
 
         // 3. Tạo đối tượng Patient và liên kết với user đã tạo
         Patient patient = new Patient();
         patient.setAddress(patientDto.getAddress());
         patient.setMedicalHistory(patientDto.getMedicalHistory());
-        patient.setUser(savedUser); // Gắn liên kết giữa Patient và User
 
+        patient.setUser(savedUser);
+
+        patient.setFullName(patientDto.getFullName());
+        patient.setEmail(patientDto.getEmail());
+        patient.setPhone_number(patientDto.getPhoneNumber());
+        patient.setGender(patientDto.getGender());
+        patient.setDate_of_birth(patientDto.getDateOfBirth());
         // 4. Lưu Patient vào bảng `patients`
         patientRepository.save(patient);
     }
