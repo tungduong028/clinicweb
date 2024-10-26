@@ -10,7 +10,7 @@ public class HomeController {
     @GetMapping("/admin")
     public String adminPage(Model model) {
         model.addAttribute("title", "Admin Page");
-        return "admin";
+        return "admin/index";
     }
 
     @GetMapping("/index")
