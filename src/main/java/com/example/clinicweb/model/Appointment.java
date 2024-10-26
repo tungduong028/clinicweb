@@ -31,10 +31,9 @@ public class Appointment {
 
     @ManyToOne
     @JoinColumn(name = "room_id")
-    private Room room;
+    private Room RoomId;
 
     public enum Status {
         SCHEDULED, COMPLETED, CANCELLED
     }
 }
-
