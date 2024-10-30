@@ -24,10 +24,10 @@
     <link href="/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="/css/style.css" rel="stylesheet">
+    <link href="../static/css/style.css" rel="stylesheet">
 </head>
 
 <body>
@@ -269,17 +269,29 @@
 
                                 <div class="col-12 col-sm-6">
                                     <div class="date" id="date" data-target-input="nearest">
-                                        <input type="text"
+                                        <input type="date"
                                                class="form-control bg-white border-0 datetimepicker-input"
                                                placeholder="Ngày khám" data-target="#date" data-toggle="datetimepicker" style="height: 55px;">
                                     </div>
                                 </div>
 
-                                <div class="col-12 col-sm-6">
+                                <div class="col-12">
                                     <div class="time" id="time" data-target-input="nearest">
-                                        <input type="text"
-                                               class="form-control bg-white border-0 datetimepicker-input"
-                                               placeholder="Giờ khám" data-target="#time" data-toggle="datetimepicker" style="height: 55px;">
+                                        <!-- <input type="text"
+                                               class="show-time-slots form-control bg-white border-0 datetimepicker-input"
+                                               placeholder="Giờ khám" data-target="#time" data-toggle="datetimepicker" style="height: 55px;"> -->
+                                               <button id="btn-hour" type="button" class="show-time-slots form-control bg-white border-0">Giờ khám</button>
+                                    </div>
+                                    <div id="timeslots" class="time-slots">
+                                        <button class="time-slot form-control bg-white border-0">08:00 - 09:00</button>
+                                        <button class="time-slot form-control bg-white border-0">09:00 - 10:00</button>
+                                        <button class="time-slot form-control bg-white border-0">09:00 - 10:00</button>
+                                        <button class="time-slot form-control bg-white border-0">09:00 - 10:00</button>
+                                        <button class="time-slot form-control bg-white border-0">09:00 - 10:00</button>
+                                        <button class="time-slot form-control bg-white border-0">09:00 - 10:00</button>
+                                        <button class="time-slot form-control bg-white border-0">09:00 - 10:00</button>
+                                        <button class="time-slot form-control bg-white border-0">09:00 - 10:00</button>
+                                        <button class="time-slot form-control bg-white border-0">09:00 - 10:00</button>
                                     </div>
                                 </div>
                                 <div></div> <!-- Xuống dòng -->
@@ -510,7 +522,8 @@
     <script src="/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 
     <!-- Template Javascript -->
-    <script src="/js/main.js"></script>
+    <script src="../static/js/main.js"></script>
+    <script src="../static/js/script.js"></script>
 </body>
 
 </html>

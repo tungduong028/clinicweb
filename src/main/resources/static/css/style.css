@@ -6,6 +6,26 @@
     --dark: #1D2A4D;
 }
 
+.time-slots {
+    display: grid;
+    gap: 10px ;
+    grid-template-columns: repeat(3,1fr);
+    margin-top: 10px;
+    margin-right: 15px;
+}
+
+.time-slot {
+    margin: 10px 10px 0 10px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.show-time-slots {
+    padding: 10px;
+}
+
 .btn {
     font-weight: 700;
     transition: .5s;
@@ -244,3 +264,4 @@
     width: 150px;
     height: 150px;
 }
+
