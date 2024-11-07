@@ -1,14 +1,14 @@
 package com.example.clinicweb.dto;
 
 import lombok.Data;
-import java.time.LocalDateTime;
+
+import java.sql.Date;
+import java.sql.Time;
 
 @Data
 public class AppointmentDTO {
-    private Long appointmentId;
-    private Long patientId;
     private Long doctorId;
-    private LocalDateTime appointmentDate;
-    private String status;
-    private Long RoomId;
+    private Long patientId;
+    private Date date;
+    private String time;
 }

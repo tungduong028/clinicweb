@@ -3,7 +3,9 @@ package com.example.clinicweb.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.time.LocalDateTime;
+
+import java.sql.Time;
+import java.sql.Date;
 
 @Data
 @NoArgsConstructor
@@ -23,7 +25,9 @@ public class Appointment {
     @JoinColumn(name = "doctor_id", nullable = false)
     private Doctor doctor;
 
-    private LocalDateTime appointmentDate;
+    private Date date;
+
+    private String time;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

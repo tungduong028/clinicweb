@@ -12,3 +12,7 @@ btn.addEventListener('click', () => {
     list.style.display = 'none';
   }
 });
+
+function selectTime(time) {
+  document.getElementById('selectedTime').value = time;
+}
