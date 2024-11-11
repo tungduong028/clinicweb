@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class AppointmentController {
+    @Autowired
+    private DoctorServiceImpl doctorService;
+
+    @Autowired
+    private PatientServiceImpl patientService;
 
     @Autowired
     private AppointmentServiceImpl appointmentService;
@@ -27,6 +32,8 @@ public class AppointmentController {
         } catch (RuntimeException e) {
             model.addAttribute("errorMessage", e.getMessage());
         }
-        return "redirect:/index";
+        model.addAttribute("doctors", doctorService.findAllDoctors());
+        model.addAttribute("patients", patientService.findAllPatients());
+        return "index";
     }
 }

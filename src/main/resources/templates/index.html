@@ -51,7 +51,15 @@
     </div>
 </div>
 <!-- Topbar End -->
+<!-- Hiển thị thông báo lỗi -->
+<div th:if="${errorMessage}" class="alert alert-danger">
+    <p th:text="${errorMessage}"></p>
+</div>
 
+<!-- Hiển thị thông báo thành công -->
+<div th:if="${successMessage}" class="alert alert-success">
+    <p th:text="${successMessage}"></p>
+</div>
     <!-- Navbar Start -->
     <div class="container-fluid sticky-top bg-white shadow-sm">
         <div class="container">
@@ -251,15 +259,7 @@
                     <p class="text-white mb-5">Eirmod sed tempor lorem ut dolores. Aliquyam sit sadipscing kasd ipsum. Dolor ea et dolore et at sea ea at dolor, justo ipsum duo rebum sea invidunt voluptua. Eos vero eos vero ea et dolore eirmod et. Dolores diam duo invidunt lorem. Elitr ut dolores magna sit. Sea dolore sanctus sed et. Takimata takimata sanctus sed.</p>
                     <a class="btn btn-dark rounded-pill py-3 px-5 me-3" th:href="@{/team}">Tìm Bác Sĩ Phù Hợp</a>
                 </div>
-                <!-- Hiển thị thông báo lỗi -->
-                <div th:if="${errorMessage}" class="alert alert-danger">
-                    <p th:text="${errorMessage}"></p>
-                </div>
 
-                <!-- Hiển thị thông báo thành công -->
-                <div th:if="${successMessage}" class="alert alert-success">
-                    <p th:text="${successMessage}"></p>
-                </div>
                 <!-- Form Appointment -->
                 <form th:action="@{/new-booking}" method="post" class="col-lg-6">
                     <div class="bg-light text-center rounded p-5">
