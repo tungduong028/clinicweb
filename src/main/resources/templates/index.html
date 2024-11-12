@@ -273,7 +273,7 @@
                             <!-- Dropdown chọn bác sĩ -->
                             <div class="col-12 col-sm-6">
                                 <select name="doctorId" class="form-select bg-white border-0" style="height: 55px;" required>
-                                    <option selected disabled>Chọn bác sĩ</option>
+                                    <option selected th:value="0">Chọn bác sĩ</option>
                                     <!-- Sử dụng th:each để duyệt qua danh sách bác sĩ -->
                                     <option th:each="doctor : ${doctors}"
                                             th:value="${doctor.doctorId}"
@@ -300,9 +300,7 @@
                             </div>
                                 <input type="hidden" name="time" id="selectedTime" required>
                             </div>
-                            <div class="col-12">
-                                <input type="text" name="patientId" class="form-control bg-white border-0" placeholder="Mã bệnh nhân" style="height: 55px;" required>
-                            </div>
+
 
                             <div class="col-12">
                                 <button class="btn btn-primary w-100 py-3" type="submit">Đặt lịch</button>

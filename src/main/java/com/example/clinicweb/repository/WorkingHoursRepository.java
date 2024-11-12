@@ -5,10 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.DayOfWeek;
-import java.util.Optional;
+import java.util.List;
 
 @Repository
 public interface WorkingHoursRepository extends JpaRepository<WorkingHours, Integer> {
-
-    Optional<WorkingHours> findByDoctorDoctorIdAndDayOfWeek(Long doctorId, DayOfWeek dayOfWeek);
+    List<WorkingHours> findByDoctor_DoctorIdAndDayOfWeek(Long doctorId, DayOfWeek dayOfWeek);
 }

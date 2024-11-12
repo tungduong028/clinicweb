@@ -33,9 +33,6 @@ public class Appointment {
     @Enumerated(EnumType.STRING)
     private Status status = Status.SCHEDULED;
 
-    @ManyToOne
-    @JoinColumn(name = "room_id")
-    private Room RoomId;
 
     public enum Status {
         SCHEDULED, COMPLETED, CANCELLED

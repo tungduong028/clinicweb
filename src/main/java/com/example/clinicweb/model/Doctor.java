@@ -35,8 +35,6 @@ public class Doctor {
 
     @Column(nullable = true)
     private String date_of_birth;
-    @ManyToOne
-    @JoinColumn(name = "room_id")
-    private Room room;
+
 }
 
