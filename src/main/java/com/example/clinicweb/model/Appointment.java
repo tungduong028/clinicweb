@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Time;
 import java.sql.Date;
+import java.time.LocalTime;
 
 @Data
 @NoArgsConstructor
@@ -27,7 +28,7 @@ public class Appointment {
 
     private Date date;
 
-    private String time;
+    private LocalTime time;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

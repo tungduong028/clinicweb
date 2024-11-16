@@ -8,7 +8,7 @@ import com.example.clinicweb.model.WorkingDays;
 import com.example.clinicweb.repository.AppointmentRepository;
 import com.example.clinicweb.repository.DoctorRepository;
 import com.example.clinicweb.repository.PatientRepository;
-import com.example.clinicweb.repository.WorkingHoursRepository;
+import com.example.clinicweb.repository.WorkingDaysRepository;
 import com.example.clinicweb.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private PatientRepository patientRepository;
 
     @Autowired
-    private WorkingHoursRepository workingHoursRepository;
+    private WorkingDaysRepository workingDaysRepository;
 
     @Transactional
     public void bookAppointment(AppointmentDTO appointmentDTO) {
@@ -68,7 +68,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         // Kiểm tra ngày làm việc của bác sĩ
         DayOfWeek appointmentDayOfWeek = appointmentDate.getDayOfWeek();
-        List<WorkingDays> workingHours = workingHoursRepository.findByDoctor_DoctorIdAndDayOfWeek(
+        List<WorkingDays> workingHours = workingDaysRepository.findByDoctor_DoctorIdAndDayOfWeek(
                 appointmentDTO.getDoctorId(), appointmentDayOfWeek);
 
         if (workingHours.isEmpty()) {

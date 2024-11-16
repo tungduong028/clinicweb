@@ -8,6 +8,6 @@ import java.time.DayOfWeek;
 import java.util.List;
 
 @Repository
-public interface WorkingHoursRepository extends JpaRepository<WorkingDays, Integer> {
+public interface WorkingDaysRepository extends JpaRepository<WorkingDays, Integer> {
     List<WorkingDays> findByDoctor_DoctorIdAndDayOfWeek(Long doctorId, DayOfWeek dayOfWeek);
 }

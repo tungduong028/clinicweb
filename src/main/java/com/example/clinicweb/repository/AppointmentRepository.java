@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,8 +15,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     List<Appointment> findByDoctorDoctorIdAndDate(Long doctorId, Date date);
 
-    boolean existsByDoctorDoctorIdAndDateAndTime(Long doctorId, Date date, String time);
+    boolean existsByDoctorDoctorIdAndDateAndTime(Long doctorId, Date date, LocalTime time);
 
     // Tìm kiếm lịch hẹn của bác sĩ vào ngày và thời gian cụ thể
-    Optional<Appointment> findByDoctor_DoctorIdAndDateAndTime(Long doctorId, Date date, String time);
+    Optional<Appointment> findByDoctor_DoctorIdAndDateAndTime(Long doctorId, Date date, LocalTime time);
 }
