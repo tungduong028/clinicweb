@@ -43,7 +43,7 @@ public class AppointmentController {
         return "index";
     }
 
-    // Hàm này sẽ lấy danh sách các mốc thời gian dựa trên bác sĩ được chọn
+    // Lấy danh sách các mốc thời gian dựa trên bác sĩ được chọn
     @GetMapping("/get-available-times")
     @ResponseBody
     public List<LocalTime> getAvailableTimes(@RequestParam("doctorId") Long doctorId) {
@@ -52,7 +52,7 @@ public class AppointmentController {
         if (workingTimes != null) {
             LocalTime start = workingTimes.getTimeStart();
             LocalTime end = workingTimes.getTimeEnd();
-            while (!start.isAfter(end)) {
+            while (start.isBefore(end)) {
                 availableTimes.add(start);
                 start = start.plusHours(1);  // Tăng thêm 1 giờ mỗi lần
             }
