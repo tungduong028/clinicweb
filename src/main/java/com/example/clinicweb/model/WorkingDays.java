@@ -11,8 +11,8 @@ import java.time.DayOfWeek;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "working_hours")
-public class WorkingHours {
+@Table(name = "working_days")
+public class WorkingDays {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +26,5 @@ public class WorkingHours {
     @Column(name = "day_of_week")
     private DayOfWeek dayOfWeek;
 
-    private java.sql.Time startTime;
-
-    private java.sql.Time endTime;
 }
 

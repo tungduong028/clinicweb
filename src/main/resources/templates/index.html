@@ -87,6 +87,7 @@
                             </div>
                         </div>
                         <a th:href="@{/contact}" class="nav-item nav-link">Liên hệ</a>
+                        <a th:href="@{/logout}" class="nav-item nav-link">Đăng xuất</a>
                     </div>
                 </div>
             </nav>
@@ -247,48 +248,48 @@
     <!-- Services End -->
 
 
-    <!-- Appointment Start -->
-    <div class="container-fluid bg-primary my-5 py-5">
-        <div class="container py-5">
-            <div class="row gx-5">
-                <div class="col-lg-6 mb-5 mb-lg-0">
-                    <div class="mb-4">
-                        <h5 class="d-inline-block text-white text-uppercase border-bottom border-5">Lịch Khám</h5>
-                        <h1 class="display-4">Hãy Đặt Lịch Khám Vì Sức Khỏe Của Bạn</h1>
-                    </div>
-                    <p class="text-white mb-5">Eirmod sed tempor lorem ut dolores. Aliquyam sit sadipscing kasd ipsum. Dolor ea et dolore et at sea ea at dolor, justo ipsum duo rebum sea invidunt voluptua. Eos vero eos vero ea et dolore eirmod et. Dolores diam duo invidunt lorem. Elitr ut dolores magna sit. Sea dolore sanctus sed et. Takimata takimata sanctus sed.</p>
-                    <a class="btn btn-dark rounded-pill py-3 px-5 me-3" th:href="@{/team}">Tìm Bác Sĩ Phù Hợp</a>
+<!-- Appointment Start -->
+<div class="container-fluid bg-primary my-5 py-5">
+    <div class="container py-5">
+        <div class="row gx-5">
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <div class="mb-4">
+                    <h5 class="d-inline-block text-white text-uppercase border-bottom border-5">Lịch Khám</h5>
+                    <h1 class="display-4">Hãy Đặt Lịch Khám Vì Sức Khỏe Của Bạn</h1>
                 </div>
+                <p class="text-white mb-5">Eirmod sed tempor lorem ut dolores. Aliquyam sit sadipscing kasd ipsum. Dolor ea et dolore et at sea ea at dolor, justo ipsum duo rebum sea invidunt voluptua. Eos vero eos vero ea et dolore eirmod et. Dolores diam duo invidunt lorem. Elitr ut dolores magna sit. Sea dolore sanctus sed et. Takimata takimata sanctus sed.</p>
+                <a class="btn btn-dark rounded-pill py-3 px-5 me-3" th:href="@{/team}">Tìm Bác Sĩ Phù Hợp</a>
+            </div>
 
-                <!-- Form Appointment -->
-                <form th:action="@{/new-booking}" method="post" class="col-lg-6">
-                    <div class="bg-light text-center rounded p-5">
-                        <h1 class="mb-4">Đặt lịch khám</h1>
+            <!-- Form Appointment -->
+            <form th:action="@{/new-booking}" method="post" class="col-lg-6">
+                <div class="bg-light text-center rounded p-5">
+                    <h1 class="mb-4">Đặt lịch khám</h1>
 
-                        <div th:if="${message}">
-                            <p th:text="${message}"></p>
+                    <div th:if="${message}">
+                        <p th:text="${message}"></p>
+                    </div>
+
+                    <div class="row g-3">
+                        <!-- Dropdown chọn bác sĩ -->
+                        <div class="col-12 col-sm-6">
+                            <select name="doctorId" class="form-select bg-white border-0" style="height: 55px;" required>
+                                <option selected th:value="0">Chọn bác sĩ</option>
+                                <!-- Sử dụng th:each để duyệt qua danh sách bác sĩ -->
+                                <option th:each="doctor : ${doctors}"
+                                        th:value="${doctor.doctorId}"
+                                        th:text="${doctor.fullName}"></option>
+                            </select>
                         </div>
 
-                        <div class="row g-3">
-                            <!-- Dropdown chọn bác sĩ -->
-                            <div class="col-12 col-sm-6">
-                                <select name="doctorId" class="form-select bg-white border-0" style="height: 55px;" required>
-                                    <option selected th:value="0">Chọn bác sĩ</option>
-                                    <!-- Sử dụng th:each để duyệt qua danh sách bác sĩ -->
-                                    <option th:each="doctor : ${doctors}"
-                                            th:value="${doctor.doctorId}"
-                                            th:text="${doctor.fullName}"></option>
-                                </select>
-                            </div>
+                        <div class="col-12 col-sm-6">
+                            <input type="date" name="date" class="form-control bg-white border-0" placeholder="Ngày khám" style="height: 55px;" required>
+                        </div>
+                        <div class="col-12">
+                            <div class="time" id="time" data-target-input="nearest">
 
-                            <div class="col-12 col-sm-6">
-                                <input type="date" name="date" class="form-control bg-white border-0" placeholder="Ngày khám" style="height: 55px;" required>
+                                <button id="btn-hour" type="button" class="show-time-slots form-control bg-white border-0">Giờ khám</button>
                             </div>
-                            <div class="col-12">
-                                <div class="time" id="time" data-target-input="nearest">
-
-                                    <button id="btn-hour" type="button" class="show-time-slots form-control bg-white border-0">Giờ khám</button>
-                                </div>
                             <div id="timeslots" class="time-slots">
                                 <button name="time" type="button" class="time-slot form-control bg-white border-0" onclick="selectTime('08:00 - 09:00')">08:00 - 09:00</button>
                                 <button name="time" type="button" class="time-slot form-control bg-white border-0" onclick="selectTime('09:00 - 10:00')">09:00 - 10:00</button>
@@ -298,21 +299,21 @@
                                 <button name="time" type="button" class="time-slot form-control bg-white border-0" onclick="selectTime('13:00 - 14:00')">13:00 - 14:00</button>
                                 <button name="time" type="button" class="time-slot form-control bg-white border-0" onclick="selectTime('14:00 - 15:00')">14:00 - 15:00</button>
                             </div>
-                                <input type="hidden" name="time" id="selectedTime" required>
-                            </div>
+                            <input type="hidden" name="time" id="selectedTime" required>
+                        </div>
 
 
-                            <div class="col-12">
-                                <button class="btn btn-primary w-100 py-3" type="submit">Đặt lịch</button>
-                            </div>
+                        <div class="col-12">
+                            <button class="btn btn-primary w-100 py-3" type="submit">Đặt lịch</button>
                         </div>
                     </div>
-                </form>
-                <!-- Form Appointment -->
-            </div>
+                </div>
+            </form>
+            <!-- Form Appointment -->
         </div>
     </div>
-    <!-- Appointment End -->
+</div>
+<!-- Appointment End -->
 
 
 

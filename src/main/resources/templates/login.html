@@ -11,6 +11,10 @@
 <body>
 <div class="wrapper">
     <div class="title"><span>Login Form</span></div>
+    <!-- Hiển thị thông báo lỗi khi đăng nhập thất bại -->
+    <div th:if="${param.error}">
+        <p style="color: red;">Tên đăng nhập hoặc mật khẩu không chính xác. Vui lòng thử lại.</p>
+    </div>
     <form th:action="@{/login}" method="post">
         <div class="row">
             <i class="fas fa-user"></i>
@@ -24,7 +28,7 @@
         <div class="row button">
             <input type="submit" value="Login" />
         </div>
-        <p th:if="${param.error}" style="color: red;">Sai tài khoản hoặc mật khẩu!</p>
+
         <div class="signup-link">Not a member? <a th:href="@{/register}">Signup now</a></div>
     </form>
 </div>

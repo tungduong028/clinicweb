@@ -4,7 +4,7 @@ import com.example.clinicweb.dto.AppointmentDTO;
 import com.example.clinicweb.model.Appointment;
 import com.example.clinicweb.model.Doctor;
 import com.example.clinicweb.model.Patient;
-import com.example.clinicweb.model.WorkingHours;
+import com.example.clinicweb.model.WorkingDays;
 import com.example.clinicweb.repository.AppointmentRepository;
 import com.example.clinicweb.repository.DoctorRepository;
 import com.example.clinicweb.repository.PatientRepository;
@@ -68,7 +68,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         // Kiểm tra ngày làm việc của bác sĩ
         DayOfWeek appointmentDayOfWeek = appointmentDate.getDayOfWeek();
-        List<WorkingHours> workingHours = workingHoursRepository.findByDoctor_DoctorIdAndDayOfWeek(
+        List<WorkingDays> workingHours = workingHoursRepository.findByDoctor_DoctorIdAndDayOfWeek(
                 appointmentDTO.getDoctorId(), appointmentDayOfWeek);
 
         if (workingHours.isEmpty()) {
