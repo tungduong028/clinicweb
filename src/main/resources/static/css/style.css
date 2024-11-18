@@ -265,3 +265,72 @@
     height: 150px;
 }
 
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+}
+
+/* Màu mặc định của chữ */
+.nav-link {
+  color: #1d2a4d; /* Màu chữ mặc định */
+  text-decoration: none;
+}
+
+/* Màu chữ khi được chọn (bằng cách thêm lớp active vào liên kết) */
+.nav-link.active {
+  color: #13c5dd; /* Màu chữ khi mục được chọn */
+  font-weight: bold; /* Đậm chữ khi chọn */
+}
+
+/* Thay đổi màu chữ khi nhấn vào */
+.nav-link:active {
+  color: #13c5dd; /* Màu chữ khi nhấn */
+}
+
+
+.sidebar {
+    height: 100vh;
+    padding-top: 20px;
+    background-color: #13c5dd;
+}
+
+.sidebar .nav-link {
+    color: #1d2a4d; /* Màu chữ của các liên kết trong sidebar khi chưa được chọn */
+    transition: color 0.3s ease; /* Thay đổi màu chữ với hiệu ứng */
+    display: flex; /* Sử dụng flexbox để tên danh mục nằm trên 1 hàng */
+    align-items: center; /* Căn giữa các mục */
+    padding: 10px 15px; /* Thêm padding để giãn khoảng cách */
+    text-transform: uppercase; /* Chuyển chữ thành in hoa */
+    font-weight: 700;
+}
+
+.sidebar .nav-link::selection {
+    color: #13c5dd;
+    font-weight: bold; 
+}
+
+.sidebar .nav-link:hover {
+    color: #13c5dd; /* Màu chữ khi di chuột qua (hover) */
+}
+
+h2 {
+    font-weight: 700; /* Màu chữ cho tiêu đề */
+    transition: color 0.3s ease;
+}
+
+h2:hover {
+    color: #0a8a9d; /* Màu chữ khi di chuột qua tiêu đề */
+}
+
+p {
+    color: #808080; /* Màu chữ cho văn bản nội dung thành màu xám */
+}
+
+.nav-item i {
+    color: #1d2a4d; /* Màu chữ cho biểu tượng trong sidebar */
+    margin-right: 8px; /* Khoảng cách giữa biểu tượng và văn bản */
+}
+
+h4 {
+    text-align: center;
+}
