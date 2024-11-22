@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title>Admin Dashboard</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+</head>
+
+<body>
+<div id="editSuccessMessage" style="display:none;" class="alert alert-success fixed-top p-2 text-center">
+
+</div>
+<div id="deleteSuccessMessage" style="display:none;" class="alert alert-success fixed-top p-2 text-center">
+
+</div>
+<!-- Thông báo thành công tìm kiếm -->
+<div id="searchSuccessMessage" class="alert alert-success fixed-top p-2 text-center" style="display: none;">
+    Tìm kiếm bác sĩ thành công!
+</div>
+
+<!-- Topbar Start -->
+<div class="container-fluid sticky-top bg-white shadow-sm">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg bg-white navbar-light py-3">
+            <h1 class="m-0 text-uppercase text-primary">Admin Dashboard</h1>
+        </nav>
+    </div>
+</div>
+<!-- Topbar End -->
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <h4>Quản Lý</h4>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a th:href="@{/admin/user}" class="nav-link" onclick="showSection('userManagement')">
+                            <i class="fas fa-users"></i> Quản Lý Người Dùng
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/admin/doctor}" class="nav-link">
+                            <i class="fas fa-user-md"></i> Quản Lý Bác Sĩ
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showSection('serviceManagement')">
+                            <i class="fas fa-concierge-bell"></i> Quản Lý Dịch Vụ
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showSection('patientManagement')">
+                            <i class="fas fa-procedures"></i> Quản Lý Bệnh Nhân
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showSection('statistics')">
+                            <i class="fas fa-chart-bar"></i> Thống Kê
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main content -->
+        <main role="main" class="col-md-9 ms-sm-auto col-lg-10 px-4">
+            <div>
+                <div class="container-fluid">
+                    <h1 class="mt-4 mb-4">Quản Lý Bác Sĩ</h1>
+
+                    <!-- Tìm kiếm bác sĩ -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <form id="searchForm" class="d-flex">
+                                <input type="text" name="username" id="searchInput" class="form-control me-2" placeholder="Tìm kiếm bác sĩ..." required>
+                            </form>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <!-- Nút Tìm Kiếm gửi dữ liệu qua AJAX -->
+                            <button type="submit" class="btn btn-secondary me-2" id="searchButton">Tìm Kiếm</button>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDoctorModal">Thêm Bác Sĩ</button>
+                        </div>
+                    </div>
+
+
+                    <!-- Thông báo nếu không tìm thấy bác sĩ -->
+                    <div th:if="${message}" class="alert alert-info mt-3">
+                        <p th:text="${message}"></p>
+                    </div>
+                    <table id="doctorTable" class="table table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Tên Bác Sĩ</th>
+                            <th>Email</th>
+                            <th>Chuyên Khoa</th>
+                            <th>Năm Kinh Nghiệm</th>
+                            <th>Hành Động</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="doctor : ${doctors}">
+                                <td th:text="${doctor.doctorId}">ID</td>
+                                <td th:text="${doctor.fullName}">Full Name</td>
+                                <td th:text="${doctor.email}">Email</td>
+                                <td th:text="${doctor.specialization}">Specialization</td>
+                                <td th:text="${doctor.experienceYears}">Experience</td>
+                                <td>
+                                    <a href="#" class="btn btn-warning btn-sm" th:onclick="'openEditDoctorModal(' + ${doctor.doctorId} + ')'">
+                                        <i class="fas fa-edit"></i> Sửa
+                                    </a>
+
+                                    <a th:href="@{/admin/doctor/delete/{doctorId}(doctorId=${doctor.doctorId})}"
+                                       class="btn btn-danger btn-sm"
+                                       data-bs-toggle="modal"
+                                       data-bs-target="#deleteDoctorModal"
+                                       th:onclick="'setDeleteDoctorId(' + ${doctor.doctorId} + ')'">
+                                        <i class="fas fa-trash"></i> Xóa
+                                    </a>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <!-- Modal Thêm Bác Sĩ -->
+                <div class="modal fade" id="addDoctorModal" tabindex="-1" aria-labelledby="addDoctorModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addDoctorModalLabel">Thêm Bác Sĩ</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="addDoctorForm" th:action="@{/admin/doctor/save}" method="POST">
+                                    <div class="mb-3">
+                                        <label for="doctorfullName" class="form-label">Tên Bác Sĩ</label>
+                                        <input type="text" class="form-control" id="doctorfullName" name="fullName" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="doctorEmail" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="doctorEmail" name="email" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="doctorSpecialization" class="form-label">Chuyên Khoa</label>
+                                        <input type="text" class="form-control" id="doctorSpecialization" name="specialization" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="doctorExperienceYears" class="form-label">Năm Kinh Nghiệm</label>
+                                        <input type="number" class="form-control" id="doctorExperienceYears" name="experienceYears" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Thêm</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="successMessage" style="display:none;" class="alert alert-success fixed-top p-2 text-center">
+                        Bác sĩ đã được thêm thành công!
+                    </div>
+
+                    <div id="errorMessage" style="display:none;" class="alert alert-success fixed-top p-2 text-center">
+                        Lỗi khi thêm bác sĩ!
+                    </div>
+                </div>
+
+
+                <!-- Modal Chỉnh Sửa Bác Sĩ -->
+                <div class="modal fade" id="editDoctorModal" tabindex="-1" aria-labelledby="editDoctorModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editDoctorModalLabel">Chỉnh Sửa Bác Sĩ</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="editDoctorForm" th:action="@{/admin/doctor/update}" method="post">
+                                    <input type="hidden" id="editDoctorId" name="doctorId">
+                                    <div class="mb-3">
+                                        <label for="editDoctorName" class="form-label">Tên Bác Sĩ</label>
+                                        <input type="text" class="form-control" id="editDoctorName" name="fullName" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="editDoctorEmail" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="editDoctorEmail" name="email" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="editDoctorSpecialty" class="form-label">Chuyên Khoa</label>
+                                        <input type="text" class="form-control" id="editDoctorSpecialty" name="specialization" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="editDoctorExperience" class="form-label">Năm Kinh Nghiệm</label>
+                                        <input type="number" class="form-control" id="editDoctorExperience" name="experienceYears" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Cập Nhật</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Modal Xóa Bác Sĩ -->
+                <div class="modal fade" id="deleteDoctorModal" tabindex="-1" aria-labelledby="deleteDoctorModalLabel" style="display: none;">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteDoctorModalLabel">Xóa Bác Sĩ</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Bạn có chắc chắn muốn xóa bác sĩ này không?</p>
+                                <input type="hidden" id="deleteDoctorId">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                <button type="button" class="btn btn-danger" id="confirmDeleteDoctor">Xóa</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
+                <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+                <script src="/js/doctor.js"></script>
+            </div>
+        </main>
+    </div>
+</div>
+
+
+</body>
+</html>

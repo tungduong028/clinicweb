@@ -31,23 +31,32 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public Users findUserByUsername(String username) {
-        return null;
-    }
-
-    @Override
-    public Users saveUser(UsersDTO userDto) {
-        return null;
-    }
-
-    @Override
-    public List<Users> findAllUsers() {
+    public List<Users> getUsers() {
         return userRepository.findAll();
     }
 
     @Override
-    public void deleteUserById(Long id) {
-        userRepository.deleteById(id);
+    public Users findById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    // Lưu người dùng mới hoặc cập nhật thông tin người dùng
+    public void save(Users user) {
+        userRepository.save(user);
+    }
+
+    public void deleteUser(Long userId) {
+        try {
+            userRepository.deleteById(userId); // Xóa người dùng
+        } catch (Exception e) {
+            // Log exception for debugging
+            e.printStackTrace();
+            throw new RuntimeException("Error deleting user", e);
+        }
+    }
+
+    public List<Users> searchUsersByKeyword(String keyword) {
+        return userRepository.findByKeyword(keyword);
     }
 
     @Transactional

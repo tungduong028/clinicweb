@@ -25,7 +25,6 @@ public class Users implements UserDetails {
     @Column(nullable = false)
     private String passwordHash;
 
-
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
@@ -36,7 +35,6 @@ public class Users implements UserDetails {
         this.passwordHash = passwordHash;
         this.role = role;
     }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

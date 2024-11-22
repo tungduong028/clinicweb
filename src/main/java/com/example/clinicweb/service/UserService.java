@@ -6,11 +6,9 @@ import com.example.clinicweb.model.Users;
 import java.util.List;
 
 public interface UserService {
-    Users findUserByUsername(String username);
-
-    Users saveUser(UsersDTO userDto);
-
-    List<Users> findAllUsers();
-
-    void deleteUserById(Long id);
+    List<Users> getUsers();
+    Users findById(Long id);
+    void save(Users user);
+    void deleteUser(Long id);
+    List<Users> searchUsersByKeyword(String keyword);
 }
