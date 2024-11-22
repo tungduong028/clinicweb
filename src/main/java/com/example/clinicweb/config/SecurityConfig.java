@@ -16,9 +16,10 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
     private final CustomUserDetailService customUserDetailService;
-
-    public SecurityConfig(CustomUserDetailService customUserDetailService) {
+    private final CustomOAuth2UserService customOAuth2UserService;
+    public SecurityConfig(CustomUserDetailService customUserDetailService, CustomOAuth2UserService customOAuth2UserService) {
         this.customUserDetailService = customUserDetailService;
+        this.customOAuth2UserService = customOAuth2UserService;
     }
 
     @Bean
@@ -32,6 +33,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/index").authenticated()
                         .requestMatchers("/index").hasAnyRole("DOCTOR", "PATIENT")
                         .requestMatchers("/register", "/css/**", "/new-booking").permitAll()
                         .anyRequest().authenticated()
@@ -45,6 +47,14 @@ public class SecurityConfig {
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout")
+                        .permitAll()
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/redirect", true)
+                        .userInfoEndpoint(userInfoEndpointConfig ->
+                                userInfoEndpointConfig.userService(customOAuth2UserService)
+                        )
                         .permitAll()
                 );
 
