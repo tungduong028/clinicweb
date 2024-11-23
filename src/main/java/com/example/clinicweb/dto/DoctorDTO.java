@@ -15,5 +15,6 @@ public class DoctorDTO {
     private String phoneNumber;
     private String gender;
     private String dateOfBirth;
+    private boolean status;
 }
 
