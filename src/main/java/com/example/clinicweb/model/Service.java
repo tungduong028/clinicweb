@@ -21,4 +21,6 @@ public class Service {
 
     @Column(nullable = false)
     private double price;
+
+    //private  boolean isDeleted=false;
 }
