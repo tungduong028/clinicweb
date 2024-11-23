@@ -88,21 +88,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="user : ${users}" th:data-id="${user.userId}">
-                                <td th:text="${user.userId}"></td>
-                                <td th:text="${user.username}"></td>
-                                <td class="user-role" th:text="${user.role.roleName}"></td> <!-- Thêm lớp để dễ cập nhật -->
-                                <td>
-                                    <a class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editUserModal"
-                                       th:data-id="${user.userId}" th:data-username="${user.username}" th:data-role="${user.role.roleName}">
-                                        <i class="fas fa-edit"></i> Sửa
-                                    </a>
-                                    <a class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteUserModal"
-                                       th:data-id="${user.userId}">
-                                        <i class="fas fa-trash"></i> Xóa
-                                    </a>
-                                </td>
-                            </tr>
+                        <tr th:each="user : ${users}" th:data-id="${user.userId}">
+                            <td th:text="${user.userId}"></td>
+                            <td th:text="${user.username}"></td>
+                            <td class="user-role" th:text="${user.role.roleName}"></td>
+                            <td>
+                                <a class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteUserModal" th:data-id="${user.userId}">
+                                    <i class="fas fa-trash"></i> Xóa
+                                </a>
+
+                            </td>
+                        </tr>
+
                         </tbody>
                     </table>
                 </div>
@@ -136,38 +133,38 @@
 <!--                    </div>-->
 <!--                </div>-->
 
-                <!-- Modal Chỉnh Sửa Người Dùng -->
-                <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="editUserModalLabel">Chỉnh Sửa Người Dùng</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="editUserForm">
-                                    <div class="mb-3">
-                                        <label for="username" class="form-label">Tên Tài Khoản</label>
-                                        <input type="text" class="form-control" id="username" disabled>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="role_name" class="form-label">Vai Trò</label>
-                                        <select class="form-select" id="role_name">
-                                            <option value="Admin">Admin</option>
-                                            <option value="Doctor">Doctor</option>
-                                            <option value="Patient">Patient</option>
-                                        </select>
-                                    </div>
-                                    <input type="hidden" id="user_id">
-                                    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<!--                &lt;!&ndash; Modal Chỉnh Sửa Người Dùng &ndash;&gt;-->
+<!--                <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">-->
+<!--                    <div class="modal-dialog">-->
+<!--                        <div class="modal-content">-->
+<!--                            <div class="modal-header">-->
+<!--                                <h5 class="modal-title" id="editUserModalLabel">Chỉnh Sửa Người Dùng</h5>-->
+<!--                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--                            </div>-->
+<!--                            <div class="modal-body">-->
+<!--                                <form id="editUserForm">-->
+<!--                                    <div class="mb-3">-->
+<!--                                        <label for="username" class="form-label">Tên Tài Khoản</label>-->
+<!--                                        <input type="text" class="form-control" id="username" disabled>-->
+<!--                                    </div>-->
+<!--                                    <div class="mb-3">-->
+<!--                                        <label for="role_name" class="form-label">Vai Trò</label>-->
+<!--                                        <select class="form-select" id="role_name">-->
+<!--                                            <option value="Admin">Admin</option>-->
+<!--                                            <option value="Doctor">Doctor</option>-->
+<!--                                            <option value="Patient">Patient</option>-->
+<!--                                        </select>-->
+<!--                                    </div>-->
+<!--                                    <input type="hidden" id="user_id">-->
+<!--                                    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>-->
+<!--                                </form>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
 
-                <!-- Modal Xóa Người Dùng -->
-                <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+                <!-- Modal xóa người dùng -->
+                <div class="modal" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -175,18 +172,18 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <p>Bạn có chắc chắn muốn xóa người dùng này không?</p>
+                                Bạn có chắc chắn muốn xóa người dùng này?
                             </div>
                             <div class="modal-footer">
-                                <form id="deleteUserForm" action="/admin/user/delete" method="post">
-                                    <input type="hidden" name="id" id="deleteUserId">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                    <button type="submit" class="btn btn-danger">Xóa</button>
-                                </form>
+                                <input type="hidden" id="deleteUserId" />
+                                <button type="button" class="btn btn-danger" id="confirmDeleteUser">Xóa</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
                             </div>
                         </div>
                     </div>
                 </div>
+
+
 
 
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -231,134 +228,83 @@
                         .catch(error => console.error("Error:", error));
                     });
 
-                    // Lắng nghe sự kiện nhấp chuột vào nút "Sửa"
-                    document.querySelectorAll('[data-bs-target="#editUserModal"]').forEach(button => {
-                        button.addEventListener('click', function() {
-                            const userId = this.getAttribute('data-id');
-                            const username = this.getAttribute('data-username');
-                            const roleName = this.getAttribute('data-role');
 
-                            openEditUserModal(userId, username, roleName); // Mở modal và điền thông tin
-                        });
-                    });
-
-
-                    // Hàm để mở modal và điền thông tin người dùng vào form
-                    function openEditUserModal(userId, username, roleName) {
-                        document.getElementById('username').value = username;
-                        document.getElementById('role_name').value = roleName;
-                        document.getElementById('user_id').value = userId;
-                    }
-
-                    // Hàm để cập nhật vai trò trong giao diện bảng sau khi thay đổi
-                    function updateUserRoleInTable(userId, newRoleName) {
-                        const row = document.querySelector(`tr[data-id='${userId}']`);
-                        if (row) {
-                            const roleCell = row.querySelector('.user-role');
-                            if (roleCell) {
-                                roleCell.textContent = newRoleName; // Cập nhật vai trò mới
-                            }
+                    function setDeleteUserId(userId) {
+                        console.log("userId trong hàm setDeleteUserId:", userId);  // Kiểm tra giá trị userId
+                        if (userId !== undefined && userId !== null) {
+                            document.getElementById('deleteUserId').value = userId;  // Gán ID vào modal
+                            const deleteModal = new bootstrap.Modal(document.getElementById('deleteUserModal'));
+                            deleteModal.show();  // Mở modal
+                        } else {
+                            console.error("Không thể gán userId vào modal:", userId);  // Log lỗi nếu userId không hợp lệ
                         }
                     }
 
-                    // Lắng nghe sự kiện form submit để thay đổi vai trò
-                    document.getElementById('editUserForm').addEventListener('submit', function(event) {
-                        event.preventDefault();
 
-                        const userId = document.getElementById('user_id').value;
-                        const newRoleName = document.getElementById('role_name').value;
 
-                        // Giả sử bạn đã gửi yêu cầu cập nhật vai trò đến server thành công, bạn cập nhật giao diện
-                        updateUserRoleInTable(userId, newRoleName);
+                    $(document).on('click', '#confirmDeleteUser', function(e) {
+                        var userId = $('#deleteUserId').val();  // Lấy giá trị ID từ modal
+                        console.log("userId xác nhận xóa:", userId);  // Kiểm tra lại userId
 
-                        // Đóng modal sau khi cập nhật
-                        const modal = new bootstrap.Modal(document.getElementById('editUserModal'));
-                        modal.hide();
+                        e.preventDefault();
+                        if (userId && !isNaN(userId)) {
+                            $.ajax({
+                                type: "DELETE",
+                                url: `/admin/user/delete/${userId}`,  // Truyền đúng userId vào URL
+                                success: function(response) {
+                                    if (response.success) {
+                                        $('#deleteSuccessMessage').text(response.message).fadeIn(500).delay(3000).fadeOut(500);
+                                        $('#deleteUserModal').modal('hide');
+                                        updateUserTable(response.data);  // Cập nhật lại bảng người dùng
+                                    } else {
+                                        $('#errorMessage').text("Đã xảy ra lỗi khi xóa người dùng!").fadeIn(500).delay(3000).fadeOut(500);
+                                    }
+                                },
+                                error: function() {
+                                    $('#errorMessage').text("Đã xảy ra lỗi khi xóa người dùng!").fadeIn(500).delay(3000).fadeOut(500);
+                                }
+                            });
+                        } else {
+                            console.error("userId không hợp lệ:", userId);
+                            $('#errorMessage').text("ID người dùng không hợp lệ!").fadeIn(500).delay(3000).fadeOut(500);
+                        }
                     });
 
-                    // Giả sử bạn sử dụng fetch để gửi yêu cầu cập nhật vai trò
-                    document.getElementById('editUserForm').addEventListener('submit', function(event) {
-                        event.preventDefault();
-
-                        const userId = document.getElementById('user_id').value;
-                        const newRoleName = document.getElementById('role_name').value;
-
-                        // Gửi yêu cầu PATCH hoặc POST đến server để cập nhật vai trò người dùng
-                        fetch(`/admin/user/edit`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                id: userId,
-                                role: newRoleName
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                updateUserRoleInTable(userId, newRoleName); // Cập nhật giao diện sau khi thành công
-                                const modal = new bootstrap.Modal(document.getElementById('editUserModal'));
-                                modal.hide();
-                            } else {
-                                alert('Cập nhật vai trò không thành công');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            alert('Có lỗi xảy ra khi cập nhật');
-                        });
+                    $(document).on('click', '.btn-danger', function() {
+                        var userId = $(this).data('id');  // Lấy userId từ thuộc tính data-id của nút
+                        console.log("userId tại sự kiện click:", userId);  // Kiểm tra giá trị userId
+                        setDeleteUserId(userId);  // Gọi hàm với userId hợp lệ
                     });
 
-                    // Lắng nghe sự kiện nhấp chuột vào nút "Xóa"
-                    document.querySelectorAll('[data-bs-target="#deleteUserModal"]').forEach(button => {
-                        button.addEventListener('click', function() {
-                            const userId = this.getAttribute('data-id'); // Lấy ID người dùng từ thuộc tính data-id
-                            openDeleteUserModal(userId); // Mở modal và điền ID người dùng
-                        });
-                    });
 
-                    // Hàm để mở modal và điền thông tin người dùng vào form
-                    function openDeleteUserModal(userId) {
-                        document.getElementById('deleteUserId').value = userId;
-                    }
 
-                    // Xử lý gửi yêu cầu xóa khi nhấn nút "Xóa"
-                    document.getElementById('deleteUserForm').addEventListener('submit', function(event) {
-                        event.preventDefault();
+                    // Hàm cập nhật lại bảng người dùng
+                    function updateUserTable(users) {
+                        var tableBody = $('#userTable tbody');
+                        tableBody.empty(); // Xóa bảng hiện tại
 
-                        const userId = document.getElementById('deleteUserId').value;
-
-                        // Gửi yêu cầu DELETE đến server để xóa người dùng
-                        fetch(`/admin/user/delete`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({ id: userId })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                // Xử lý khi xóa thành công
-                            } else {
-                                alert('Có lỗi xảy ra khi xóa');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            alert('Có lỗi xảy ra khi xóa');
-                        });
-                    });
-
-                    // Hàm để loại bỏ người dùng khỏi bảng
-                    function removeUserFromTable(userId) {
-                        const row = document.querySelector(`tr[data-id='${userId}']`);
-                        if (row) {
-                            row.remove(); // Loại bỏ hàng khỏi bảng
+                        // Kiểm tra nếu users là một mảng hợp lệ
+                        if (Array.isArray(users)) {
+                            users.forEach(function(user) {
+                                var row = `<tr>
+                                            <td>${user.userId}</td>
+                                            <td>${user.username}</td>
+                                            <td>${user.email}</td>
+                                            <td>
+                                                <a href="#" class="btn btn-warning btn-sm" onclick="openEditUserModal(${user.userId})">
+                                                    <i class="fas fa-edit"></i> Sửa
+                                                </a>
+                                                <a href="#" class="btn btn-danger btn-sm" onclick="setDeleteUserId(${user.userId})">
+                                                    <i class="fas fa-trash"></i> Xóa
+                                                </a>
+                                            </td>
+                                        </tr>`;
+                                tableBody.append(row);
+                            });
+                        } else {
+                            console.error("Dữ liệu người dùng không hợp lệ hoặc không phải mảng:", users);
                         }
                     }
-
 
                 </script>
             </div>

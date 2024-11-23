@@ -20,8 +20,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
             "LOWER(u.username) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(u.role.roleName) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     List<Users> findByKeyword(String keyword);
-
-    void deleteById(Long userId);
+    void deleteByUserId(Long userId);
 }
 
 

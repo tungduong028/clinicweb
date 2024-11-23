@@ -5,6 +5,7 @@ import com.example.clinicweb.dto.UsersDTO;
 import com.example.clinicweb.model.Patient;
 import com.example.clinicweb.model.Role;
 import com.example.clinicweb.model.Users;
+import com.example.clinicweb.repository.DoctorRepository;
 import com.example.clinicweb.repository.PatientRepository;
 import com.example.clinicweb.repository.RoleRepository;
 import com.example.clinicweb.repository.UsersRepository;
@@ -28,6 +29,9 @@ public class UserServiceImpl implements UserService {
     private RoleRepository roleRepository;
 
     @Autowired
+    private DoctorRepository doctorRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
@@ -45,14 +49,26 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
-    public void deleteUser(Long userId) {
-        try {
-            userRepository.deleteById(userId); // Xóa người dùng
-        } catch (Exception e) {
-            // Log exception for debugging
-            e.printStackTrace();
-            throw new RuntimeException("Error deleting user", e);
+    @Transactional
+    public void deleteUserById(Long userId) {
+        Users user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Người dùng không tồn tại."));
+
+        // Kiểm tra vai trò
+        String roleName = user.getRole().getRoleName();
+        if ("Admin".equalsIgnoreCase(roleName)) {
+            throw new RuntimeException("Không thể xóa tài khoản với vai trò Admin.");
         }
+
+        // Xóa dữ liệu liên quan
+        if ("Doctor".equalsIgnoreCase(roleName)) {
+            doctorRepository.deleteByUser_UserId(userId);
+        } else if ("Patient".equalsIgnoreCase(roleName)) {
+            patientRepository.deleteByUser_UserId(userId);
+        }
+
+        // Xóa người dùng
+        userRepository.delete(user);
     }
 
     public List<Users> searchUsersByKeyword(String keyword) {

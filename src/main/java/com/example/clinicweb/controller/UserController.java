@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.example.clinicweb.repository.RoleRepository;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -44,47 +45,19 @@ public class UserController {
         return "redirect:/admin/user"; // Quay lại danh sách người dùng
     }
 
-    @PostMapping("/edit")
-    public ResponseEntity<Map<String, Object>> editUser(@RequestBody Map<String, String> payload) {
+    // Phương thức xóa người dùng
+    @DeleteMapping("/delete/{userId}")
+    public ResponseEntity<Map<String, Object>> deleteUserById(@PathVariable Long userId) {
+        Map<String, Object> response = new HashMap<>();
         try {
-            Long userId = Long.parseLong(payload.get("id"));
-            String role = payload.get("role");
-
-            if (!role.equals("Admin") && !role.equals("Doctor") && !role.equals("Patient")) {
-                return ResponseEntity.badRequest().body(Map.of("success", false, "message", "Vai trò không hợp lệ"));
-            }
-
-            Users user = userService.findById(userId);
-            if (user != null) {
-                Role newRole = roleRepository.findByRoleName(role);
-                if (newRole == null) {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("success", false, "message", "Vai trò không tồn tại"));
-                }
-
-                user.setRole(newRole);
-                userService.save(user);
-
-                return ResponseEntity.ok(Map.of("success", true, "message", "Cập nhật vai trò thành công"));
-            }
-
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("success", false, "message", "Người dùng không tồn tại"));
-        } catch (Exception e) {
-            e.printStackTrace(); // Log lỗi chi tiết
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("success", false, "message", "Đã xảy ra lỗi"));
+            userService.deleteUserById(userId);
+            response.put("success", true);
+            response.put("message", "Người dùng đã được xóa thành công.");
+        } catch (RuntimeException ex) {
+            response.put("success", false);
+            response.put("message", ex.getMessage());
         }
+        return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/delete")
-    @ResponseBody
-    public ResponseEntity<?> deleteUser(@RequestBody Map<String, String> request) {
-        try {
-            Long userId = Long.parseLong(request.get("id"));
-            userService.deleteUser(userId);
-            return ResponseEntity.ok().body(Map.of("success", true));
-        } catch (Exception e) {
-            // Log exception for debugging
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("success", false));
-        }
-    }
 }

@@ -1,7 +1,9 @@
 package com.example.clinicweb.controller;
 
 import com.example.clinicweb.model.Doctor;
+import com.example.clinicweb.model.Role;
 import com.example.clinicweb.model.Users;
+import com.example.clinicweb.repository.RoleRepository;
 import com.example.clinicweb.repository.UsersRepository;
 import com.example.clinicweb.service.DoctorService;
 import com.example.clinicweb.service.UserService;
@@ -28,6 +30,8 @@ public class DoctorController {
     private UserService userService;
     @Autowired
     private UsersRepository usersRepository;
+    @Autowired
+    private RoleRepository roleRepository;
 
     // Hiển thị danh sách bác sĩ
     @GetMapping
@@ -44,18 +48,12 @@ public class DoctorController {
     @PostMapping("/save")
     public ResponseEntity<List<Doctor>> addDoctor(@ModelAttribute Doctor doctor) {
         try {
-            String username;
-            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            if (principal instanceof UserDetails) {
-                username = ((UserDetails) principal).getUsername();
-            } else {
-                username = principal.toString();
-            }
-            Users users = usersRepository.findByUsername(username)
-                    .orElseThrow(() -> new UsernameNotFoundException("Không tìm thấy người dùng: " + username));
+            Role doctorRole = roleRepository.findByroleName("ROLE_DOCTOR")
+                    .orElseThrow(() -> new RuntimeException("Role PATIENT not found"));
+            Users users = new Users(doctor.getFullName(),"",doctorRole);
+            userService.save(users);
             doctor.setUser(users);
-
-            // Thêm bác sĩ mới
+            // Thêm bác sĩ
             doctorService.saveDoctor(doctor);
         } catch (Exception e) {
             return ResponseEntity.status(500).body(null); // Trả về mã lỗi 500 nếu có lỗi
