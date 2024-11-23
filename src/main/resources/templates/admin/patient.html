@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title>Admin Dashboard</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+          integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+<!-- Topbar Start -->
+<div class="container-fluid sticky-top bg-white shadow-sm">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg bg-white navbar-light py-3">
+            <h1 class="m-0 text-uppercase text-primary">Admin Dashboard</h1>
+        </nav>
+    </div>
+</div>
+<!-- Topbar End -->
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <h4>Quản Lý</h4>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" onclick="showSection('userManagement')">
+                            <i class="fas fa-users"></i> Quản Lý Người Dùng
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showSection('doctorManagement')">
+                            <i class="fas fa-user-md"></i> Quản Lý Bác Sĩ
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/service}">
+                            <i class="fas fa-concierge-bell"></i> Quản Lý Dịch Vụ
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/patient}">
+                            <i class="fas fa-procedures"></i> Quản Lý Bệnh Nhân
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showSection('statistics')">
+                            <i class="fas fa-chart-bar"></i> Thống Kê
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main content -->
+        <main role="main" class="col-md-9 ms-sm-auto col-lg-10 px-4">
+            <div id="content">
+                <div class="block block-rounded">
+                    <div class="block-header block-header-default">
+                        <h3 class="block-title">
+                            <small>Bảng bệnh nhân</small>
+                        </h3>
+                    </div>
+                    <div>
+                        <input type="button" value="Tạo bệnh nhân" th:onclick="|window.location.href='/admin/patient/new'|" class="btn btn-primary btn-sm mr-2" />
+                    </div>
+                    <div class="block-content block-content-full">
+
+                        <!-- DataTables init on table by adding .js-dataTable-full-pagination class, functionality is initialized in js/pages/be_tables_datatables.min.js which was auto compiled from _js/pages/be_tables_datatables.js -->
+                        <table class="table table-bordered table-striped table-vcenter js-dataTable-full-pagination">
+                            <thead>
+                            <tr>
+                                <th class="text-center" style="width: 80px;">#</th>
+                                <th scope="col" style="width: 150px;">Tên</th>
+                                <th scope="col" style="width: 150px;">Email</th>
+                                <th class="d-none d-sm-table-cell" style="width: 50%;">Lịch sự bệnh</th>
+                                <th scope="col" style="width: 20%;">Địa chỉ</th>
+                                <th scope="col" style="width: 10%;">Số điện thoại</th>
+                                <th scope="col" style="width: 10%;">Giới tính</th>
+                                <th scope="col" style="width: 10%;">Ngày sinh</th>
+                                <th scope="col" style="width: 150px;">Hành động</th>
+                                <!--<th class="d-none d-sm-table-cell" style="width: 15%;">Access</th>
+                                <th style="width: 15%;">Registered</th>-->
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="patient: ${patients}">
+                                <td class="text-center" th:text="${patient.patientId}">1</td>
+                                <td class="fw-semibold" th:text="${patient.fullName}">David Fuller</td>
+                                <td class="d-none d-sm-table-cell" th:text="${patient.email}"></td>
+                                <td class="d-none d-sm-table-cell" th:text="${patient.medicalHistory}"></td>
+                                <td class="d-none d-sm-table-cell" th:text="${patient.address}"></td>
+                                <td class="d-none d-sm-table-cell" th:text="${patient.phoneNumber}"></td>
+                                <td class="d-none d-sm-table-cell" th:text="${patient.gender}"></td>
+                                <td class="d-none d-sm-table-cell" th:text="${patient.dateOfBirth}"></td>
+                                <td>
+                                    <a class="fa-regular fa-square-check"
+                                       th:href="@{'/admin/patient/edit/' + ${patient.patientId}}" title="Edit this patient"></a>
+                                    <a th:href="@{'/admin/patient/delete/' + ${patient.patientId}}"
+                                       id="btnDelete"
+                                       title="Delete this patient" class="fa-regular fa-trash-can icon-dark btn-delete"></a>
+                                </td>
+                                <!--</td>
+                                <td class="d-none d-sm-table-cell">
+                                  <span class="badge bg-danger">Disabled</span>
+                                </td>
+                                <td>
+                                  <em class="text-muted">9 days ago</em>
+                                </td>-->
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <nav aria-label="Pagination" th:if="${totalPages > 0}">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                                <!--                                <a th:replace="/fragments/paging.html :: paging(1, '<<', 'First Page')"></a>-->
+                                <a class="page-link"
+                                   th:href="@{'/admin/patient?' + ${keyword!=null && keyword!=''? 'keyword=' + keyword + '&' : ''} + 'page=1' + '&size=' + ${pageSize}}"
+                                   title="First Page" rel="First Page">
+                                    <<
+                                </a>
+                            </li>
+                            <li class="page-item font-weight-bold" th:classappend="${currentPage == 1} ? 'disabled'">
+                                <!--                                <a th:replace="fragments/paging :: paging(${currentPage - 1}, 'Prev', 'Previous Page')"></a>-->
+                                <a class="page-link"
+                                   th:href="@{'/admin/patient?' + ${keyword!=null && keyword!=''? 'keyword=' + keyword + '&' : ''} + 'page=' + ${currentPage - 1} + '&size=' + ${pageSize}}"
+                                   title="Previous Page" rel="Previous Page">
+                                    Prev
+                                </a>
+                            </li>
+                            <li class="page-item disabled" th:if="${currentPage - 2 > 1}">
+                                <a class="page-link" href="#">...</a>
+                            </li>
+                            <li class="page-item" th:classappend="${page == currentPage} ? 'active'"
+                                th:each="page : ${#numbers.sequence(currentPage > 2 ? currentPage - 2 : 1, currentPage + 2 < totalPages ? currentPage + 2 : totalPages)}">
+                                <!--                                <a th:replace="fragments/paging :: paging(${page}, ${page}, 'Page ' + ${page})"></a>-->
+                                <a class="page-link"
+                                   th:href="@{'/admin/patient?' + ${keyword!=null && keyword!=''? 'keyword=' + keyword + '&' : ''} + 'page=' + ${page} + '&size=' + ${pageSize}}"
+                                   title="'Page ' + ${page})" rel="'Page ' + ${page})">
+                                    [[${page}]]
+                                </a>
+                            </li>
+                            <li class="page-item disabled" th:if="${currentPage + 2 < totalPages}">
+                                <a class="page-link" href="#">...</a>
+                            </li>
+                            <li class="page-item font-weight-bold" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                                <!--                                <a th:replace="fragments/paging :: paging(${currentPage + 1},'Next', 'Next Page')"></a>-->
+                                <a class="page-link"
+                                   th:href="@{'/admin/patient?' + ${keyword!=null && keyword!=''? 'keyword=' + keyword + '&' : ''} + 'page=' + ${currentPage + 1} + '&size=' + ${pageSize}}"
+                                   title="Next Page" rel="Next Page">
+                                    Next
+                                </a>
+                            </li>
+                            <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                                <!--                                <a th:replace="fragments/paging :: paging(${totalPages}, '>>', 'Last Page')"></a>-->
+                                <a class="page-link"
+                                   th:href="@{'/admin/patient?' + ${keyword!=null && keyword!=''? 'keyword=' + keyword + '&' : ''} + 'page=' + ${totalPages} + '&size=' + ${pageSize}}"
+                                   title="Last Page" rel="Last Page">
+                                    >>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script>
+    function showSection(section) {
+        const content = document.getElementById('content');
+        switch (section) {
+            case 'userManagement':
+                content.innerHTML = '<h2>Quản Lý Người Dùng</h2><p>Danh sách người dùng sẽ được hiển thị ở đây.</p>';
+                break;
+            case 'doctorManagement':
+                content.innerHTML = '<h2>Quản Lý Bác Sĩ</h2><p>Danh sách bác sĩ sẽ được hiển thị ở đây.</p>';
+                break;
+            case 'serviceManagement':
+                content.innerHTML = '<h2>Quản Lý Dịch Vụ</h2><p>Danh sách dịch vụ sẽ được hiển thị ở đây.</p>';
+                break;
+            case 'patientManagement':
+                content.innerHTML = '<h2>Quản Lý Bệnh Nhân</h2><p>Danh sách bệnh nhân sẽ được hiển thị ở đây.</p>';
+                break;
+            case 'statistics':
+                content.innerHTML = '<h2>Thống Kê</h2><p>Biểu đồ và số liệu sẽ được hiển thị ở đây.</p>';
+                break;
+            default:
+                content.innerHTML = '<h2>Chào mừng đến với trang quản lý!</h2><p>Vui lòng chọn một chức năng từ menu bên trái để bắt đầu.</p>';
+        }
+        content.classList.add('animate__animated', 'animate__fadeIn');
+    }
+</script>
+
+</body>
+</html>

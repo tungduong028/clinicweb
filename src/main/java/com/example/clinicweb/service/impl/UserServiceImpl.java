@@ -73,10 +73,14 @@ public class UserServiceImpl implements UserService {
 
         patient.setFullName(patientDto.getFullName());
         patient.setEmail(patientDto.getEmail());
-        patient.setPhone_number(patientDto.getPhoneNumber());
+        patient.setPhoneNumber(patientDto.getPhoneNumber());
         patient.setGender(patientDto.getGender());
-        patient.setDate_of_birth(patientDto.getDateOfBirth());
+        patient.setDateOfBirth(patientDto.getDateOfBirth());
         // 4. Lưu Patient vào bảng `patients`
         patientRepository.save(patient);
+    }
+
+    public List<Users> findByRolePatient(){
+        return userRepository.findByRolePatient();
     }
 }

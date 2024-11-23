@@ -13,4 +13,6 @@ public interface UserService {
     List<Users> findAllUsers();
 
     void deleteUserById(Long id);
+
+    List<Users> findByRolePatient();
 }
