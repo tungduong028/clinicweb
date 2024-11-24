@@ -16,7 +16,7 @@ public class CloudStorageService {
     private final Storage storage;
 
     public CloudStorageService() throws IOException {
-        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("C:/elevated-axon-442412-c5-55a42ddda5c6.json"));
+        GoogleCredentials credentials = GoogleCredentials.getApplicationDefault();
         storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
     }
 
