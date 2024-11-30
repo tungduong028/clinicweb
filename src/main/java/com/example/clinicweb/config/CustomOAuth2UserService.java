@@ -67,11 +67,11 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
 
             // 3. Tạo đối tượng Patient liên kết với người dùng đã tạo và lưu vào bảng patients
+            String fullName = oAuth2User.getAttribute("name");
             Patient patient = new Patient();
             patient.setUser(savedUser);
             patient.setEmail(email);
-            patient.setFullName(""); // Hoặc lấy từ oAuth2User nếu có (ví dụ: oAuth2User.getAttribute("name"))
-            patient.setPhone_number(""); // Các thông tin này có thể cần cập nhật sau
+            patient.setFullName(fullName);
             patientRepository.save(patient); // Lưu Patient vào DB
 
         } else {
