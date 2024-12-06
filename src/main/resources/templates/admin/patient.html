@@ -5,6 +5,10 @@
     <meta charset="utf-8">
     <title>Admin Dashboard</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <script type="text/javascript"
+            src="webjars/jquery/2.2.3/jquery.min.js"></script>
+    <script type="text/javascript"
+            src="webjars/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"></script>
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" rel="stylesheet">
@@ -33,12 +37,12 @@
                 <h4>Quản Lý</h4>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#" onclick="showSection('userManagement')">
+                        <a class="nav-link active" th:href="@{/admin/user}">
                             <i class="fas fa-users"></i> Quản Lý Người Dùng
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showSection('doctorManagement')">
+                        <a class="nav-link" th:href="@{/admin/doctor}">
                             <i class="fas fa-user-md"></i> Quản Lý Bác Sĩ
                         </a>
                     </li>
@@ -64,16 +68,30 @@
         <!-- Main content -->
         <main role="main" class="col-md-9 ms-sm-auto col-lg-10 px-4">
             <div id="content">
-                <div class="block block-rounded">
-                    <div class="block-header block-header-default">
-                        <h3 class="block-title">
-                            <small>Bảng bệnh nhân</small>
-                        </h3>
+                <div class="container-fluid">
+                    <h1 class="mt-4 mb-4">Quản Lý Bệnh Nhân</h1>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <!-- Search Form -->
+                            <form id="searchForm" class="d-flex" th:action="@{/admin/patient}" method="get">
+                                <input type="text" name="keyword" id="searchInput" class="form-control me-2" placeholder="Tìm kiếm theo tên bệnh nhân" th:value="${keyword}">
+                                <button type="submit" style="width:150px" class="btn btn-secondary me-2">Tìm Kiếm</button>
+                            </form>
+                        </div>
+                        <div class="col-md-6 text-end">
+
+                            <!-- Create new service button -->
+                            <a th:href="@{'/admin/patient/new'}" class="btn btn-primary">Thêm Bệnh Nhân</a>
+                        </div>
+                    </div>
+
+
+                    <!-- Thông báo nếu không tìm thấy bác sĩ -->
+                    <div th:if="${message}" class="alert alert-info mt-3">
+                        <p th:text="${message}"></p>
                     </div>
                     <div>
-                        <input type="button" value="Tạo bệnh nhân" th:onclick="|window.location.href='/admin/patient/new'|" class="btn btn-primary btn-sm mr-2" />
-                    </div>
-                    <div class="block-content block-content-full">
 
                         <!-- DataTables init on table by adding .js-dataTable-full-pagination class, functionality is initialized in js/pages/be_tables_datatables.min.js which was auto compiled from _js/pages/be_tables_datatables.js -->
                         <table class="table table-bordered table-striped table-vcenter js-dataTable-full-pagination">
@@ -103,11 +121,29 @@
                                 <td class="d-none d-sm-table-cell" th:text="${patient.gender}"></td>
                                 <td class="d-none d-sm-table-cell" th:text="${patient.dateOfBirth}"></td>
                                 <td>
-                                    <a class="fa-regular fa-square-check"
-                                       th:href="@{'/admin/patient/edit/' + ${patient.patientId}}" title="Edit this patient"></a>
-                                    <a th:href="@{'/admin/patient/delete/' + ${patient.patientId}}"
-                                       id="btnDelete"
-                                       title="Delete this patient" class="fa-regular fa-trash-can icon-dark btn-delete"></a>
+                                    <a data-toggle="modal" th:attr="data-target='#recordDeleteModal'+${patient.patientId}" class="btn btn-danger delBtn">Delete</a>
+                                    <a th:href="@{'/admin/patient/edit/' + ${patient.patientId}}" class="btn btn-primary">Edit</a>
+<!--                                    <a class="fa-regular fa-square-check"-->
+<!--                                       th:href="@{'/admin/patient/edit/' + ${patient.patientId}}" title="Edit this patient"></a>-->
+<!--                                    <a th:href="@{'/admin/patient/delete/' + ${patient.patientId}}"-->
+<!--                                       id="btnDelete"-->
+<!--                                       title="Delete this patient" class="fa-regular fa-trash-can icon-dark btn-delete"></a>-->
+                                    <div class="modal fade" th:attr="id='recordDeleteModal'+${patient.patientId}" tabindex="-1" role="dialog" aria-labelledby="recordDeleteModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="recordDeleteModalLabel">Delete Record</h5>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to delete this record?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                                                    <a class="btn btn-primary" th:attr="href='/admin/patient/delete/' + ${patient.patientId}">Yes</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                                 <!--</td>
                                 <td class="d-none d-sm-table-cell">
@@ -121,6 +157,82 @@
                             </tbody>
                         </table>
                     </div>
+<!--                    <div class="myForm">-->
+<!--                        <form th:action="@{/admin/patient/save}" method="post">-->
+<!--                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+<!--                                <div class="modal-dialog" role="document">-->
+<!--                                    <div class="modal-content">-->
+<!--                                        <div class="modal-header">-->
+<!--                                            <h5 class="modal-title" id="exampleModalLabel">Update or create</h5>-->
+<!--                                        </div>-->
+<!--                                        <div class="modal-body">-->
+<!--                                            <div class="form-group">-->
+<!--                                                <label for="patientId" class="form-control-label"></label>-->
+<!--                                                <input type="hidden" class="form-control" id="patientId" name="patientId"/>-->
+<!--                                            </div>-->
+
+<!--                                            <div class="form-group">-->
+<!--                                                <label for="fullName" class="form-control-label">Tên:</label>-->
+<!--                                                <input type="text" class="form-control" id="fullName" name="fullName" value="" required/>-->
+<!--                                            </div>-->
+
+<!--                                            <div class="form-group">-->
+<!--                                                <label for="address" class="form-control-label">Địa chỉ:</label>-->
+<!--                                                <input type="text" class="form-control" id="address" name="address" value="" required/>-->
+<!--                                            </div>-->
+
+<!--                                            <div class="form-group">-->
+<!--                                                <label for="email" class="form-control-label">Email:</label>-->
+<!--                                                <input type="text" class="form-control" id="email" name="email" value="" required/>-->
+<!--                                            </div>-->
+
+<!--                                            <div class="form-group">-->
+<!--                                                <label for="phoneNumber" class="form-control-label">Sđt:</label>-->
+<!--                                                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" value="" required/>-->
+<!--                                            </div>-->
+
+<!--                                            <div class="form-group">-->
+<!--                                                <label for="medicalHistory" class="form-control-label">Lịch sử bệnh lý:</label>-->
+<!--                                                <textarea id="medicalHistory" name="medicalHistory" minlength="0" maxlength="500" class="form-control" rows="7" cols="50" ></textarea>-->
+<!--                                            </div>-->
+
+<!--                                            <div class="form-group">-->
+<!--                                                <label for="gender" class="form-control-label">Giới tính:</label>-->
+<!--                                                <select id="gender" name="gender" required>-->
+<!--                                                    <option value="MALE">Nam</option>-->
+<!--                                                    <option value="FEMALE">Nữ</option>-->
+<!--                                                </select>-->
+<!--                                            </div>-->
+
+<!--                                            &lt;!&ndash; User (Dropdown) &ndash;&gt;-->
+<!--                                            <div class="form-group row">-->
+<!--                                                <label class="col-sm-3 col-form-label" for="userId">Người dùng</label>-->
+<!--                                                <div class="col-sm-9">-->
+<!--                                                    <select name="userId" id="userId" class="form-select bg-white border-0" style="height: 55px;" required>-->
+<!--                                                        <option value="0" th:each="user : ${users}" th:value="${user.id}" th:text="${user.username}">Chọn người dùng</option>-->
+<!--                                                    </select>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+
+<!--                                            &lt;!&ndash; Date of Birth &ndash;&gt;-->
+<!--                                            <div class="form-group row">-->
+<!--                                                <label class="col-sm-3 col-form-label" for="dateOfBirth">Ngày sinh</label>-->
+<!--                                                <div class="col-sm-9">-->
+<!--                                                    <input type="date" th:field="*{dateOfBirth}" required class="form-control" id="dateOfBirth" />-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+
+<!--                                        </div>-->
+<!--                                        <div class="modal-footer">-->
+<!--                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+<!--                                            <input type="submit" class="btn btn-primary" value="Save" />-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </form>-->
+<!--                    </div>-->
+
                     <nav aria-label="Pagination" th:if="${totalPages > 0}">
                         <ul class="pagination justify-content-center">
                             <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
@@ -172,12 +284,62 @@
                             </li>
                         </ul>
                     </nav>
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <!-- Include Bootstrap JS -->
+                    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
                 </div>
             </div>
         </main>
     </div>
 </div>
+<!--<script>-->
+<!--$(document).ready(function(){-->
+<!--    // Event listener for edit or new patient actions-->
+<!--    $(' .nBtn, .table .eBtn').on('click', function(event){-->
+<!--        event.preventDefault();-->
+<!--        var href = $(this).attr('href');-->
+<!--        var text = $(this).text();-->
 
+<!--        // If the button is for 'Edit'-->
+<!--        if(text == 'Edit') {-->
+<!--            $.get(href, function (patient, status) {-->
+<!--                // Populate form fields with patient data-->
+<!--                $('.myForm #patientId').val(patient.patientId);-->
+<!--                $('.myForm #userId').val(patient.userId);-->
+<!--                $('.myForm #address').val(patient.address);-->
+<!--                $('.myForm #medicalHistory').val(patient.medicalHistory);-->
+<!--                $('.myForm #fullName').val(patient.fullName);-->
+<!--                $('.myForm #email').val(patient.email);-->
+<!--                $('.myForm #phoneNumber').val(patient.phoneNumber);-->
+<!--                $('.myForm #gender').val(patient.gender);-->
+<!--                $('.myForm #dateOfBirth').val(patient.dateOfBirth);-->
+<!--            });-->
+
+<!--            $('.myForm #exampleModal').modal();-->
+<!--        } else {-->
+<!--            // Clear form fields for new patient-->
+<!--            $('.myForm #patientId').val("");-->
+<!--            $('.myForm #userId').val("");-->
+<!--            $('.myForm #address').val("");-->
+<!--            $('.myForm #medicalHistory').val("");-->
+<!--            $('.myForm #fullName').val("");-->
+<!--            $('.myForm #email').val("");-->
+<!--            $('.myForm #phoneNumber').val("");-->
+<!--            $('.myForm #gender').val("");-->
+<!--            $('.myForm #dateOfBirth').val("");-->
+<!--            $('.myForm #exampleModal').modal();-->
+<!--        }-->
+<!--    });-->
+
+<!--    // Event listener for delete button-->
+<!--    $('.table .delBtn').on('click', function(event){-->
+<!--        event.preventDefault();-->
+<!--        var href = $(this).attr('href');-->
+<!--        $('#myModal #delRef').attr('href', href);-->
+<!--        $('#myModal').modal();-->
+<!--    });-->
+<!--});-->
+<!--</script>-->
 <script>
     function showSection(section) {
         const content = document.getElementById('content');

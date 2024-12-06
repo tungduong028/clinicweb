@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title>Admin Dashboard</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+</head>
+
+<body>
+<!-- Topbar Start -->
+<div class="container-fluid sticky-top bg-white shadow-sm">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg bg-white navbar-light py-3">
+            <h1 class="m-0 text-uppercase text-primary">Admin Dashboard</h1>
+        </nav>
+    </div>
+</div>
+<!-- Topbar End -->
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <h4>Quản Lý</h4>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/admin/user}">
+                            <i class="fas fa-users"></i> Quản Lý Người Dùng
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/doctor}">
+                            <i class="fas fa-user-md"></i> Quản Lý Bác Sĩ
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/service}">
+                            <i class="fas fa-concierge-bell"></i> Quản Lý Dịch Vụ
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/patient}">
+                            <i class="fas fa-procedures"></i> Quản Lý Bệnh Nhân
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showSection('statistics')">
+                            <i class="fas fa-chart-bar"></i> Thống Kê
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main content -->
+        <main role="main" class="col-md-9 ms-sm-auto col-lg-10 px-4">
+            <div id="content">
+                <div class="block-header block-header-default">
+                    <h2 class="text-center">[[${pageTitle}]]</h2>
+                </div>
+                <div class="block-content block-content-full">
+                    <!-- DataTables init on table by adding .js-dataTable-full-pagination class, functionality is initialized in js/pages/be_tables_datatables.min.js which was auto compiled from _js/pages/be_tables_datatables.js -->
+
+                </div>
+                <div class="my-3">
+                    <form th:action="@{/admin/user/save}" method="post" enctype="multipart/form-data" th:object="${user}" style="max-width: 550px; margin: 0 auto">
+
+                        <input type="hidden" th:field="*{userId}" />
+
+                        <div class="p-3 grid-container">
+                            <!-- Username Field -->
+                            <input type="hidden" th:field="*{username}" />
+
+                            <!-- Password Field -->
+                            <input type="hidden" th:field="*{passwordHash}"/>
+
+                            <!-- Role Field -->
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="roleName">Vai trò</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control" id="roleName" name="roleName">
+                                        <option th:each="role : ${roles}" th:value="${role.roleName}" th:text="${role.roleName}"></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Delete Status (if needed) -->
+<!--                            <div class="form-group row">-->
+<!--                                <label class="col-sm-3 col-form-label" for="isDeleted">Xóa</label>-->
+<!--                                <div class="col-sm-9">-->
+<!--                                    <input type="checkbox" th:field="*{isDeleted}" id="isDeleted" />-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+                            <!-- Success and Error Messages -->
+                            <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+                            <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+                            <div class="text-center">
+                                <input type="submit" value="Save" class="btn btn-primary btn-sm mr-2" />
+                                <input type="button" value="Cancel" id="btnCancel" th:onclick="|window.location.href='/admin/user'|" class="btn btn-secondary btn-sm" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+</body>
+</html>

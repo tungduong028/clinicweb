@@ -6,6 +6,7 @@ import lombok.Data;
 public class UsersDTO {
     private Long userId;
     private String username;
-    private String password;
+    private String passwordHash;
     private String roleName;
+    private boolean isDeleted=false;
 }

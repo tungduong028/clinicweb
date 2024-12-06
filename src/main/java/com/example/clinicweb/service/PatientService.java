@@ -19,4 +19,6 @@ public interface PatientService {
     Page<Patient> findAll(Pageable pageable);
     void deleteById(Long id);
     Optional<Patient> findById(Long id);
+    Page<Patient> findByFullNameContainingIgnoreCase(String name, Pageable pageable);
+    int markAsDeleted(Long id);
 }

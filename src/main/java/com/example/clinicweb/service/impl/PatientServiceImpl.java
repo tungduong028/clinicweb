@@ -2,7 +2,9 @@ package com.example.clinicweb.service.impl;
 
 import com.example.clinicweb.dto.PatientDTO;
 import com.example.clinicweb.model.Patient;
+import com.example.clinicweb.model.Users;
 import com.example.clinicweb.repository.PatientRepository;
+import com.example.clinicweb.repository.UsersRepository;
 import com.example.clinicweb.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +21,9 @@ import java.util.Optional;
 public class PatientServiceImpl implements PatientService {
     @Autowired
     private PatientRepository patientRepository;
+
+    @Autowired
+    private UsersRepository usersRepository;
 
     @Override
     public List<Patient> findAllPatients() {
@@ -53,8 +58,8 @@ public class PatientServiceImpl implements PatientService {
         patient1.setMedicalHistory(patient.getMedicalHistory());
         patient1.setDateOfBirth(patient.getDateOfBirth());
         patient1.setPhoneNumber(patient.getPhoneNumber());
-        Optional<Patient> user = patientRepository.findById(patient.getUserId());
-        user.ifPresent(value -> patient1.setUser(value.getUser()));
+        Optional<Users> user = usersRepository.findById(patient.getUserId());
+        user.ifPresent(patient1::setUser);
         patientRepository.save(patient1);
     }
 
@@ -81,4 +86,8 @@ public class PatientServiceImpl implements PatientService {
     public Optional<Patient> findById(Long id) {
         return patientRepository.findById(id);
     }
+
+    public int markAsDeleted(Long id){return patientRepository.markAsDeleted(id);}
+
+    public Page<Patient> findByFullNameContainingIgnoreCase(String name, Pageable pageable){ return patientRepository.findByFullNameContainingIgnoreCase(name, pageable);}
 }

@@ -18,6 +18,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Controller
 public class ServiceController {
@@ -40,8 +42,8 @@ public class ServiceController {
 //                pageTuts = serviceService.findByServiceNameLikeIgnoreCase(keyword, paging);
 //                model.addAttribute("keyword", keyword);
 //            }
-            pageTuts = serviceService.findAll(paging);
-
+//            pageTuts = serviceService.findAll(paging);
+            pageTuts = serviceService.findByIsDeletedFalse(paging);
             services = pageTuts.getContent();
 
             model.addAttribute("services", services);
@@ -122,7 +124,7 @@ public class ServiceController {
     @GetMapping("/admin/service/delete/{id}")
     public String deleteService(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes) {
         try {
-            serviceService.deleteById(id);
+            serviceService.markAsDeleted(id);
 
             redirectAttributes.addFlashAttribute("message", "The Service with id=" + id + " has been deleted successfully!");
         } catch (Exception e) {
@@ -143,5 +145,12 @@ public class ServiceController {
             redirectAttributes.addFlashAttribute("error", "Lỗi khi tải lên: " + e.getMessage());
         }
         return "redirect:/admin/service";
+    }
+
+    @GetMapping("/admin/service/findOne/{id}")
+    @ResponseBody
+    public Service findOne(@PathVariable("id") Long id){
+        return serviceService.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Service not found with ID: " + id));
     }
 }

@@ -11,17 +11,21 @@ import java.util.Optional;
 public interface ServiceService {
     List<Service> getAllService(Integer pageNo, Integer pageSize, String sortBy);
 
-    void saveService(ServiceDTO service);
-
     Page<Service> findByServiceNameLikeIgnoreCase(String name, Pageable pageable);
 
     Page<Service> findByOrderByPriceAsc(double price, Pageable pageable);
 
+    void saveService(ServiceDTO service);
+
     Page<Service> findAll(Pageable pageable);
+
+    Optional<Service> findById(Long id);
 
     void deleteById(Long id);
 
-    Optional<Service> findById(Long id);
+    int markAsDeleted(Long id);
+
+    Page<Service> findByIsDeletedFalse(Pageable pageable);
 
     Page<Service> findByServiceNameContainingIgnoreCase(String keyword, Pageable pageable);
 }

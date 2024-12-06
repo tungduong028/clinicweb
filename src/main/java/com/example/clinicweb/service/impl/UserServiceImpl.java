@@ -10,11 +10,14 @@ import com.example.clinicweb.repository.RoleRepository;
 import com.example.clinicweb.repository.UsersRepository;
 import com.example.clinicweb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -37,7 +40,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Users saveUser(UsersDTO userDto) {
-        return null;
+        Role userRole = roleRepository.findByroleName(userDto.getRoleName())
+                .orElseThrow(() -> new RuntimeException("Role not found"));
+        Users user = new Users();
+        user.setUserId(userDto.getUserId());
+        user.setUsername(userDto.getUsername());
+        user.setPasswordHash(userDto.getPasswordHash());
+        user.setRole(userRole);
+        return userRepository.save(user);
     }
 
     @Override
@@ -59,7 +69,7 @@ public class UserServiceImpl implements UserService {
         // 2. Tạo đối tượng Users và lưu vào bảng `users`
         Users user = new Users();
         user.setUsername(userDto.getUsername());
-        user.setPasswordHash(passwordEncoder.encode(userDto.getPassword())); // Mã hóa mật khẩu
+        user.setPasswordHash(passwordEncoder.encode(userDto.getPasswordHash())); // Mã hóa mật khẩu
         user.setRole(patientRole);
 
         Users savedUser = userRepository.save(user);
@@ -83,4 +93,10 @@ public class UserServiceImpl implements UserService {
     public List<Users> findByRolePatient(){
         return userRepository.findByRolePatient();
     }
+    public List<Users> findByRoleDoctor(){return userRepository.findByRoleDoctor();}
+    public Page<Users> findByUsernameContainingIgnoreCase(String name, Pageable pageable){ return userRepository.findByUsernameContainingIgnoreCase(name, pageable);}
+    public Page<Users> findByIsDeletedFalse(Pageable pageable){ return userRepository.findByIsDeletedFalse(pageable);}
+    public int markAsDeleted(Long id){ return userRepository.markAsDeleted(id);}
+    public Page<Users> findAll(Pageable pageable){ return userRepository.findAll(pageable);}
+    public Optional<Users> findById(Long id){ return userRepository.findById(id);}
 }

@@ -35,5 +35,7 @@ public class Patient {
 
     @Column(nullable = true)
     private String dateOfBirth;
+
+    private boolean isDeleted=false;
 }
 

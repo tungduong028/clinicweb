@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Controller
 public class PatientController {
@@ -35,13 +36,13 @@ public class PatientController {
             Pageable paging = PageRequest.of(page - 1, size);
 
             Page<Patient> pageTuts;
-//            if (keyword == null) {
-//                pageTuts = patientService.findAll(paging);
-//            } else {
-//                pageTuts = patientService.findByServiceNameLikeIgnoreCase(keyword, paging);
-//                model.addAttribute("keyword", keyword);
-//            }
-            pageTuts = patientService.findAll(paging);
+            if (keyword == null) {
+                pageTuts = patientService.findAll(paging);
+            } else {
+                pageTuts = patientService.findByFullNameContainingIgnoreCase(keyword, paging);
+                model.addAttribute("keyword", keyword);
+            }
+//            pageTuts = patientService.findAll(paging);
 
             patients = pageTuts.getContent();
 
@@ -51,7 +52,7 @@ public class PatientController {
             model.addAttribute("totalPages", pageTuts.getTotalPages());
             model.addAttribute("pageSize", size);
         } catch (Exception e) {
-            //model.addAttribute("message", e.getMessage());
+            model.addAttribute("message", e.getMessage());
         }
 
         return "admin/patient";
@@ -88,7 +89,7 @@ public class PatientController {
     @GetMapping("/admin/patient/delete/{id}")
     public String deletePatient(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes) {
         try {
-            patientService.deleteById(id);
+            patientService.markAsDeleted(id);
 
             redirectAttributes.addFlashAttribute("message", "The Patient with id=" + id + " has been deleted successfully!");
         } catch (Exception e) {
@@ -96,5 +97,12 @@ public class PatientController {
         }
 
         return "redirect:/admin/patient";
+    }
+
+    @GetMapping("/admin/patient/findOne/{id}")
+    @ResponseBody
+    public Patient findOne(@PathVariable("id") Long id){
+        return patientService.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Paitient not found with ID: " + id));
     }
 }

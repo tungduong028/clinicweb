@@ -25,10 +25,11 @@ public class Users implements UserDetails {
     @Column(nullable = false)
     private String passwordHash;
 
-
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
+
+    private boolean isDeleted = false;
 
     // Constructor có tham số
     public Users(String username, String passwordHash, Role role) {
