@@ -22,5 +22,7 @@ public class Service {
     @Column(nullable = false)
     private double price;
 
-    //private  boolean isDeleted=false;
+    @Column(nullable = true)
+    private String imageUrl;
+    private boolean isDeleted=false;
 }

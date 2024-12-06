@@ -70,10 +70,32 @@
                             <small>Bảng dịch vụ</small>
                         </h3>
                     </div>
-                    <div>
-                        <input type="button" value="Tạo dịch vụ" th:onclick="|window.location.href='/admin/service/new'|" class="btn btn-primary btn-sm mr-2" />
+<!--                    <div class="row mb-3">-->
+<!--                        <div class="col-md-6">-->
+<!--                            <form id="searchForm" class="d-flex">-->
+<!--                                <input type="text" name="username" id="searchInput" class="form-control me-2" placeholder="Tìm kiếm bác sĩ..." required>-->
+<!--                            </form>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-6 text-end">-->
+<!--                            &lt;!&ndash; Nút Tìm Kiếm gửi dữ liệu qua AJAX &ndash;&gt;-->
+<!--                            <button type="submit" class="btn btn-secondary me-2" id="searchButton">Tìm Kiếm</button>-->
+<!--                            <input type="button" value="Tạo dịch vụ" th:onclick="|window.location.href='/admin/service/new'|" class="btn btn-primary btn-sm mr-2" />-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <!-- Search Form -->
+                            <form id="searchForm" class="d-flex" th:action="@{/admin/service}" method="get">
+                                <input type="text" name="keyword" id="searchInput" class="form-control me-2" placeholder="Tìm kiếm dịch vụ..." th:value="${keyword}">
+                                <button type="submit" class="btn btn-secondary me-2">Tìm Kiếm</button>
+                            </form>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <!-- Create new service button -->
+                            <input type="button" value="Tạo dịch vụ" th:onclick="|window.location.href='/admin/service/new'|" class="btn btn-primary btn-sm mr-2" />
+                        </div>
                     </div>
-                    <div class="block-content block-content-full">
+                    <div th:if="${services.size() > 0}" class="block-content block-content-full">
                         <!-- DataTables init on table by adding .js-dataTable-full-pagination class, functionality is initialized in js/pages/be_tables_datatables.min.js which was auto compiled from _js/pages/be_tables_datatables.js -->
                         <table class="table table-bordered table-striped table-vcenter js-dataTable-full-pagination">
                             <thead>
@@ -112,10 +134,12 @@
                             </tbody>
                         </table>
                     </div>
+                    <div th:unless="${services.size() > 0}">
+                        <span>No services found!</span>
+                    </div>
                     <nav aria-label="Pagination" th:if="${totalPages > 0}">
                         <ul class="pagination justify-content-center">
                             <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
-<!--                                <a th:replace="/fragments/paging.html :: paging(1, '<<', 'First Page')"></a>-->
                                 <a class="page-link"
                                    th:href="@{'/admin/service?' + ${keyword!=null && keyword!=''? 'keyword=' + keyword + '&' : ''} + 'page=1' + '&size=' + ${pageSize}}"
                                    title="First Page" rel="First Page">
@@ -123,7 +147,6 @@
                                 </a>
                             </li>
                             <li class="page-item font-weight-bold" th:classappend="${currentPage == 1} ? 'disabled'">
-<!--                                <a th:replace="fragments/paging :: paging(${currentPage - 1}, 'Prev', 'Previous Page')"></a>-->
                                 <a class="page-link"
                                    th:href="@{'/admin/service?' + ${keyword!=null && keyword!=''? 'keyword=' + keyword + '&' : ''} + 'page=' + ${currentPage - 1} + '&size=' + ${pageSize}}"
                                    title="Previous Page" rel="Previous Page">
@@ -135,7 +158,6 @@
                             </li>
                             <li class="page-item" th:classappend="${page == currentPage} ? 'active'"
                                 th:each="page : ${#numbers.sequence(currentPage > 2 ? currentPage - 2 : 1, currentPage + 2 < totalPages ? currentPage + 2 : totalPages)}">
-<!--                                <a th:replace="fragments/paging :: paging(${page}, ${page}, 'Page ' + ${page})"></a>-->
                                 <a class="page-link"
                                    th:href="@{'/admin/service?' + ${keyword!=null && keyword!=''? 'keyword=' + keyword + '&' : ''} + 'page=' + ${page} + '&size=' + ${pageSize}}"
                                    title="'Page ' + ${page})" rel="'Page ' + ${page})">
@@ -146,7 +168,6 @@
                                 <a class="page-link" href="#">...</a>
                             </li>
                             <li class="page-item font-weight-bold" th:classappend="${currentPage == totalPages} ? 'disabled'">
-<!--                                <a th:replace="fragments/paging :: paging(${currentPage + 1},'Next', 'Next Page')"></a>-->
                                 <a class="page-link"
                                    th:href="@{'/admin/service?' + ${keyword!=null && keyword!=''? 'keyword=' + keyword + '&' : ''} + 'page=' + ${currentPage + 1} + '&size=' + ${pageSize}}"
                                    title="Next Page" rel="Next Page">
@@ -154,7 +175,6 @@
                                 </a>
                             </li>
                             <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
-<!--                                <a th:replace="fragments/paging :: paging(${totalPages}, '>>', 'Last Page')"></a>-->
                                 <a class="page-link"
                                    th:href="@{'/admin/service?' + ${keyword!=null && keyword!=''? 'keyword=' + keyword + '&' : ''} + 'page=' + ${totalPages} + '&size=' + ${pageSize}}"
                                    title="Last Page" rel="Last Page">

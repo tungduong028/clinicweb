@@ -15,4 +15,6 @@ public interface ServiceRepository extends PagingAndSortingRepository<Service, L
     Page<Service> findByServiceNameLikeIgnoreCase(String name, Pageable pageable);
 
     Page<Service> findByOrderByPriceAsc(double price, Pageable pageable);
+
+    Page<Service> findByServiceNameContainingIgnoreCase(String name, Pageable pageable);
 }

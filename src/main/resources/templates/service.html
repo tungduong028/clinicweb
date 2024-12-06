@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
@@ -96,78 +96,133 @@
                 <h1 class="display-4">Excellent Medical Services</h1>
             </div>
             <div class="row g-5">
-                <div class="col-lg-4 col-md-6">
-                    <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
+                <div class="col-lg-4 col-md-6" th:each="service: ${services}">
+                    <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center" >
                         <div class="service-icon mb-4">
                             <i class="fa fa-2x fa-user-md text-white"></i>
                         </div>
-                        <h4 class="mb-3">Emergency Care</h4>
-                        <p class="m-0">Kasd dolor no lorem nonumy sit labore tempor at justo rebum rebum stet, justo elitr dolor amet sit</p>
-                        <a class="btn btn-lg btn-primary rounded-pill" href="">
-                            <i class="bi bi-arrow-right"></i>
-                        </a>
+                        <h4 class="mb-3" th:text="${service.serviceName}">Emergency Care</h4>
+                        <p class="m-0" th:text="${service.description}">Kasd dolor no lorem nonumy sit labore tempor at justo rebum rebum stet, justo elitr dolor amet sit</p>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
-                        <div class="service-icon mb-4">
-                            <i class="fa fa-2x fa-procedures text-white"></i>
-                        </div>
-                        <h4 class="mb-3">Operation & Surgery</h4>
-                        <p class="m-0">Kasd dolor no lorem nonumy sit labore tempor at justo rebum rebum stet, justo elitr dolor amet sit</p>
-                        <a class="btn btn-lg btn-primary rounded-pill" href="">
-                            <i class="bi bi-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
-                        <div class="service-icon mb-4">
-                            <i class="fa fa-2x fa-stethoscope text-white"></i>
-                        </div>
-                        <h4 class="mb-3">Outdoor Checkup</h4>
-                        <p class="m-0">Kasd dolor no lorem nonumy sit labore tempor at justo rebum rebum stet, justo elitr dolor amet sit</p>
-                        <a class="btn btn-lg btn-primary rounded-pill" href="">
-                            <i class="bi bi-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
-                        <div class="service-icon mb-4">
-                            <i class="fa fa-2x fa-ambulance text-white"></i>
-                        </div>
-                        <h4 class="mb-3">Ambulance Service</h4>
-                        <p class="m-0">Kasd dolor no lorem nonumy sit labore tempor at justo rebum rebum stet, justo elitr dolor amet sit</p>
-                        <a class="btn btn-lg btn-primary rounded-pill" href="">
-                            <i class="bi bi-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
-                        <div class="service-icon mb-4">
-                            <i class="fa fa-2x fa-pills text-white"></i>
-                        </div>
-                        <h4 class="mb-3">Medicine & Pharmacy</h4>
-                        <p class="m-0">Kasd dolor no lorem nonumy sit labore tempor at justo rebum rebum stet, justo elitr dolor amet sit</p>
-                        <a class="btn btn-lg btn-primary rounded-pill" href="">
-                            <i class="bi bi-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
-                        <div class="service-icon mb-4">
-                            <i class="fa fa-2x fa-microscope text-white"></i>
-                        </div>
-                        <h4 class="mb-3">Blood Testing</h4>
-                        <p class="m-0">Kasd dolor no lorem nonumy sit labore tempor at justo rebum rebum stet, justo elitr dolor amet sit</p>
-                        <a class="btn btn-lg btn-primary rounded-pill" href="">
-                            <i class="bi bi-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
+                <nav aria-label="Pagination" th:if="${totalPages > 0}">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                            <a class="page-link"
+                               th:href="@{'/service?' + ${keyword!=null && keyword!=''? 'keyword=' + keyword + '&' : ''} + 'page=1' + '&size=' + ${pageSize}}"
+                               title="First Page" rel="First Page">
+                                <<
+                            </a>
+                        </li>
+                        <li class="page-item font-weight-bold" th:classappend="${currentPage == 1} ? 'disabled'">
+                            <a class="page-link"
+                               th:href="@{'/service?' + ${keyword!=null && keyword!=''? 'keyword=' + keyword + '&' : ''} + 'page=' + ${currentPage - 1} + '&size=' + ${pageSize}}"
+                               title="Previous Page" rel="Previous Page">
+                                Prev
+                            </a>
+                        </li>
+                        <li class="page-item disabled" th:if="${currentPage - 2 > 1}">
+                            <a class="page-link" href="#">...</a>
+                        </li>
+                        <li class="page-item" th:classappend="${page == currentPage} ? 'active'"
+                            th:each="page : ${#numbers.sequence(currentPage > 2 ? currentPage - 2 : 1, currentPage + 2 < totalPages ? currentPage + 2 : totalPages)}">
+                            <a class="page-link"
+                               th:href="@{'/service?' + ${keyword!=null && keyword!=''? 'keyword=' + keyword + '&' : ''} + 'page=' + ${page} + '&size=' + ${pageSize}}"
+                               title="'Page ' + ${page})" rel="'Page ' + ${page})">
+                                [[${page}]]
+                            </a>
+                        </li>
+                        <li class="page-item disabled" th:if="${currentPage + 2 < totalPages}">
+                            <a class="page-link" href="#">...</a>
+                        </li>
+                        <li class="page-item font-weight-bold" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                            <a class="page-link"
+                               th:href="@{'/service?' + ${keyword!=null && keyword!=''? 'keyword=' + keyword + '&' : ''} + 'page=' + ${currentPage + 1} + '&size=' + ${pageSize}}"
+                               title="Next Page" rel="Next Page">
+                                Next
+                            </a>
+                        </li>
+                        <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                            <a class="page-link"
+                               th:href="@{'/service?' + ${keyword!=null && keyword!=''? 'keyword=' + keyword + '&' : ''} + 'page=' + ${totalPages} + '&size=' + ${pageSize}}"
+                               title="Last Page" rel="Last Page">
+                                >>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+<!--                <div class="col-lg-4 col-md-6">-->
+<!--                    <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">-->
+<!--                        <div class="service-icon mb-4">-->
+<!--                            <i class="fa fa-2x fa-user-md text-white"></i>-->
+<!--                        </div>-->
+<!--                        <h4 class="mb-3">Emergency Care</h4>-->
+<!--                        <p class="m-0">Kasd dolor no lorem nonumy sit labore tempor at justo rebum rebum stet, justo elitr dolor amet sit</p>-->
+<!--                        <a class="btn btn-lg btn-primary rounded-pill" href="">-->
+<!--                            <i class="bi bi-arrow-right"></i>-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="col-lg-4 col-md-6">-->
+<!--                    <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">-->
+<!--                        <div class="service-icon mb-4">-->
+<!--                            <i class="fa fa-2x fa-procedures text-white"></i>-->
+<!--                        </div>-->
+<!--                        <h4 class="mb-3">Operation & Surgery</h4>-->
+<!--                        <p class="m-0">Kasd dolor no lorem nonumy sit labore tempor at justo rebum rebum stet, justo elitr dolor amet sit</p>-->
+<!--                        <a class="btn btn-lg btn-primary rounded-pill" href="">-->
+<!--                            <i class="bi bi-arrow-right"></i>-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="col-lg-4 col-md-6">-->
+<!--                    <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">-->
+<!--                        <div class="service-icon mb-4">-->
+<!--                            <i class="fa fa-2x fa-stethoscope text-white"></i>-->
+<!--                        </div>-->
+<!--                        <h4 class="mb-3">Outdoor Checkup</h4>-->
+<!--                        <p class="m-0">Kasd dolor no lorem nonumy sit labore tempor at justo rebum rebum stet, justo elitr dolor amet sit</p>-->
+<!--                        <a class="btn btn-lg btn-primary rounded-pill" href="">-->
+<!--                            <i class="bi bi-arrow-right"></i>-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="col-lg-4 col-md-6">-->
+<!--                    <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">-->
+<!--                        <div class="service-icon mb-4">-->
+<!--                            <i class="fa fa-2x fa-ambulance text-white"></i>-->
+<!--                        </div>-->
+<!--                        <h4 class="mb-3">Ambulance Service</h4>-->
+<!--                        <p class="m-0">Kasd dolor no lorem nonumy sit labore tempor at justo rebum rebum stet, justo elitr dolor amet sit</p>-->
+<!--                        <a class="btn btn-lg btn-primary rounded-pill" href="">-->
+<!--                            <i class="bi bi-arrow-right"></i>-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="col-lg-4 col-md-6">-->
+<!--                    <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">-->
+<!--                        <div class="service-icon mb-4">-->
+<!--                            <i class="fa fa-2x fa-pills text-white"></i>-->
+<!--                        </div>-->
+<!--                        <h4 class="mb-3">Medicine & Pharmacy</h4>-->
+<!--                        <p class="m-0">Kasd dolor no lorem nonumy sit labore tempor at justo rebum rebum stet, justo elitr dolor amet sit</p>-->
+<!--                        <a class="btn btn-lg btn-primary rounded-pill" href="">-->
+<!--                            <i class="bi bi-arrow-right"></i>-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="col-lg-4 col-md-6">-->
+<!--                    <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">-->
+<!--                        <div class="service-icon mb-4">-->
+<!--                            <i class="fa fa-2x fa-microscope text-white"></i>-->
+<!--                        </div>-->
+<!--                        <h4 class="mb-3">Blood Testing</h4>-->
+<!--                        <p class="m-0">Kasd dolor no lorem nonumy sit labore tempor at justo rebum rebum stet, justo elitr dolor amet sit</p>-->
+<!--                        <a class="btn btn-lg btn-primary rounded-pill" href="">-->
+<!--                            <i class="bi bi-arrow-right"></i>-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                </div>-->
             </div>
         </div>
     </div>

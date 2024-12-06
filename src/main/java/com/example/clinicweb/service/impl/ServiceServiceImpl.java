@@ -37,6 +37,7 @@ public class ServiceServiceImpl implements ServiceService {
         service1.setServiceId(service.getServiceId());
         service1.setPrice(service.getPrice());
         service1.setDescription(service.getDescription());
+        service1.setImageUrl(service.getImageUrl());
         serviceRepository.save(service1);
     }
 
@@ -59,4 +60,6 @@ public class ServiceServiceImpl implements ServiceService {
     public Optional<Service> findById(Long id) {
         return serviceRepository.findById(id);
     }
+
+    public Page<Service> findByServiceNameContainingIgnoreCase(String keyword, Pageable pageable){ return serviceRepository.findByServiceNameContainingIgnoreCase(keyword, pageable);}
 }

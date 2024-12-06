@@ -22,4 +22,6 @@ public interface ServiceService {
     void deleteById(Long id);
 
     Optional<Service> findById(Long id);
+
+    Page<Service> findByServiceNameContainingIgnoreCase(String keyword, Pageable pageable);
 }
