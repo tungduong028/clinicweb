@@ -32,6 +32,9 @@ public class Users implements UserDetails {
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
+    @Column(nullable = true)
+    private boolean status = true;
+
     // Constructor có tham số
     public Users(String username, String passwordHash, Role role) {
         this.username = username;
