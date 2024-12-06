@@ -7,6 +7,8 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
+<!--    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">-->
+<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
 </head>
@@ -18,10 +20,15 @@
 <div id="deleteSuccessMessage" style="display:none;" class="alert alert-success fixed-top p-2 text-center">
 
 </div>
+<div id="errorMessageSearch" class="alert alert-danger fixed-top p-2 text-center" style="display:none;">
+    Không tìm thấy bác sĩ nào với từ khóa tìm kiếm!
+</div>
+
 <!-- Thông báo thành công tìm kiếm -->
 <div id="searchSuccessMessage" class="alert alert-success fixed-top p-2 text-center" style="display: none;">
     Tìm kiếm bác sĩ thành công!
 </div>
+
 
 <!-- Topbar Start -->
 <div class="container-fluid sticky-top bg-white shadow-sm">
@@ -41,7 +48,7 @@
                 <h4>Quản Lý</h4>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a th:href="@{/admin/user}" class="nav-link" onclick="showSection('userManagement')">
+                        <a th:href="@{/admin/user}" class="nav-link" >
                             <i class="fas fa-users"></i> Quản Lý Người Dùng
                         </a>
                     </li>
@@ -78,8 +85,8 @@
                     <!-- Tìm kiếm bác sĩ -->
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <form id="searchForm" class="d-flex">
-                                <input type="text" name="username" id="searchInput" class="form-control me-2" placeholder="Tìm kiếm bác sĩ..." required>
+                            <form id="searchForm" action="/admin/doctor/search" method="get" class="d-flex">
+                                <input type="text" name="query"  id="searchInput" class="form-control me-2" placeholder="Tìm kiếm theo tên bác sĩ..." required>
                             </form>
                         </div>
                         <div class="col-md-6 text-end">
@@ -100,8 +107,12 @@
                             <th>ID</th>
                             <th>Tên Bác Sĩ</th>
                             <th>Email</th>
+                            <th>Số Điện Thoại</th>
+                            <th>Giới Tính</th>
+                            <th>Ngày Sinh</th>
                             <th>Chuyên Khoa</th>
                             <th>Năm Kinh Nghiệm</th>
+                            <th>Phòng Khám</th>
                             <th>Hành Động</th>
                         </tr>
                         </thead>
@@ -110,8 +121,12 @@
                                 <td th:text="${doctor.doctorId}">ID</td>
                                 <td th:text="${doctor.fullName}">Full Name</td>
                                 <td th:text="${doctor.email}">Email</td>
+                                <td th:text="${doctor.phoneNumber}">PhoneNumber</td>
+                                <td th:text="${doctor.gender}">Gender</td>
+                                <td th:text="${doctor.dateOfBirth}">DateOfBirth</td>
                                 <td th:text="${doctor.specialization}">Specialization</td>
                                 <td th:text="${doctor.experienceYears}">Experience</td>
+                                <td th:text="${doctor.roomId}">RoomId</td>
                                 <td>
                                     <a href="#" class="btn btn-warning btn-sm" th:onclick="'openEditDoctorModal(' + ${doctor.doctorId} + ')'">
                                         <i class="fas fa-edit"></i> Sửa
@@ -146,20 +161,49 @@
                                         <label for="doctorfullName" class="form-label">Tên Bác Sĩ</label>
                                         <input type="text" class="form-control" id="doctorfullName" name="fullName" required>
                                     </div>
+
                                     <div class="mb-3">
                                         <label for="doctorEmail" class="form-label">Email</label>
                                         <input type="email" class="form-control" id="doctorEmail" name="email" required>
                                     </div>
+
+                                    <div class="mb-3">
+                                        <label for="doctorPhoneNumber" class="form-label">Số Điện Thoại</label>
+                                        <input type="text" class="form-control" id="doctorPhoneNumber" name="phoneNumber" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="doctorGender" class="form-label">Giới Tính</label>
+                                        <select class="form-select" id="doctorGender" name="gender" required>
+                                            <option value="MALE">Nam</option>
+                                            <option value="FEMALE">Nữ</option>
+                                            <option value="OTHER">Khác</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="doctorDateOfBirth" class="form-label">Ngày Sinh</label>
+                                        <input type="date" class="form-control" id="doctorDateOfBirth" name="dateOfBirth" required>
+                                    </div>
+
                                     <div class="mb-3">
                                         <label for="doctorSpecialization" class="form-label">Chuyên Khoa</label>
                                         <input type="text" class="form-control" id="doctorSpecialization" name="specialization" required>
                                     </div>
+
                                     <div class="mb-3">
                                         <label for="doctorExperienceYears" class="form-label">Năm Kinh Nghiệm</label>
                                         <input type="number" class="form-control" id="doctorExperienceYears" name="experienceYears" required>
                                     </div>
+
+                                    <div class="mb-3">
+                                        <label for="doctorRoomId" class="form-label">Phòng Khám</label>
+                                        <input type="text" class="form-control" id="doctorRoomId" name="roomId" required>
+                                    </div>
+
                                     <button type="submit" class="btn btn-primary">Thêm</button>
                                 </form>
+
                             </div>
                         </div>
                     </div>
@@ -182,30 +226,60 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form id="editDoctorForm" th:action="@{/admin/doctor/update}" method="post">
+                                <form id="editDoctorForm" th:action="@{/admin/doctor/update}" method="POST">
                                     <input type="hidden" id="editDoctorId" name="doctorId">
+
                                     <div class="mb-3">
                                         <label for="editDoctorName" class="form-label">Tên Bác Sĩ</label>
                                         <input type="text" class="form-control" id="editDoctorName" name="fullName" required>
                                     </div>
+
                                     <div class="mb-3">
                                         <label for="editDoctorEmail" class="form-label">Email</label>
                                         <input type="email" class="form-control" id="editDoctorEmail" name="email" required>
                                     </div>
+
                                     <div class="mb-3">
-                                        <label for="editDoctorSpecialty" class="form-label">Chuyên Khoa</label>
-                                        <input type="text" class="form-control" id="editDoctorSpecialty" name="specialization" required>
+                                        <label for="editDoctorPhoneNumber" class="form-label">Số Điện Thoại</label>
+                                        <input type="text" class="form-control" id="editDoctorPhoneNumber" name="phoneNumber" required>
                                     </div>
+
                                     <div class="mb-3">
-                                        <label for="editDoctorExperience" class="form-label">Năm Kinh Nghiệm</label>
-                                        <input type="number" class="form-control" id="editDoctorExperience" name="experienceYears" required>
+                                        <label for="editDoctorGender" class="form-label">Giới Tính</label>
+                                        <select class="form-select" id="editDoctorGender" name="gender" required>
+                                            <option value="MALE">Nam</option>
+                                            <option value="FEMALE">Nữ</option>
+                                            <option value="OTHER">Khác</option>
+                                        </select>
                                     </div>
+
+                                    <div class="mb-3">
+                                        <label for="editDoctorDateOfBirth" class="form-label">Ngày Sinh</label>
+                                        <input type="date" class="form-control" id="editDoctorDateOfBirth" name="dateOfBirth" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="editDoctorSpecialization" class="form-label">Chuyên Khoa</label>
+                                        <input type="text" class="form-control" id="editDoctorSpecialization" name="specialization" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="editDoctorExperienceYears" class="form-label">Năm Kinh Nghiệm</label>
+                                        <input type="number" class="form-control" id="editDoctorExperienceYears" name="experienceYears" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="editDoctorRoomId" class="form-label">Phòng Khám</label>
+                                        <input type="text" class="form-control" id="editDoctorRoomId" name="roomId" required>
+                                    </div>
+
                                     <button type="submit" class="btn btn-primary">Cập Nhật</button>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
+
 
 
                 <!-- Modal Xóa Bác Sĩ -->
@@ -227,6 +301,64 @@
                         </div>
                     </div>
                 </div>
+
+                <nav aria-label="Pagination" th:if="${totalPages > 0}">
+                    <ul class="pagination justify-content-center">
+                        <!-- Nút "Trang Đầu" -->
+                        <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                            <a class="page-link"
+                               th:href="@{'/admin/doctor?' + (${searchKeyword!=null && !searchKeyword.isEmpty()? 'keyword=' + searchKeyword + '&' : ''}) + 'page=1&size=' + ${pageSize}}"
+                               title="First Page">
+                                &laquo;
+                            </a>
+                        </li>
+
+                        <!-- Nút "Trang Trước" -->
+                        <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                            <a class="page-link"
+                               th:href="@{'/admin/doctor?' + (${searchKeyword!=null && !searchKeyword.isEmpty()? 'keyword=' + searchKeyword + '&' : ''}) + 'page=' + ${currentPage - 1 < 1 ? 1 : currentPage - 1} + '&size=' + ${pageSize}}"
+                               title="Previous Page">
+                                Prev
+                            </a>
+                        </li>
+
+                        <!-- Các Trang -->
+                        <li class="page-item disabled" th:if="${currentPage - 2 > 1}">
+                            <a class="page-link" href="#">...</a>
+                        </li>
+                        <li class="page-item" th:each="page : ${#numbers.sequence(currentPage > 2 ? currentPage - 2 : 1, currentPage + 2 < totalPages ? currentPage + 2 : totalPages)}"
+                            th:classappend="${page == currentPage} ? 'active'">
+                            <a class="page-link"
+                               th:href="@{'/admin/doctor?' + (${searchKeyword!=null && !searchKeyword.isEmpty()? 'keyword=' + searchKeyword + '&' : ''}) + 'page=' + ${page} + '&size=' + ${pageSize}}"
+                               th:text="${page}">
+                            </a>
+                        </li>
+                        <li class="page-item disabled" th:if="${currentPage + 2 < totalPages}">
+                            <a class="page-link" href="#">...</a>
+                        </li>
+
+                        <!-- Nút "Trang Kế" -->
+                        <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                            <a class="page-link"
+                               th:href="@{'/admin/doctor?' + (${searchKeyword!=null && !searchKeyword.isEmpty()? 'keyword=' + searchKeyword + '&' : ''}) + 'page=' + ${currentPage + 1 > totalPages ? totalPages : currentPage + 1} + '&size=' + ${pageSize}}"
+                               title="Next Page">
+                                Next
+                            </a>
+                        </li>
+
+                        <!-- Nút "Trang Cuối" -->
+                        <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                            <a class="page-link"
+                               th:href="@{'/admin/doctor?' + (${searchKeyword!=null && !searchKeyword.isEmpty()? 'keyword=' + searchKeyword + '&' : ''}) + 'page=' + ${totalPages} + '&size=' + ${pageSize}}"
+                               title="Last Page">
+                                &raquo;
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+
+
 
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>

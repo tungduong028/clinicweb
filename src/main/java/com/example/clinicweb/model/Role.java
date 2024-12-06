@@ -17,7 +17,8 @@ public class Role {
     @Column(nullable = false, unique = true)
     private String roleName;
     // Constructor có tham số
-    public Role(String roleName) {
+    public Role(Long roleId, String roleName) {
+        this.roleId = roleId;
         this.roleName = roleName;
     }
 }

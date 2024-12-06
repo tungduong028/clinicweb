@@ -25,6 +25,9 @@ public class Users implements UserDetails {
     @Column(nullable = false)
     private String passwordHash;
 
+    @Column(name = "is_deleted", nullable = false)
+    private boolean isDeleted = false;
+
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
@@ -70,6 +73,7 @@ public class Users implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }
 
 

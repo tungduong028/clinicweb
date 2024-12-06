@@ -30,12 +30,12 @@
                 <h4>Quản Lý</h4>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" onclick="showSection('userManagement')">
+                        <a th:href="@{/admin/user}" class="nav-link">
                             <i class="fas fa-users"></i> Quản Lý Người Dùng
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a th:href="@{/admin/doctor}" class="nav-link" href="#" onclick="showSection('doctorManagement')">
+                        <a th:href="@{/admin/doctor}" class="nav-link">
                             <i class="fas fa-user-md"></i> Quản Lý Bác Sĩ
                         </a>
                     </li>
@@ -67,18 +67,18 @@
                     <!-- Tìm kiếm bác sĩ -->
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <form id="searchForm" class="d-flex">
-                                <input type="text" name="keyword" id="searchInput" class="form-control me-2" placeholder="Nhập từ khóa tìm kiếm..." required>
+                            <form id="searchForm" action="/admin/user/search" method="get" class="d-flex">
+                                <input type="text" name="query"  id="searchInput" class="form-control me-2" placeholder="Tìm kiếm theo tên người dùng..." required>
                             </form>
                         </div>
                         <div class="col-md-6 text-end">
                             <!-- Nút Tìm Kiếm gửi dữ liệu qua AJAX -->
                             <button type="submit" class="btn btn-secondary me-2" id="searchButton">Tìm Kiếm</button>
-<!--                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">Thêm Người Dùng</button>-->
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">Thêm Người Dùng</button>
                         </div>
                     </div>
 
-                    <table class="table table-bordered">
+                    <table id="userTable"  class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -88,52 +88,158 @@
                             </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="user : ${users}" th:data-id="${user.userId}">
-                            <td th:text="${user.userId}"></td>
-                            <td th:text="${user.username}"></td>
-                            <td class="user-role" th:text="${user.role.roleName}"></td>
+                        <tr th:each="user : ${users}">
+                            <td th:text="${user.userId}">ID</td>
+                            <td th:text="${user.username}">Tên Tài Khoản</td>
+                            <td th:text="${user.roleName}">Vai Trò</td>
                             <td>
-                                <a class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteUserModal" th:data-id="${user.userId}">
+<!--                                <a class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteUserModal" th:data-id="${user.userId}">-->
+<!--                                    <i class="fas fa-trash"></i> Xóa-->
+<!--                                </a>-->
+                                <a th:href="@{/admin/user/delete/{userId}(userId=${user.userId})}"
+                                   class="btn btn-danger btn-sm"
+                                   data-bs-toggle="modal"
+                                   data-bs-target="#deleteUserModal"
+                                   th:onclick="'setDeleteUserId(' + ${user.userId} + ')'">
                                     <i class="fas fa-trash"></i> Xóa
                                 </a>
-
                             </td>
                         </tr>
 
                         </tbody>
                     </table>
                 </div>
-            
-                <!-- Modal Thêm Người Dùng -->
-<!--                <div class="modal fade" id="addUser  Modal" tabindex="-1" aria-labelledby="addUser  ModalLabel" aria-hidden="true">-->
-<!--                    <div class="modal-dialog">-->
-<!--                        <div class="modal-content">-->
-<!--                            <div class="modal-header">-->
-<!--                                <h5 class="modal-title" id="addUser  ModalLabel">Thêm Người Dùng Mới</h5>-->
-<!--                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
-<!--                            </div>-->
-<!--                            <div class="modal-body">-->
-<!--                                <form action="/admin/user/add" method="post">-->
-<!--                                    <div class="mb-3">-->
-<!--                                        <input type="text" class="form-control" name="username" placeholder="Tên Tài Khoản" required>-->
-<!--                                    </div>-->
-<!--                                    <div class="mb-3">-->
-<!--                                        <input type="text" class="form-control" name="fullName" placeholder="Họ và Tên" required>-->
-<!--                                    </div>-->
-<!--                                    <div class="mb-3">-->
-<!--                                        <input type="email" class="form-control" name="email" placeholder="Email" required>-->
-<!--                                    </div>-->
-<!--                                    <div class="mb-3">-->
-<!--                                        <input type="text" class="form-control" name="role" placeholder="Vai Trò" required>-->
-<!--                                    </div>-->
-<!--                                    <button type="submit" class="btn btn-primary">Thêm</button>-->
-<!--                                </form>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
 
-<!--                &lt;!&ndash; Modal Chỉnh Sửa Người Dùng &ndash;&gt;-->
+                <!-- Modal Thêm Người Dùng -->
+                <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addUserModalLabel">Thêm Người Dùng</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="addUserform"  th:action="@{/admin/user/save}" method="POST">
+                                    <!-- Tên đăng nhập và mật khẩu -->
+                                    <div class="mb-3">
+                                        <label for="username" class="form-label">Username</label>
+                                        <input type="text" class="form-control" id="username" name="user.username" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">Password</label>
+                                        <input type="password" class="form-control" id="password" name="user.password" required>
+                                    </div>
+
+                                    <!-- Chọn vai trò (Bác sĩ, Bệnh nhân) -->
+                                    <div class="mb-3">
+                                        <label for="role" class="form-label">Role</label>
+                                        <select class="form-control" id="role" name="user.roleName" required>
+                                            <option value="ROLE_ADMIN">Admin</option>
+                                            <option value="ROLE_DOCTOR">Doctor</option>
+                                            <option value="ROLE_PATIENT">Patient</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Form cho bệnh nhân -->
+                                    <div id="patientForm" style="display:none;">
+                                        <div class="mb-3">
+                                            <label for="fullNamePatient" class="form-label">Full Name</label>
+                                            <input type="text" class="form-control" id="fullNamePatient" name="patient.fullName" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="emailPatient" class="form-label">Email</label>
+                                            <input type="email" class="form-control" id="emailPatient" name="patient.email" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="phoneNumberPatient" class="form-label">Phone Number</label>
+                                            <input type="text" class="form-control" id="phoneNumberPatient" name="patient.phoneNumber" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="genderPatient" class="form-label">Gender</label>
+                                            <select class="form-control" id="genderPatient" name="patient.gender" required>
+                                                <option value="MALE">Male</option>
+                                                <option value="FEMALE">Female</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="dateOfBirthPatient" class="form-label">Date of Birth</label>
+                                            <input type="date" class="form-control" id="dateOfBirthPatient" name="patient.dateOfBirth" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="addressPatient" class="form-label">Address</label>
+                                            <input type="text" class="form-control" id="addressPatient" name="patient.address" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="medicalHistoryPatient" class="form-label">Medical History</label>
+                                            <textarea class="form-control" id="medicalHistoryPatient" name="patient.medicalHistory"></textarea>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Form cho bác sĩ -->
+                                    <div id="doctorForm" style="display:none;">
+                                        <div class="mb-3">
+                                            <label for="fullNameDoctor" class="form-label">Full Name</label>
+                                            <input type="text" class="form-control" id="fullNameDoctor" name="doctor.fullName" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="emailDoctor" class="form-label">Email</label>
+                                            <input type="email" class="form-control" id="emailDoctor" name="doctor.email" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="phoneNumberDoctor" class="form-label">Phone Number</label>
+                                            <input type="text" class="form-control" id="phoneNumberDoctor" name="doctor.phoneNumber" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="genderDoctor" class="form-label">Gender</label>
+                                            <select class="form-select" id="genderDoctor" name="doctor.gender" required>
+                                                <option value="MALE">Male</option>
+                                                <option value="FEMALE">Female</option>
+                                                <option value="OTHER">Other</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="dateOfBirthDoctor" class="form-label">Date of Birth</label>
+                                            <input type="date" class="form-control" id="dateOfBirthDoctor" name="doctor.dateOfBirth" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="specialtyDoctor" class="form-label">Specialty</label>
+                                            <input type="text" class="form-control" id="specialtyDoctor" name="doctor.specialization" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="yearsOfExperienceDoctor" class="form-label">Years of Experience</label>
+                                            <input type="number" class="form-control" id="yearsOfExperienceDoctor" name="doctor.experienceYears" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="roomIdDoctor" class="form-label">Room ID</label>
+                                            <input type="number" class="form-control" id="roomIdDoctor" name="doctor.roomId" required>
+                                        </div>
+                                    </div>
+
+
+                                    <button type="submit" class="btn btn-primary">Add User</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="errorMessage" style="display:none;" class="alert alert-danger fixed-top p-2 text-center">
+                        Lỗi khi thêm người dùng!
+                    </div>
+                </div>
+
+
+
+
+                <!--                &lt;!&ndash; Modal Chỉnh Sửa Người Dùng &ndash;&gt;-->
 <!--                <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">-->
 <!--                    <div class="modal-dialog">-->
 <!--                        <div class="modal-content">-->
@@ -164,7 +270,7 @@
 <!--                </div>-->
 
                 <!-- Modal xóa người dùng -->
-                <div class="modal" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+                <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" style="display: none;">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -173,140 +279,79 @@
                             </div>
                             <div class="modal-body">
                                 Bạn có chắc chắn muốn xóa người dùng này?
+                                <input type="hidden" id="deleteUserId" />
                             </div>
                             <div class="modal-footer">
-                                <input type="hidden" id="deleteUserId" />
+
                                 <button type="button" class="btn btn-danger" id="confirmDeleteUser">Xóa</button>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
                             </div>
                         </div>
                     </div>
                 </div>
+                <nav aria-label="Pagination" th:if="${totalPages > 0}">
+                    <ul class="pagination justify-content-center">
+                        <!-- Nút "Trang Đầu" -->
+                        <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                            <a class="page-link"
+                               th:href="@{'/admin/user?' + (${searchKeyword!=null && !searchKeyword.isEmpty()? 'keyword=' + searchKeyword + '&' : ''}) + 'page=1&size=' + ${pageSize}}"
+                               title="First Page">
+                                &laquo;
+                            </a>
+                        </li>
 
+                        <!-- Nút "Trang Trước" -->
+                        <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                            <a class="page-link"
+                               th:href="@{'/admin/user?' + (${searchKeyword!=null && !searchKeyword.isEmpty()? 'keyword=' + searchKeyword + '&' : ''}) + 'page=' + ${currentPage - 1 < 1 ? 1 : currentPage - 1} + '&size=' + ${pageSize}}"
+                               title="Previous Page">
+                                Prev
+                            </a>
+                        </li>
+
+                        <!-- Các Trang -->
+                        <li class="page-item disabled" th:if="${currentPage - 2 > 1}">
+                            <a class="page-link" href="#">...</a>
+                        </li>
+                        <li class="page-item" th:each="page : ${#numbers.sequence(currentPage > 2 ? currentPage - 2 : 1, currentPage + 2 < totalPages ? currentPage + 2 : totalPages)}"
+                            th:classappend="${page == currentPage} ? 'active'">
+                            <a class="page-link"
+                               th:href="@{'/admin/user?' + (${searchKeyword!=null && !searchKeyword.isEmpty()? 'keyword=' + searchKeyword + '&' : ''}) + 'page=' + ${page} + '&size=' + ${pageSize}}"
+                               th:text="${page}">
+                            </a>
+                        </li>
+                        <li class="page-item disabled" th:if="${currentPage + 2 < totalPages}">
+                            <a class="page-link" href="#">...</a>
+                        </li>
+
+                        <!-- Nút "Trang Kế" -->
+                        <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                            <a class="page-link"
+                               th:href="@{'/admin/user?' + (${searchKeyword!=null && !searchKeyword.isEmpty()? 'keyword=' + searchKeyword + '&' : ''}) + 'page=' + ${currentPage + 1 > totalPages ? totalPages : currentPage + 1} + '&size=' + ${pageSize}}"
+                               title="Next Page">
+                                Next
+                            </a>
+                        </li>
+
+                        <!-- Nút "Trang Cuối" -->
+                        <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                            <a class="page-link"
+                               th:href="@{'/admin/user?' + (${searchKeyword!=null && !searchKeyword.isEmpty()? 'keyword=' + searchKeyword + '&' : ''}) + 'page=' + ${totalPages} + '&size=' + ${pageSize}}"
+                               title="Last Page">
+                                &raquo;
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
 
 
 
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
                 <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-
-                <script>
-                    document.getElementById("searchButton").addEventListener("click", function() {
-                        const keyword = document.getElementById("searchInput").value;
-
-                        fetch(`/admin/user/search?keyword=${keyword}`, {
-                            method: 'GET',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            const tableBody = document.querySelector("table tbody");
-                            tableBody.innerHTML = ""; // Xóa dữ liệu cũ
-                            data.forEach(user => {
-                                const row = `
-                                    <tr>
-                                        <td>${user.userId}</td>
-                                        <td>${user.username}</td>
-                                        <td>${user.role.roleName}</td>
-                                        <td>
-                                            <a class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editUserModal"
-                                                data-id="${user.userId}" data-username="${user.username}" data-role="${user.role.roleName}">
-                                                <i class="fas fa-edit"></i> Sửa
-                                            </a>
-                                            <a class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteUserModal"
-                                                data-id="${user.userId}">
-                                                <i class="fas fa-trash"></i> Xóa
-                                            </a>
-                                        </td>
-                                    </tr>
-                                `;
-                                tableBody.insertAdjacentHTML("beforeend", row);
-                            });
-                        })
-                        .catch(error => console.error("Error:", error));
-                    });
-
-
-                    function setDeleteUserId(userId) {
-                        console.log("userId trong hàm setDeleteUserId:", userId);  // Kiểm tra giá trị userId
-                        if (userId !== undefined && userId !== null) {
-                            document.getElementById('deleteUserId').value = userId;  // Gán ID vào modal
-                            const deleteModal = new bootstrap.Modal(document.getElementById('deleteUserModal'));
-                            deleteModal.show();  // Mở modal
-                        } else {
-                            console.error("Không thể gán userId vào modal:", userId);  // Log lỗi nếu userId không hợp lệ
-                        }
-                    }
-
-
-
-                    $(document).on('click', '#confirmDeleteUser', function(e) {
-                        var userId = $('#deleteUserId').val();  // Lấy giá trị ID từ modal
-                        console.log("userId xác nhận xóa:", userId);  // Kiểm tra lại userId
-
-                        e.preventDefault();
-                        if (userId && !isNaN(userId)) {
-                            $.ajax({
-                                type: "DELETE",
-                                url: `/admin/user/delete/${userId}`,  // Truyền đúng userId vào URL
-                                success: function(response) {
-                                    if (response.success) {
-                                        $('#deleteSuccessMessage').text(response.message).fadeIn(500).delay(3000).fadeOut(500);
-                                        $('#deleteUserModal').modal('hide');
-                                        updateUserTable(response.data);  // Cập nhật lại bảng người dùng
-                                    } else {
-                                        $('#errorMessage').text("Đã xảy ra lỗi khi xóa người dùng!").fadeIn(500).delay(3000).fadeOut(500);
-                                    }
-                                },
-                                error: function() {
-                                    $('#errorMessage').text("Đã xảy ra lỗi khi xóa người dùng!").fadeIn(500).delay(3000).fadeOut(500);
-                                }
-                            });
-                        } else {
-                            console.error("userId không hợp lệ:", userId);
-                            $('#errorMessage').text("ID người dùng không hợp lệ!").fadeIn(500).delay(3000).fadeOut(500);
-                        }
-                    });
-
-                    $(document).on('click', '.btn-danger', function() {
-                        var userId = $(this).data('id');  // Lấy userId từ thuộc tính data-id của nút
-                        console.log("userId tại sự kiện click:", userId);  // Kiểm tra giá trị userId
-                        setDeleteUserId(userId);  // Gọi hàm với userId hợp lệ
-                    });
-
-
-
-                    // Hàm cập nhật lại bảng người dùng
-                    function updateUserTable(users) {
-                        var tableBody = $('#userTable tbody');
-                        tableBody.empty(); // Xóa bảng hiện tại
-
-                        // Kiểm tra nếu users là một mảng hợp lệ
-                        if (Array.isArray(users)) {
-                            users.forEach(function(user) {
-                                var row = `<tr>
-                                            <td>${user.userId}</td>
-                                            <td>${user.username}</td>
-                                            <td>${user.email}</td>
-                                            <td>
-                                                <a href="#" class="btn btn-warning btn-sm" onclick="openEditUserModal(${user.userId})">
-                                                    <i class="fas fa-edit"></i> Sửa
-                                                </a>
-                                                <a href="#" class="btn btn-danger btn-sm" onclick="setDeleteUserId(${user.userId})">
-                                                    <i class="fas fa-trash"></i> Xóa
-                                                </a>
-                                            </td>
-                                        </tr>`;
-                                tableBody.append(row);
-                            });
-                        } else {
-                            console.error("Dữ liệu người dùng không hợp lệ hoặc không phải mảng:", users);
-                        }
-                    }
-
-                </script>
+                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+                <script src="/js/user.js"></script>
             </div>
         </main>
     </div>

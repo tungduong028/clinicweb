@@ -7,8 +7,12 @@ function openEditDoctorModal(doctorId) {
             $('#editDoctorId').val(doctor.doctorId);
             $('#editDoctorName').val(doctor.fullName);
             $('#editDoctorEmail').val(doctor.email);
-            $('#editDoctorSpecialty').val(doctor.specialization);
-            $('#editDoctorExperience').val(doctor.experienceYears);
+            $('#editDoctorPhoneNumber').val(doctor.phoneNumber);
+            $('#editDoctorGender').val(doctor.gender);
+            $('#editDoctorDateOfBirth').val(doctor.dateOfBirth);
+            $('#editDoctorSpecialization').val(doctor.specialization);
+            $('#editDoctorExperienceYears').val(doctor.experienceYears);
+            $('#editDoctorRoomId').val(doctor.roomId);
             $('#editDoctorModal').modal('show');
         },
         error: function() {
@@ -43,41 +47,31 @@ $(document).ready(function() {
     });
 
     // Gửi form thêm bác sĩ
-    $('#addDoctorForm').on('submit', function(e) {
-        e.preventDefault();
-        var formData = $(this).serialize();
+    $('#addDoctorForm').submit(function (e) {
+        e.preventDefault();  // Ngừng reload trang khi submit form
+        var formData = $(this).serialize();  // Lấy dữ liệu từ form
 
         $.ajax({
-            type: "POST",
-            url: "/admin/doctor/save",
+            url: '/admin/doctor/save',
+            method: 'POST',
             data: formData,
             success: function(response) {
-                // Kiểm tra nếu response là mảng
+                // Kiểm tra nếu response là mảng bác sĩ
                 if (Array.isArray(response)) {
-                    $('#successMessage')
-                        .show()
-                        .text("Thêm bác sĩ thành công!")
-                        .fadeIn(500)
-                        .delay(3000)
-                        .fadeOut(500);
+                    // Hiển thị thông báo thành công
+                    $('#successMessage').fadeIn().delay(2000).fadeOut();
                     $('#addDoctorModal').modal('hide');
-                    updateDoctorTable(response);  // Cập nhật lại danh sách bác sĩ
+                    updateDoctorTable(response);  // Cập nhật lại bảng bác sĩ
                 } else {
-                    console.error("Dữ liệu không phải mảng:", response);
-                    $('#errorMessage')
-                        .show()
-                        .text("Đã xảy ra lỗi khi thêm bác sĩ!")
-                        .fadeOut(3000);
+                    $('#errorMessage').fadeIn().delay(2000).fadeOut();
                 }
             },
-            error: function(error) {
-                $('#errorMessage')
-                    .show()
-                    .text("Đã xảy ra lỗi khi thêm bác sĩ!")
-                    .fadeOut(3000);
+            error: function() {
+                $('#errorMessage').fadeIn().delay(2000).fadeOut();
             }
         });
     });
+
 
 
     // Gửi form cập nhật bác sĩ
@@ -159,27 +153,36 @@ $(document).ready(function() {
             e.preventDefault();  // Ngừng hành động mặc định của form
 
             var searchKeyword = $('#searchInput').val();  // Lấy từ khóa tìm kiếm từ input
+            var searchType = 'name';  // Hoặc 'email', 'specialization', tùy vào yêu cầu tìm kiếm (có thể thay đổi qua giao diện người dùng)
 
+            // Kiểm tra nếu từ khóa tìm kiếm không rỗng
+            if (searchKeyword.trim() === "") {
+                alert("Vui lòng nhập từ khóa tìm kiếm!");
+                return;
+            }
+
+            // Gửi yêu cầu AJAX
             $.ajax({
                 type: "GET",
-                url: `/admin/doctor/search?username=${searchKeyword}`,  // Gửi yêu cầu tìm kiếm đến server
+                url: `/admin/doctor/search?query=${encodeURIComponent(searchKeyword)}&type=${encodeURIComponent(searchType)}`,  // Thêm tham số query và type
                 success: function(response) {
-                    // Kiểm tra nếu response là mảng
-                    if (Array.isArray(response)) {
+                    // Kiểm tra nếu response là mảng (dữ liệu bác sĩ)
+                    if (Array.isArray(response) && response.length > 0) {
                         updateDoctorTable(response);  // Cập nhật lại bảng bác sĩ với kết quả tìm kiếm
 
                         // Hiển thị thông báo thành công
                         $('#searchSuccessMessage').show().fadeOut(3000);
                     } else {
-                        console.error("Dữ liệu không phải mảng:", response);
-                        $('#errorMessage')
+                        // Nếu không có bác sĩ nào tìm thấy
+                        console.error("Không tìm thấy bác sĩ nào!");
+                        $('#errorMessageSearch')
                             .show()
                             .text("Không tìm thấy bác sĩ nào với từ khóa tìm kiếm!")
                             .fadeOut(3000);
                     }
                 },
                 error: function() {
-                    $('#errorMessage')
+                    $('#errorMessageSearch')
                         .show()
                         .text("Đã xảy ra lỗi khi tìm kiếm bác sĩ!")
                         .fadeOut(3000);
@@ -187,6 +190,46 @@ $(document).ready(function() {
             });
         });
     });
+
+    // phân trang
+    $(document).ready(function() {
+        let currentPage = 1;  // Trang hiện tại
+        let pageSize = 10;    // Kích thước mỗi trang
+
+        function fetchDoctors(page = 0) {
+            $.ajax({
+                type: "GET",
+                url: `/admin/doctor?page=${page}&size=${pageSize}`,
+                success: function(response) {
+                    //updateDoctorTable(response.content);  // response.content chứa dữ liệu bác sĩ
+                    setupPagination(response.totalPages, page);  // Cập nhật phân trang
+                },
+                error: function() {
+                    alert("Không thể tải danh sách bác sĩ!");
+                }
+            });
+        }
+
+        function setupPagination(totalPages, currentPage) {
+            // Cập nhật phân trang: hiển thị số trang và xử lý sự kiện chuyển trang
+            let paginationHtml = '';
+            for (let i = 0; i < totalPages; i++) {
+                paginationHtml += `<li class="page-item ${i === currentPage ? 'active' : ''}">
+                                       <a class="page-link" href="#" onclick="fetchDoctors(${i})">${i + 1}</a>
+                                     </li>`;
+            }
+            $('#pagination').html(paginationHtml);  // Cập nhật phân trang
+        }
+
+        // Gọi hàm fetchDoctors để tải dữ liệu khi trang được tải
+        fetchDoctors(currentPage);
+    });
+
+    document.getElementById("searchButton").addEventListener("click", function () {
+        document.getElementById("searchForm").submit();
+    });
+
+
 });
 
 // Hàm cập nhật lại bảng bác sĩ
@@ -194,30 +237,32 @@ function updateDoctorTable(doctors) {
     var tableBody = $('#doctorTable tbody');
     tableBody.empty(); // Xóa bảng hiện tại
 
-    // Kiểm tra nếu doctors là một mảng hợp lệ
-    if (Array.isArray(doctors)) {
-        doctors.forEach(function(doctor) {
-            var row = `<tr>
-                        <td>${doctor.doctorId}</td>
-                        <td>${doctor.fullName}</td>
-                        <td>${doctor.email}</td>
-                        <td>${doctor.specialization}</td>
-                        <td>${doctor.experienceYears}</td>
-                        <td>
-                            <a href="#" class="btn btn-warning btn-sm" onclick="openEditDoctorModal(${doctor.doctorId})">
-                                <i class="fas fa-edit"></i> Sửa
-                            </a>
-                            <a href="#" class="btn btn-danger btn-sm" onclick="setDeleteDoctorId(${doctor.doctorId})">
-                                <i class="fas fa-trash"></i> Xóa
-                            </a>
-                        </td>
-                    </tr>`;
+    doctors.forEach(function (doctor) {
+        if (!doctor.isDeleted) { // Chỉ hiển thị bác sĩ chưa bị xóa
+            var row = `<tr data-doctor-id="${doctor.doctorId}">
+                         <td>${doctor.doctorId}</td>
+                         <td>${doctor.fullName}</td>
+                         <td>${doctor.email}</td>
+                         <td>${doctor.phoneNumber}</td>
+                         <td>${doctor.gender}</td>
+                         <td>${doctor.dateOfBirth}</td>
+                         <td>${doctor.specialization}</td>
+                         <td>${doctor.experienceYears}</td>
+                         <td>${doctor.roomId}</td>
+                         <td>
+                             <a href="#" class="btn btn-warning btn-sm" onclick="openEditDoctorModal(${doctor.doctorId})">
+                                 <i class="fas fa-edit"></i> Sửa
+                             </a>
+                             <a href="#" class="btn btn-danger btn-sm" onclick="setDeleteDoctorId(${doctor.doctorId})">
+                                 <i class="fas fa-trash"></i> Xóa
+                             </a>
+                         </td>
+                     </tr>`;
             tableBody.append(row);
-        });
-    } else {
-        console.error("Dữ liệu bác sĩ không hợp lệ hoặc không phải mảng:", doctors);
-    }
+        }
+    });
 }
+
 
 
 $('#deleteDoctorModal').on('hidden.bs.modal', function () {

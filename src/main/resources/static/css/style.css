@@ -390,3 +390,15 @@ h1.mt-4.mb-4 {
     width: 20%; /* Giảm chiều dài của thanh thông báo xuống 1/5 so với ban đầu */
     transition: opacity 0.5s ease-in-out; /* Thêm hiệu ứng mờ dần */
 }
+#errorMessageSearch {
+    top: 50px; /* Đưa thông báo xuống dưới 50px */
+        left: 50%; /* Căn giữa thông báo từ trái sang phải */
+        transform: translateX(-50%); /* Điều chỉnh vị trí để thanh thông báo hoàn toàn ở giữa */
+        z-index: 1050; /* Đảm bảo thông báo nằm trên các phần tử khác */
+        border-radius: 5px; /* Gỡ bỏ bo tròn các góc */
+        font-size: 14px; /* Giảm kích thước chữ */
+        padding: 14px 15px; /* Điều chỉnh padding để thanh thông báo ngắn lại */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Thêm bóng cho thanh thông báo */
+        width: 20%; /* Giảm chiều dài của thanh thông báo xuống 1/5 so với ban đầu */
+        transition: opacity 0.5s ease-in-out; /* Thêm hiệu ứng mờ dần */
+}

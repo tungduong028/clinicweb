@@ -14,4 +14,7 @@ public class PatientDTO {
     private String phoneNumber;
     private String gender;
     private String dateOfBirth;
+
+    public PatientDTO(String fullNamePatient, String emailPatient, String phoneNumberPatient, String genderPatient, String dateOfBirthPatient, String address, String medicalHistory) {
+    }
 }

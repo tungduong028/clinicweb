@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -22,6 +22,7 @@ public class Doctor {
 
     private String specialization;
     private int experienceYears;
+    private int roomId;
 
     @Column(nullable = false)
     private String fullName;
@@ -30,12 +31,15 @@ public class Doctor {
     private String email;
 
     @Column(nullable = true)
-    private String phone_number;
+    private String phoneNumber; // Đổi từ phone_number
 
     @Column(nullable = true)
     private String gender;
 
     @Column(nullable = true)
-    private String date_of_birth;
+    private String dateOfBirth; // Đổi từ date_of_birth
+
+    @Column(name = "is_deleted", nullable = false)
+    private boolean isDeleted = false;
 
 }
