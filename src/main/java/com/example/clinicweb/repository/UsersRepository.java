@@ -21,7 +21,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     @Query("SELECT u FROM Users u WHERE u.role.roleId = 2")
     List<Users> findByRoleDoctor();
 
-    Page<Users> findByUsernameContainingIgnoreCase(String name, Pageable pageable);
+    Page<Users> findByIsDeletedFalseAndUsernameContainingIgnoreCase(String name, Pageable pageable);
     Page<Users> findByIsDeletedFalse(Pageable pageable);
 
     @Transactional

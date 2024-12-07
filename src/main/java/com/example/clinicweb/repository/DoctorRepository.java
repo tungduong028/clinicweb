@@ -16,7 +16,7 @@ import java.util.List;
 
 @Repository
 public interface DoctorRepository extends JpaRepository<Doctor, Long>, CrudRepository<Doctor, Long> {
-    Page<Doctor> findByFullNameContainingIgnoreCase(String name, Pageable pageable);
+    Page<Doctor> findByIsDeletedFalseAndFullNameContainingIgnoreCase(String name, Pageable pageable);
     Page<Doctor> findByIsDeletedFalse(Pageable pageable);
 
     @Transactional

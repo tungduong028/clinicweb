@@ -17,7 +17,7 @@ public interface DoctorService {
     Page<Doctor> findAll(Pageable pageable);
 
     Optional<Doctor> findById(Long id);
-    Page<Doctor> findByFullNameContainingIgnoreCase(String keyword, Pageable pageable);
+    Page<Doctor> findByIsDeletedFalseAndFullNameContainingIgnoreCase(String keyword, Pageable pageable);
     int markAsDeleted(Long id);
     Page<Doctor> findByIsDeletedFalse(Pageable pageable);
 }

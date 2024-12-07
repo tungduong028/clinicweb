@@ -39,7 +39,7 @@ public class PatientController {
             if (keyword == null) {
                 pageTuts = patientService.findAll(paging);
             } else {
-                pageTuts = patientService.findByFullNameContainingIgnoreCase(keyword, paging);
+                pageTuts = patientService.findByIsDeletedFalseAndFullNameContainingIgnoreCase(keyword, paging);
                 model.addAttribute("keyword", keyword);
             }
 //            pageTuts = patientService.findAll(paging);

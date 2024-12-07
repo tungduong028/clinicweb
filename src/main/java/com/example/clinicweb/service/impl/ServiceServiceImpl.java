@@ -61,7 +61,7 @@ public class ServiceServiceImpl implements ServiceService {
         return serviceRepository.findById(id);
     }
 
-    public Page<Service> findByServiceNameContainingIgnoreCase(String keyword, Pageable pageable){ return serviceRepository.findByServiceNameContainingIgnoreCase(keyword, pageable);}
+    public Page<Service> findByIsDeletedFalseAndServiceNameContainingIgnoreCase(String keyword, Pageable pageable){ return serviceRepository.findByIsDeletedFalseAndServiceNameContainingIgnoreCase(keyword, pageable);}
 
     public int markAsDeleted(Long id) {return serviceRepository.markAsDeleted(id);}
 

@@ -89,5 +89,5 @@ public class PatientServiceImpl implements PatientService {
 
     public int markAsDeleted(Long id){return patientRepository.markAsDeleted(id);}
 
-    public Page<Patient> findByFullNameContainingIgnoreCase(String name, Pageable pageable){ return patientRepository.findByFullNameContainingIgnoreCase(name, pageable);}
+    public Page<Patient> findByIsDeletedFalseAndFullNameContainingIgnoreCase(String name, Pageable pageable){ return patientRepository.findByIsDeletedFalseAndFullNameContainingIgnoreCase(name, pageable);}
 }

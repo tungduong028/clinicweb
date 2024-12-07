@@ -28,7 +28,7 @@ public interface PatientRepository extends JpaRepository<Patient, Long>, CrudRep
 
     Page<Patient> findByIsDeletedFalse(Pageable pageable);
 
-    Page<Patient> findByFullNameContainingIgnoreCase(String name, Pageable pageable);
+    Page<Patient> findByIsDeletedFalseAndFullNameContainingIgnoreCase(String name, Pageable pageable);
 
     @Transactional
     @Modifying

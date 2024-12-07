@@ -113,6 +113,7 @@
                                 <th scope="col" style="width: 100px;">Năm kinh nghiệm</th>
                                 <th scope="col" style="width: 100px;">Giới tính</th>
                                 <th scope="col" style="width: 100px;">Ngày sinh</th>
+                                <th scope="col" style="width: 100px;">Ảnh</th>
                                 <!--<th class="d-none d-sm-table-cell" style="width: 15%;">Access</th>
                                 <th style="width: 15%;">Registered</th>-->
                             </tr>
@@ -127,6 +128,7 @@
                                 <td class="d-none d-sm-table-cell" th:text="${doctor.experienceYears}"></td>
                                 <td class="d-none d-sm-table-cell" th:text="${doctor.gender}"></td>
                                 <td class="d-none d-sm-table-cell" th:text="${doctor.dateOfBirth}"></td>
+                                <td class="d-none d-sm-table-cell"><img th:src="${doctor.imageUrl}" style="max-width: 100px;" alt="Image"></td>
                                 <td>
                                     <a data-toggle="modal" th:attr="data-target='#recordDeleteModal'+${doctor.doctorId}" class="btn btn-danger delBtn">Delete</a>
                                     <a th:href="@{'/admin/doctor/edit/' + ${doctor.doctorId}}" class="btn btn-primary eBtn">Edit</a>

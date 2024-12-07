@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
         Users user = new Users();
         user.setUserId(userDto.getUserId());
         user.setUsername(userDto.getUsername());
-        user.setPasswordHash(userDto.getPasswordHash());
+        user.setPasswordHash(userDto.getPassword());
         user.setRole(userRole);
         return userRepository.save(user);
     }
@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
         // 2. Tạo đối tượng Users và lưu vào bảng `users`
         Users user = new Users();
         user.setUsername(userDto.getUsername());
-        user.setPasswordHash(passwordEncoder.encode(userDto.getPasswordHash())); // Mã hóa mật khẩu
+        user.setPasswordHash(passwordEncoder.encode(userDto.getPassword())); // Mã hóa mật khẩu
         user.setRole(patientRole);
 
         Users savedUser = userRepository.save(user);
@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByRolePatient();
     }
     public List<Users> findByRoleDoctor(){return userRepository.findByRoleDoctor();}
-    public Page<Users> findByUsernameContainingIgnoreCase(String name, Pageable pageable){ return userRepository.findByUsernameContainingIgnoreCase(name, pageable);}
+    public Page<Users> findByIsDeletedFalseAndUsernameContainingIgnoreCase(String name, Pageable pageable){ return userRepository.findByIsDeletedFalseAndUsernameContainingIgnoreCase(name, pageable);}
     public Page<Users> findByIsDeletedFalse(Pageable pageable){ return userRepository.findByIsDeletedFalse(pageable);}
     public int markAsDeleted(Long id){ return userRepository.markAsDeleted(id);}
     public Page<Users> findAll(Pageable pageable){ return userRepository.findAll(pageable);}

@@ -40,7 +40,7 @@ public class UserController {
             if (keyword == null) {
                 pageTuts = userService.findAll(paging);
             } else {
-                pageTuts = userService.findByUsernameContainingIgnoreCase(keyword, paging);
+                pageTuts = userService.findByIsDeletedFalseAndUsernameContainingIgnoreCase(keyword, paging);
                 model.addAttribute("keyword", keyword);
             }
             users = pageTuts.getContent();

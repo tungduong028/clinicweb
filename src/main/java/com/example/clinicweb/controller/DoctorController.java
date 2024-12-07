@@ -2,6 +2,7 @@ package com.example.clinicweb.controller;
 
 import com.example.clinicweb.dto.DoctorDTO;
 import com.example.clinicweb.dto.PatientDTO;
+import com.example.clinicweb.dto.UsersDTO;
 import com.example.clinicweb.model.Doctor;
 import com.example.clinicweb.model.Patient;
 import com.example.clinicweb.service.CloudStorageService;
@@ -22,6 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Controller
 public class DoctorController {
@@ -45,7 +47,7 @@ public class DoctorController {
             if (keyword == null) {
                 pageTuts = doctorService.findAll(paging);
             } else {
-                pageTuts = doctorService.findByFullNameContainingIgnoreCase(keyword, paging);
+                pageTuts = doctorService.findByIsDeletedFalseAndFullNameContainingIgnoreCase(keyword, paging);
                 model.addAttribute("keyword", keyword);
             }
 //            pageTuts = doctorService.findAll(paging);
@@ -69,14 +71,32 @@ public class DoctorController {
         DoctorDTO doctor = new DoctorDTO();
 
         model.addAttribute("doctor", doctor);
-        model.addAttribute("users", userService.findByRoleDoctor());
+        model.addAttribute("user", new UsersDTO());
         model.addAttribute("pageTitle", "Tạo bác sĩ mới");
 
-        return "admin/doctor/doctor_form";
+        return "admin/doctor/doctor_form_new";
     }
 
     @PostMapping("/admin/doctor/save")
     public String saveDoctor(@RequestParam("file") MultipartFile file, @ModelAttribute("doctor") DoctorDTO doctorDTO) {
+        String fileUrl = null;
+        if (!file.isEmpty()){
+            try {
+                fileUrl = cloudStorageService.uploadFile(file);
+//            redirectAttributes.addFlashAttribute("message", "Tải lên thành công!");
+//            redirectAttributes.addFlashAttribute("fileUrl", fileUrl);
+            } catch (IOException e) {
+//            redirectAttributes.addFlashAttribute("error", "Lỗi khi tải lên: " + e.getMessage());
+            }
+            doctorDTO.setImageUrl(fileUrl);
+        }
+
+        doctorService.saveDoctor(doctorDTO);
+        return "redirect:/admin/doctor";
+    }
+
+    @PostMapping("/admin/doctor/save_new")
+    public String saveNewDoctor(@RequestParam("file") MultipartFile file, @ModelAttribute("doctor") DoctorDTO doctorDTO, @ModelAttribute("user") UsersDTO usersDTO) {
         String fileUrl = null;
         try {
             fileUrl = cloudStorageService.uploadFile(file);
@@ -86,7 +106,7 @@ public class DoctorController {
 //            redirectAttributes.addFlashAttribute("error", "Lỗi khi tải lên: " + e.getMessage());
         }
         doctorDTO.setImageUrl(fileUrl);
-        doctorService.saveDoctor(doctorDTO);
+        doctorService.saveNewDoctor(doctorDTO, usersDTO);
         return "redirect:/admin/doctor";
     }
 
@@ -95,11 +115,13 @@ public class DoctorController {
         Doctor doctor = doctorService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid doctor Id:" + id));
 
-        model.addAttribute("doctor", doctor);
+        DoctorDTO doctorDTO = doctorService.toDoctorDto(doctor);
+
+        model.addAttribute("doctor", doctorDTO);
         model.addAttribute("users", userService.findByRoleDoctor());
-        model.addAttribute("imageUrl", doctor.getImageUrl());
+        model.addAttribute("imageUrl", doctorDTO.getImageUrl());
         model.addAttribute("pageTitle", "Sửa thông tin bác sĩ");
-        return "admin/doctor/doctor_form";
+        return "admin/doctor/doctor_form_edit";
     }
 
     @GetMapping("/admin/doctor/delete/{id}")

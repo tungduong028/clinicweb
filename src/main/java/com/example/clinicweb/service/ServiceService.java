@@ -27,5 +27,5 @@ public interface ServiceService {
 
     Page<Service> findByIsDeletedFalse(Pageable pageable);
 
-    Page<Service> findByServiceNameContainingIgnoreCase(String keyword, Pageable pageable);
+    Page<Service> findByIsDeletedFalseAndServiceNameContainingIgnoreCase(String keyword, Pageable pageable);
 }

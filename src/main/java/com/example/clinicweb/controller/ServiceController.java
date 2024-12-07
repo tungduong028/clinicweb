@@ -66,9 +66,9 @@ public class ServiceController {
 
             Page<Service> pageTuts;
             if (keyword == null) {
-                pageTuts = serviceService.findAll(paging);
+                pageTuts = serviceService.findByIsDeletedFalse(paging);
             } else {
-                pageTuts = serviceService.findByServiceNameContainingIgnoreCase(keyword, paging);
+                pageTuts = serviceService.findByIsDeletedFalseAndServiceNameContainingIgnoreCase(keyword, paging);
                 model.addAttribute("keyword", keyword);
             }
             services = pageTuts.getContent();

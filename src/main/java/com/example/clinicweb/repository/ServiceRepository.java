@@ -26,5 +26,5 @@ public interface ServiceRepository extends PagingAndSortingRepository<Service, L
     @Query("UPDATE Service s SET s.isDeleted = true WHERE s.id = :id AND s.isDeleted = false")
     int markAsDeleted(Long id);
 
-    Page<Service> findByServiceNameContainingIgnoreCase(String name, Pageable pageable);
+    Page<Service> findByIsDeletedFalseAndServiceNameContainingIgnoreCase(String name, Pageable pageable);
 }
