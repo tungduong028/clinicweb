@@ -16,7 +16,7 @@ public class WorkingDays {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer workingId;
+    private Long workingId;
 
     @ManyToOne
     @JoinColumn(name = "doctor_id", nullable = false)

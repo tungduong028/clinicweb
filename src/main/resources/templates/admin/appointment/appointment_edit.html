@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <title>Admin Dashboard</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+</head>
+
+<body>
+<!-- Topbar Start -->
+<div class="container-fluid sticky-top bg-white shadow-sm">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg bg-white navbar-light py-3">
+      <h1 class="m-0 text-uppercase text-primary">Admin Dashboard</h1>
+    </nav>
+  </div>
+</div>
+<!-- Topbar End -->
+
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+      <div class="sidebar-sticky">
+        <h4>Quản Lý</h4>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" th:href="@{/admin/user}">
+              <i class="fas fa-users"></i> Quản Lý Người Dùng
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/admin/doctor}">
+              <i class="fas fa-user-md"></i> Quản Lý Bác Sĩ
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/admin/service}">
+              <i class="fas fa-concierge-bell"></i> Quản Lý Dịch Vụ
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/admin/patient}">
+              <i class="fas fa-procedures"></i> Quản Lý Bệnh Nhân
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/admin/appointment}">
+              <i class="fas fa-procedures"></i> Quản Lý Lịch Khám
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <!-- Form Appointment -->
+    <form th:action="@{'/admin/appointment/edit/' + ${appointment.appointmentId}}" method="post" class="col-lg-6">
+      <div class="bg-light text-center rounded p-5">
+        <h1 class="mb-4">Đặt lịch khám</h1>
+
+        <div th:if="${message}">
+          <p th:text="${message}"></p>
+        </div>
+        <input type="hidden" name="appointmentId" th:value="${appointment.appointmentId}">
+        <div class="row g-3">
+          <!-- Dropdown chọn bác sĩ -->
+          <div class="col-12 col-sm-6">
+            <select name="doctorId" id="doctorSelect" class="form-select bg-white border-0" style="height: 55px;" required>
+              <option selected th:value="0">Chọn bác sĩ</option>
+              <option th:each="doctor : ${doctors}"
+                      th:value="${doctor.doctorId}"
+                      th:text="${doctor.fullName}"></option>
+            </select>
+          </div>
+          <div class="col-12 col-sm-6">
+            <select name="patientId" id="patientSelect" class="form-select bg-white border-0" style="height: 55px;" required>
+              <option selected th:value="0">Chọn bệnh nhân</option>
+              <option th:each="patient : ${patients}"
+                      th:value="${patient.patientId}"
+                      th:text="${patient.fullName}"></option>
+            </select>
+          </div>
+          <div class="col-12 col-sm-6">
+            <label for="status" class="form-label">Trạng Thái</label>
+            <select class="form-control" id="status" name="status">
+              <option value="SCHEDULED" >SCHEDULED</option>
+              <option value="COMPLETED" >COMPLETED</option>
+              <option value="CANCELLED" >CANCELLED</option>
+            </select>
+          </div>
+          <div class="col-12 col-sm-6">
+            <input type="date" name="date" class="form-control bg-white border-0" placeholder="Ngày khám" style="height: 55px;" required>
+          </div>
+
+          <div class="col-12 col-sm-6">
+            <select name="time" id="timeSelect" class="form-select bg-white border-0" style="height: 55px;" required>
+              <option selected value="">Chọn giờ</option>
+            </select>
+          </div>
+
+          <script>
+            document.getElementById("doctorSelect").addEventListener("change", function() {
+              const doctorId = this.value;
+              if (doctorId) {
+                fetch(`/get-available-times?doctorId=` + doctorId)
+                        .then(response => response.json())
+                        .then(data => {
+                          const timeSelect = document.getElementById("timeSelect");
+                          timeSelect.innerHTML = '<option value="">Chọn giờ</option>';  // Xóa lựa chọn trước đó
+                          data.forEach(time => {
+                            const option = document.createElement("option");
+                            option.value = time;
+                            option.text = time;
+                            timeSelect.appendChild(option);
+                          });
+                        })
+                        .catch(error => console.error("Error fetching available times:", error));
+              }
+            });
+          </script>
+
+
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary">Lưu Thay Đổi</button>
+            <a th:href="@{/admin/appointment}" class="btn btn-secondary">Hủy</a>
+          </div>
+        </div>
+      </div>
+    </form>
+    <!-- Form Appointment -->
+
+
+
+  </div>
+</div>
+
+</body>
+</html>
