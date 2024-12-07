@@ -34,4 +34,6 @@ public interface PatientRepository extends JpaRepository<Patient, Long>, CrudRep
     @Modifying
     @Query("UPDATE Patient s SET s.isDeleted = true WHERE s.id = :id AND s.isDeleted = false")
     int markAsDeleted(Long id);
+    Patient findByEmail(String email);
+
 }

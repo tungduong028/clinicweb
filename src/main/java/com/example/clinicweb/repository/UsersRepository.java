@@ -16,6 +16,7 @@ import java.util.Optional;
 @Repository
 public interface UsersRepository extends JpaRepository<Users, Long> {
     Optional<Users> findByUsername(String username);
+    Users findByResetPasswordToken(String token);
     @Query("SELECT u FROM Users u WHERE u.role.roleId = 3")
     List<Users> findByRolePatient();
     @Query("SELECT u FROM Users u WHERE u.role.roleId = 2")

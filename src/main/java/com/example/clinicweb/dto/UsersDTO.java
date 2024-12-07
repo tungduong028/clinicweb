@@ -9,4 +9,5 @@ public class UsersDTO {
     private String password;
     private String roleName;
     private boolean isDeleted=false;
+    private String resetPasswordToken;
 }

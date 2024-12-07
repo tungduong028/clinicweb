@@ -1,6 +1,7 @@
 package com.example.clinicweb.service.impl;
 
 import com.example.clinicweb.dto.PatientDTO;
+import com.example.clinicweb.dto.UsersDTO;
 import com.example.clinicweb.model.Patient;
 import com.example.clinicweb.model.Users;
 import com.example.clinicweb.repository.PatientRepository;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -90,4 +92,33 @@ public class PatientServiceImpl implements PatientService {
     public int markAsDeleted(Long id){return patientRepository.markAsDeleted(id);}
 
     public Page<Patient> findByIsDeletedFalseAndFullNameContainingIgnoreCase(String name, Pageable pageable){ return patientRepository.findByIsDeletedFalseAndFullNameContainingIgnoreCase(name, pageable);}
+    @Override
+    public Patient findByEmail(String email) {
+        return patientRepository.findByEmail(email);
+    }
+
+    @Override
+    public void updateResetPasswordToken(String token, String email) {
+        Patient patient = patientRepository.findByEmail(email);
+        if (patient != null) {
+            Users user = patient.getUser();
+            if (user != null) {
+                user.setResetPasswordToken(token);
+                usersRepository.save(user);
+            }
+        }
+    }
+
+    @Override
+    public Users getByResetPasswordToken(String token) {
+        return usersRepository.findByResetPasswordToken(token);
+    }
+
+    @Override
+    public void updatePassword(Users users, String newPassword) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        users.setPasswordHash(encoder.encode(newPassword));
+        users.setResetPasswordToken(null);
+        usersRepository.save(users);
+    }
 }

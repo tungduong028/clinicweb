@@ -25,6 +25,9 @@ public class Users implements UserDetails {
     @Column(nullable = false)
     private String passwordHash;
 
+    @Column(name = "reset_password_token")
+    private String resetPasswordToken;
+
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
