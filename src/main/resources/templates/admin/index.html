@@ -30,28 +30,33 @@
                 <h4>Quản Lý</h4>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#" onclick="showSection('userManagement')">
+                        <a class="nav-link active" th:href="@{/admin/user}">
                             <i class="fas fa-users"></i> Quản Lý Người Dùng
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showSection('doctorManagement')">
+                        <a class="nav-link" th:href="@{/admin/doctor}">
                             <i class="fas fa-user-md"></i> Quản Lý Bác Sĩ
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showSection('serviceManagement')">
+                        <a class="nav-link" th:href="@{/admin/service}">
                             <i class="fas fa-concierge-bell"></i> Quản Lý Dịch Vụ
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showSection('patientManagement')">
+                        <a class="nav-link" th:href="@{/admin/patient}">
                             <i class="fas fa-procedures"></i> Quản Lý Bệnh Nhân
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showSection('statistics')">
-                            <i class="fas fa-chart-bar"></i> Thống Kê
+                        <a class="nav-link" th:href="@{/admin/appointment}">
+                            <i class="fas fa-procedures"></i> Quản Lý Lịch Khám
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/workingday}">
+                            <i class="fas fa-procedures"></i> Quản Lý ngày làm việc
                         </a>
                     </li>
                 </ul>

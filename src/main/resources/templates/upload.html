@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Ảnh</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+  <h2>Upload Ảnh</h2>
+
+  <!-- Hiển thị thông báo khi upload thành công hoặc lỗi -->
+  <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+  <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+  <!-- Form upload ảnh -->
+  <form th:action="@{/upload}" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+      <label for="file">Chọn file ảnh:</label>
+      <input type="file" class="form-control-file" id="file" name="file" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Upload</button>
+  </form>
+
+  <!-- Hiển thị link ảnh sau khi upload -->
+  <div th:if="${fileUrl}" class="mt-3">
+    <h4>Ảnh đã tải lên:</h4>
+    <img th:src="${fileUrl}" class="img-thumbnail" style="max-width: 300px;">
+    <p><a th:href="${fileUrl}" target="_blank">Xem ảnh</a></p>
+  </div>
+</div>
+</body>
+</html>

@@ -28,12 +28,14 @@ public class Patient {
     private String email;
 
     @Column(nullable = true)
-    private String phone_number;
+    private String phoneNumber;
 
     @Column(nullable = true)
     private String gender;
 
     @Column(nullable = true)
-    private String date_of_birth;
+    private String dateOfBirth;
+
+    private boolean isDeleted=false;
 }
 

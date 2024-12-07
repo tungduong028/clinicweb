@@ -334,3 +334,11 @@ p {
 h4 {
     text-align: center;
 }
+
+.grid-container {
+  display: grid;
+  align-content: space-evenly;
+  grid-template-columns: auto;
+  gap: 20px;
+  padding: 10px;
+}

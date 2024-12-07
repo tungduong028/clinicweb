@@ -8,5 +8,7 @@ public class ServiceDTO {
     private String serviceName;
     private String description;
     private double price;
+    private String imageUrl;
+    private boolean isDeleted = false;
 }
 
