@@ -8,4 +8,5 @@ public class UsersDTO {
     private String username;
     private String password;
     private String roleName;
+    private String resetPasswordToken;
 }

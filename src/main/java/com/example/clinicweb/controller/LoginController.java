@@ -37,5 +37,10 @@ public class LoginController {
     public String logoutPage() {
         return "/login";
     }
+
+    @GetMapping("/forgot-password")
+    public String showForgotPasswordPage() {
+        return "forgot-password"; // Trả về trang giao diện forgot-password.html
+    }
 }
 
