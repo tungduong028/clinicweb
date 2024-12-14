@@ -41,11 +41,15 @@ public class WorkingDaysServiceImpl implements WorkingDaysService {
     }
 
 
-    public void delete(Integer id) {
-        workingDaysRepository.deleteById(id);
+    public Page<WorkingDays> findByDoctor_DoctorId(Long id, Pageable pageable){
+        return workingDaysRepository.findByDoctor_DoctorId(id, pageable);
     }
-    public Page<WorkingDays> findByDoctor_DoctorId(Long id, Pageable pageable){ return workingDaysRepository.findByDoctor_DoctorId(id, pageable);}
-    public Page<WorkingDays> findByIsDeletedFalse(Pageable pageable){ return workingDaysRepository.findAll(pageable);}
-    public Page<WorkingDays> findAll(Pageable pageable){ return workingDaysRepository.findAll(pageable);}
-//    public Optional<WorkingDays> findById(Long id){ return workingDaysRepository.findById(id);}
+
+    public Page<WorkingDays> findByIsDeletedFalse(Pageable pageable){
+        return workingDaysRepository.findAll(pageable);
+    }
+
+    public Page<WorkingDays> findAll(Pageable pageable){
+        return workingDaysRepository.findAll(pageable);
+    }
 }

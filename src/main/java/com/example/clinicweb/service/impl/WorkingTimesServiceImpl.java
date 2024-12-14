@@ -11,6 +11,7 @@ public class WorkingTimesServiceImpl implements WorkingTimesService {
     @Autowired
     private WorkingTimesRepository workingTimesRepository;
 
+    @Override
     public WorkingTimes findByDoctor_DoctorId(Long doctorId) {
         return workingTimesRepository.findByDoctor_DoctorId(doctorId);
     }

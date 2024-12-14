@@ -2,10 +2,8 @@ package com.example.clinicweb.controller;
 
 import com.example.clinicweb.dto.AppointmentDTO;
 import com.example.clinicweb.model.Appointment;
-import com.example.clinicweb.model.Doctor;
-import com.example.clinicweb.model.Users;
 import com.example.clinicweb.model.WorkingTimes;
-import com.example.clinicweb.service.impl.*;
+import com.example.clinicweb.service.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,16 +20,16 @@ import java.util.List;
 @Controller
 public class AppointmentController {
     @Autowired
-    private DoctorServiceImpl doctorService;
+    private DoctorService doctorService;
 
     @Autowired
-    private PatientServiceImpl patientService;
+    private PatientService patientService;
 
     @Autowired
-    private AppointmentServiceImpl appointmentService;
+    private AppointmentService appointmentService;
 
     @Autowired
-    private WorkingTimesServiceImpl workingTimesService;
+    private WorkingTimesService workingTimesService;
 
     // Xử lý đặt lịch khám
     @PostMapping("/new-booking")

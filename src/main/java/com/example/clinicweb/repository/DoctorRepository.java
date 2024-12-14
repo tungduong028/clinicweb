@@ -1,8 +1,6 @@
 package com.example.clinicweb.repository;
 
 import com.example.clinicweb.model.Doctor;
-import com.example.clinicweb.model.Patient;
-import com.example.clinicweb.model.Service;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,8 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public interface DoctorRepository extends JpaRepository<Doctor, Long>, CrudRepository<Doctor, Long> {
     Page<Doctor> findByIsDeletedFalseAndFullNameContainingIgnoreCase(String name, Pageable pageable);
@@ -21,6 +17,6 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long>, CrudRepos
 
     @Transactional
     @Modifying
-    @Query("UPDATE Doctor s SET s.isDeleted = true WHERE s.id = :id AND s.isDeleted = false")
+    @Query("UPDATE Doctor s SET s.isDeleted = true WHERE s.doctorId = :id AND s.isDeleted = false")
     int markAsDeleted(Long id);
 }

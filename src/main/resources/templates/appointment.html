@@ -103,77 +103,63 @@
                     <a class="btn btn-outline-primary rounded-pill py-3 px-5" href="">Read More</a>
                 </div>
                 <!-- Form Appointment -->
-                <div class="col-lg-6">
+                <form th:action="@{/new-booking}" method="post" class="col-lg-6">
                     <div class="bg-light text-center rounded p-5">
                         <h1 class="mb-4">Đặt lịch khám</h1>
-                        <form>
-                            <div class="row g-3">
 
-                                <div class="col-12 col-sm-6">
-                                    <select class="form-select bg-white border-0" style="height: 55px;">
-                                        <option selected>Chọn bác sĩ</option>
-                                        <option value="1">Doctor 1</option>
-                                        <option value="2">Doctor 2</option>
-                                        <option value="3">Doctor 3</option>
-                                    </select>
-                                </div>
+                        <div th:if="${message}">
+                            <p th:text="${message}"></p>
+                        </div>
 
-                                <div class="col-12 col-sm-6">
-                                    <div class="date" id="date" data-target-input="nearest">
-                                        <input type="text"
-                                               class="form-control bg-white border-0 datetimepicker-input"
-                                               placeholder="Ngày khám" data-target="#date" data-toggle="datetimepicker" style="height: 55px;">
-                                    </div>
-                                </div>
-
-                                <div class="col-12 col-sm-6">
-                                    <div class="time" id="time" data-target-input="nearest">
-                                        <input type="text"
-                                               class="form-control bg-white border-0 datetimepicker-input"
-                                               placeholder="Giờ khám" data-target="#time" data-toggle="datetimepicker" style="height: 55px;">
-                                    </div>
-                                </div>
-                                <div></div> <!-- Xuống dòng -->
-
-                                <div class="col-12 col-sm-6">
-                                    <input type="text" class="form-control bg-white border-0" placeholder="Họ và tên" style="height: 55px;">
-                                </div>
-
-                                <div class="col-12 col-sm-6">
-                                    <input type="text" class="form-control bg-white border-0" placeholder="Số điện thoại" style="height: 55px;">
-                                </div>
-
-                                <div class="col-12 col-sm-6">
-                                    <input type="date" class="form-control bg-white border-0" placeholder="Ngày sinh" style="height: 55px;">
-                                </div>
-
-                                <div class="col-12 col-sm-6">
-                                    <select class="form-select bg-white border-0" style="height: 55px;">
-                                        <option selected>Giới tính</option>
-                                        <option value="MALE">Male</option>
-                                        <option value="FEMALE">Female</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-12 col-sm-6">
-                                    <input type="text" class="form-control bg-white border-0" placeholder="Địa chỉ (nếu có)" style="height: 55px;">
-                                </div>
-
-                                <div class="col-12 col-sm-6">
-                                    <input type="email" class="form-control bg-white border-0" placeholder="Email (nếu có)" style="height: 55px;">
-                                </div>
-
-                                <div class="col-12 col-sm-6">
-                                    <input type="text" class="form-control bg-white border-0" placeholder="Lịch sử bệnh (nếu có)" style="height: 55px;">
-                                </div>
-
-                                <div class="col-12">
-                                    <button class="btn btn-primary w-100 py-3" type="submit">Đặt lịch</button>
-                                </div>
+                        <div class="row g-3">
+                            <!-- Dropdown chọn bác sĩ -->
+                            <div class="col-12 col-sm-6">
+                                <select name="doctorId" id="doctorSelect" class="form-select bg-white border-0" style="height: 55px;" required>
+                                    <option selected th:value="0">Chọn bác sĩ</option>
+                                    <option th:each="doctor : ${doctors}"
+                                            th:value="${doctor.doctorId}"
+                                            th:text="${doctor.fullName}"></option>
+                                </select>
                             </div>
-                        </form>
+
+                            <div class="col-12 col-sm-6">
+                                <input type="date" name="date" class="form-control bg-white border-0" placeholder="Ngày khám" style="height: 55px;" required>
+                            </div>
+
+                            <div class="col-12 col-sm-6">
+                                <select name="time" id="timeSelect" class="form-select bg-white border-0" style="height: 55px;" required>
+                                    <option selected value="">Chọn giờ</option>
+                                </select>
+                            </div>
+
+                            <script>
+                                document.getElementById("doctorSelect").addEventListener("change", function() {
+                                    const doctorId = this.value;
+                                    if (doctorId) {
+                                        fetch(`/get-available-times?doctorId=` + doctorId)
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                const timeSelect = document.getElementById("timeSelect");
+                                                timeSelect.innerHTML = '<option value="">Chọn giờ</option>';  // Xóa lựa chọn trước đó
+                                                data.forEach(time => {
+                                                    const option = document.createElement("option");
+                                                    option.value = time;
+                                                    option.text = time;
+                                                    timeSelect.appendChild(option);
+                                                });
+                                            })
+                                            .catch(error => console.error("Error fetching available times:", error));
+                                    }
+                                });
+                            </script>
+
+
+                            <div class="col-12">
+                                <button class="btn btn-primary w-100 py-3" type="submit">Đặt lịch</button>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </form>
                 <!-- Form Appointment -->
             </div>
         </div>

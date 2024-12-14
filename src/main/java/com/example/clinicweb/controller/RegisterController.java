@@ -2,7 +2,7 @@ package com.example.clinicweb.controller;
 
 import com.example.clinicweb.dto.PatientDTO;
 import com.example.clinicweb.dto.UsersDTO;
-import com.example.clinicweb.service.impl.UserServiceImpl;
+import com.example.clinicweb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class RegisterController {
 
     @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
 
     // Hiển thị form đăng ký
     @GetMapping("/register")

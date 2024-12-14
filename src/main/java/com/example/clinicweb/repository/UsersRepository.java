@@ -1,6 +1,5 @@
 package com.example.clinicweb.repository;
 
-import com.example.clinicweb.model.Service;
 import com.example.clinicweb.model.Users;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
@@ -27,7 +26,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
 
     @Transactional
     @Modifying
-    @Query("UPDATE Users s SET s.isDeleted = true WHERE s.id = :id AND s.isDeleted = false")
+    @Query("UPDATE Users s SET s.isDeleted = true WHERE s.userId = :id AND s.isDeleted = false")
     int markAsDeleted(Long id);
 }
 

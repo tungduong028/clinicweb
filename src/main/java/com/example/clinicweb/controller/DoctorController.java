@@ -1,14 +1,9 @@
 package com.example.clinicweb.controller;
 
 import com.example.clinicweb.dto.DoctorDTO;
-import com.example.clinicweb.dto.PatientDTO;
 import com.example.clinicweb.dto.UsersDTO;
 import com.example.clinicweb.model.Doctor;
-import com.example.clinicweb.model.Patient;
-import com.example.clinicweb.service.CloudStorageService;
-import com.example.clinicweb.service.impl.DoctorServiceImpl;
-import com.example.clinicweb.service.impl.PatientServiceImpl;
-import com.example.clinicweb.service.impl.UserServiceImpl;
+import com.example.clinicweb.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,16 +17,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Controller
 public class DoctorController {
     @Autowired
-    DoctorServiceImpl doctorService;
+    DoctorService doctorService;
 
     @Autowired
-    UserServiceImpl userService;
+    UserService userService;
 
     @Autowired
     private CloudStorageService cloudStorageService;
@@ -40,7 +33,7 @@ public class DoctorController {
     public String getAll(Model model, @RequestParam(required = false) String keyword
             , @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "3") int size) {
         try {
-            List<Doctor> doctors = new ArrayList<Doctor>();
+            List<Doctor> doctors;
             Pageable paging = PageRequest.of(page - 1, size);
 
             Page<Doctor> pageTuts;

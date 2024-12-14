@@ -34,11 +34,6 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public Users findUserByUsername(String username) {
-        return null;
-    }
-
-    @Override
     public Users saveUser(UsersDTO userDto) {
         Role userRole = roleRepository.findByroleName(userDto.getRoleName())
                 .orElseThrow(() -> new RuntimeException("Role not found"));
@@ -51,15 +46,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Users> findAllUsers() {
-        return userRepository.findAll();
-    }
-
-    @Override
-    public void deleteUserById(Long id) {
-        userRepository.deleteById(id);
-    }
-
     @Transactional
     public void register(UsersDTO userDto, PatientDTO patientDto) {
         // 1. Lấy role PATIENT từ RoleRepository
@@ -90,13 +76,38 @@ public class UserServiceImpl implements UserService {
         patientRepository.save(patient);
     }
 
+    @Override
     public List<Users> findByRolePatient(){
         return userRepository.findByRolePatient();
     }
-    public List<Users> findByRoleDoctor(){return userRepository.findByRoleDoctor();}
-    public Page<Users> findByIsDeletedFalseAndUsernameContainingIgnoreCase(String name, Pageable pageable){ return userRepository.findByIsDeletedFalseAndUsernameContainingIgnoreCase(name, pageable);}
-    public Page<Users> findByIsDeletedFalse(Pageable pageable){ return userRepository.findByIsDeletedFalse(pageable);}
-    public int markAsDeleted(Long id){ return userRepository.markAsDeleted(id);}
-    public Page<Users> findAll(Pageable pageable){ return userRepository.findAll(pageable);}
-    public Optional<Users> findById(Long id){ return userRepository.findById(id);}
+
+    @Override
+    public List<Users> findByRoleDoctor(){
+        return userRepository.findByRoleDoctor();
+    }
+
+    @Override
+    public Page<Users> findByIsDeletedFalseAndUsernameContainingIgnoreCase(String name, Pageable pageable){
+        return userRepository.findByIsDeletedFalseAndUsernameContainingIgnoreCase(name, pageable);
+    }
+
+    @Override
+    public Page<Users> findByIsDeletedFalse(Pageable pageable){
+        return userRepository.findByIsDeletedFalse(pageable);
+    }
+
+    @Override
+    public int markAsDeleted(Long id){
+        return userRepository.markAsDeleted(id);
+    }
+
+    @Override
+    public Page<Users> findAll(Pageable pageable){
+        return userRepository.findAll(pageable);
+    }
+
+    @Override
+    public Optional<Users> findById(Long id){
+        return userRepository.findById(id);
+    }
 }

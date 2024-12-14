@@ -1,12 +1,8 @@
 package com.example.clinicweb.controller;
 
 import com.example.clinicweb.dto.PatientDTO;
-import com.example.clinicweb.dto.ServiceDTO;
 import com.example.clinicweb.model.Patient;
-import com.example.clinicweb.model.Service;
-import com.example.clinicweb.service.impl.PatientServiceImpl;
-import com.example.clinicweb.service.impl.ServiceServiceImpl;
-import com.example.clinicweb.service.impl.UserServiceImpl;
+import com.example.clinicweb.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,16 +19,16 @@ import java.util.NoSuchElementException;
 @Controller
 public class PatientController {
     @Autowired
-    PatientServiceImpl patientService;
+    PatientService patientService;
 
     @Autowired
-    UserServiceImpl userService;
+    UserService userService;
 
     @GetMapping("/admin/patient")
     public String getAll(Model model, @RequestParam(required = false) String keyword
             , @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "3") int size) {
         try {
-            List<Patient> patients = new ArrayList<Patient>();
+            List<Patient> patients;
             Pageable paging = PageRequest.of(page - 1, size);
 
             Page<Patient> pageTuts;

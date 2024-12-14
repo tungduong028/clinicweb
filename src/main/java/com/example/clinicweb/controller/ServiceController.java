@@ -2,9 +2,8 @@ package com.example.clinicweb.controller;
 
 import com.example.clinicweb.dto.ServiceDTO;
 import com.example.clinicweb.model.Service;
-import com.example.clinicweb.repository.ServiceRepository;
 import com.example.clinicweb.service.CloudStorageService;
-import com.example.clinicweb.service.impl.ServiceServiceImpl;
+import com.example.clinicweb.service.ServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,15 +15,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Controller
 public class ServiceController {
     @Autowired
-    ServiceServiceImpl serviceService;
+    ServiceService serviceService;
     @Autowired
     private CloudStorageService cloudStorageService;
 
@@ -32,17 +29,11 @@ public class ServiceController {
     public String showService(Model model, @RequestParam(required = false) String keyword
             , @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "6") int size) {
         try {
-            List<Service> services = new ArrayList<Service>();
+            List<Service> services;
             Pageable paging = PageRequest.of(page - 1, size);
 
             Page<Service> pageTuts;
-//            if (keyword == null) {
-//                pageTuts = serviceService.findAll(paging);
-//            } else {
-//                pageTuts = serviceService.findByServiceNameLikeIgnoreCase(keyword, paging);
-//                model.addAttribute("keyword", keyword);
-//            }
-//            pageTuts = serviceService.findAll(paging);
+
             pageTuts = serviceService.findByIsDeletedFalse(paging);
             services = pageTuts.getContent();
 
@@ -61,7 +52,7 @@ public class ServiceController {
     public String getAll(Model model, @RequestParam(required = false) String keyword
             , @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "3") int size) {
         try {
-            List<Service> services = new ArrayList<Service>();
+            List<Service> services;
             Pageable paging = PageRequest.of(page - 1, size);
 
             Page<Service> pageTuts;
@@ -100,8 +91,7 @@ public class ServiceController {
         String fileUrl = null;
         try {
             fileUrl = cloudStorageService.uploadFile(file);
-//            redirectAttributes.addFlashAttribute("message", "Tải lên thành công!");
-//            redirectAttributes.addFlashAttribute("fileUrl", fileUrl);
+
         } catch (IOException e) {
 //            redirectAttributes.addFlashAttribute("error", "Lỗi khi tải lên: " + e.getMessage());
         }

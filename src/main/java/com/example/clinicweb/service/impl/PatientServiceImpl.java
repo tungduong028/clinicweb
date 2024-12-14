@@ -33,23 +33,6 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public Optional<Patient> findPatientByUsername(String username) {
-        return patientRepository.findByUser_Username(username);
-    }
-
-    @Override
-    public List<Patient> getAllPatient(Integer pageNo, Integer pageSize, String sortBy) {
-        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
-
-        Page<Patient> pagedResult = patientRepository.findAll(paging);
-
-        if(pagedResult.hasContent()) {
-            return pagedResult.getContent();
-        } else {
-            return new ArrayList<Patient>();
-        }
-    }
-
     public void savePatient(PatientDTO patient) {
         Patient patient1 = new Patient();
         patient1.setFullName(patient.getFullName());
@@ -65,33 +48,26 @@ public class PatientServiceImpl implements PatientService {
         patientRepository.save(patient1);
     }
 
-    public Page<Patient> findByFullNameLikeIgnoreCase(String name, Pageable pageable) {
-        return  patientRepository.findByFullNameLikeIgnoreCase(name, pageable);
-    }
-
-    public Page<Patient> findByEmailLike(String email, Pageable pageable) {
-        return patientRepository.findByEmailLike(email, pageable);
-    }
-
-    public Page<Patient> findByPhoneNumberLike(String phoneNumber, Pageable pageable) {
-        return patientRepository.findByPhoneNumberLike(phoneNumber, pageable);
-    }
-
+    @Override
     public Page<Patient> findAll(Pageable pageable) {
         return patientRepository.findAll(pageable);
     }
 
-    public void deleteById(Long id) {
-        patientRepository.deleteById(id);
-    }
-
+    @Override
     public Optional<Patient> findById(Long id) {
         return patientRepository.findById(id);
     }
 
-    public int markAsDeleted(Long id){return patientRepository.markAsDeleted(id);}
+    @Override
+    public int markAsDeleted(Long id){
+        return patientRepository.markAsDeleted(id);
+    }
 
-    public Page<Patient> findByIsDeletedFalseAndFullNameContainingIgnoreCase(String name, Pageable pageable){ return patientRepository.findByIsDeletedFalseAndFullNameContainingIgnoreCase(name, pageable);}
+    @Override
+    public Page<Patient> findByIsDeletedFalseAndFullNameContainingIgnoreCase(String name, Pageable pageable){
+        return patientRepository.findByIsDeletedFalseAndFullNameContainingIgnoreCase(name, pageable);
+    }
+
     @Override
     public Patient findByEmail(String email) {
         return patientRepository.findByEmail(email);

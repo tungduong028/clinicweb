@@ -35,6 +35,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Autowired
     private WorkingDaysRepository workingDaysRepository;
 
+    @Override
     @Transactional
     public void bookAppointment(AppointmentDTO appointmentDTO) {
         // Lấy username từ người dùng đang đăng nhập
@@ -99,6 +100,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         appointmentRepository.save(appointment);
     }
+
+    @Override
     @Transactional
     public void updateAppointment(Long appointmentId, AppointmentDTO appointmentDTO) {
         // Tìm kiếm Appointment theo ID
@@ -162,19 +165,22 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<Appointment> findAllAppointments() {
-        return appointmentRepository.findAll();
+    public Page<Appointment> findByDoctor_DoctorId(Long id, Pageable pageable){
+        return appointmentRepository.findByDoctor_DoctorId(id, pageable);
     }
 
     @Override
-    public void cancelAppointmentById(Long id) {
-        appointmentRepository.deleteById(id);
+    public Page<Appointment> findByIsDeletedFalse(Pageable pageable){
+        return appointmentRepository.findAll(pageable);
     }
 
+    @Override
+    public Page<Appointment> findAll(Pageable pageable){
+        return appointmentRepository.findAll(pageable);
+    }
 
-    public Page<Appointment> findByDoctor_DoctorId(Long id, Pageable pageable){ return appointmentRepository.findByDoctor_DoctorId(id, pageable);}
-    public Page<Appointment> findByIsDeletedFalse(Pageable pageable){ return appointmentRepository.findAll(pageable);}
-//    public int markAsDeleted(Long id){ return appointmentRepository.markAsDeleted(id);}
-    public Page<Appointment> findAll(Pageable pageable){ return appointmentRepository.findAll(pageable);}
-    public Optional<Appointment> findById(Long id){ return appointmentRepository.findById(id);}
+    @Override
+    public Optional<Appointment> findById(Long id){
+        return appointmentRepository.findById(id);
+    }
 }

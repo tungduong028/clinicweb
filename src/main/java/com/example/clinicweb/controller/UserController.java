@@ -2,8 +2,7 @@ package com.example.clinicweb.controller;
 
 import com.example.clinicweb.model.Users;
 import com.example.clinicweb.repository.RoleRepository;
-import com.example.clinicweb.service.CloudStorageService;
-import com.example.clinicweb.service.impl.UserServiceImpl;
+import com.example.clinicweb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,20 +10,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.clinicweb.dto.UsersDTO;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class UserController {
     @Autowired
-    UserServiceImpl userService;
-    @Autowired
-    private CloudStorageService cloudStorageService;
+    UserService userService;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -69,15 +64,7 @@ public class UserController {
 
     @PostMapping("/admin/user/save")
     public String saveUsers( @ModelAttribute("user") UsersDTO userDTO) {
-//        String fileUrl = null;
-//        try {
-//            fileUrl = cloudStorageService.uploadFile(file);
-////            redirectAttributes.addFlashAttribute("message", "Tải lên thành công!");
-////            redirectAttributes.addFlashAttribute("fileUrl", fileUrl);
-//        } catch (IOException e) {
-////            redirectAttributes.addFlashAttribute("error", "Lỗi khi tải lên: " + e.getMessage());
-//        }
-//        userDTO.setImageUrl(fileUrl);
+
         System.out.println("GGGGGGG"+userDTO.getRoleName());
         userService.saveUser(userDTO);
         return "redirect:/admin/user";
@@ -107,16 +94,4 @@ public class UserController {
         return "redirect:/admin/user";
     }
 
-//    @PostMapping("/admin/user/upload/{id}")
-//    public String handleFileUpload(@PathVariable("id") Long id, @RequestParam("file") MultipartFile file,
-//                                   RedirectAttributes redirectAttributes) {
-//        try {
-//            String fileUrl = cloudStorageService.uploadFile(file);
-//            redirectAttributes.addFlashAttribute("message", "Tải lên thành công!");
-//            redirectAttributes.addFlashAttribute("fileUrl", fileUrl);
-//        } catch (IOException e) {
-//            redirectAttributes.addFlashAttribute("error", "Lỗi khi tải lên: " + e.getMessage());
-//        }
-//        return "redirect:/admin/user";
-//    }
 }

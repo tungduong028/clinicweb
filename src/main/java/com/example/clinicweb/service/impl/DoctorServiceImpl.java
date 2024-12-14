@@ -3,11 +3,8 @@ package com.example.clinicweb.service.impl;
 import com.example.clinicweb.dto.DoctorDTO;
 import com.example.clinicweb.dto.UsersDTO;
 import com.example.clinicweb.model.Doctor;
-import com.example.clinicweb.model.Patient;
-import com.example.clinicweb.model.Role;
 import com.example.clinicweb.model.Users;
 import com.example.clinicweb.repository.DoctorRepository;
-import com.example.clinicweb.repository.RoleRepository;
 import com.example.clinicweb.repository.UsersRepository;
 import com.example.clinicweb.service.DoctorService;
 import com.example.clinicweb.service.UserService;
@@ -23,9 +20,6 @@ import java.util.Optional;
 public class DoctorServiceImpl implements DoctorService {
     @Autowired
     DoctorRepository doctorRepository;
-
-    @Autowired
-    RoleRepository roleRepository;
 
     @Autowired
     private UsersRepository usersRepository;
@@ -52,8 +46,9 @@ public class DoctorServiceImpl implements DoctorService {
         doctor.setPhoneNumber(doctorDto.getPhoneNumber());
         doctor.setImageUrl(doctorDto.getImageUrl());
         doctorRepository.save(doctor);
-    };
+    }
 
+    @Override
     public DoctorDTO toDoctorDto(Doctor doctorDto) {
         DoctorDTO doctor = new DoctorDTO();
         doctor.setDoctorId(doctorDto.getDoctorId());
@@ -69,6 +64,7 @@ public class DoctorServiceImpl implements DoctorService {
         return doctor;
     }
 
+    @Override
     public void saveNewDoctor(DoctorDTO doctorDto, UsersDTO userDto){
         userDto.setRoleName("ROLE_DOCTOR");
         Users savedUser = userService.saveUser(userDto);
@@ -85,14 +81,17 @@ public class DoctorServiceImpl implements DoctorService {
         doctor.setPhoneNumber(doctorDto.getPhoneNumber());
         doctor.setImageUrl(doctorDto.getImageUrl());
         doctorRepository.save(doctor);
-    };
+    }
 
-    public Page<Doctor> findAll(Pageable pageable){return doctorRepository.findAll(pageable);};
+    public Page<Doctor> findAll(Pageable pageable){return doctorRepository.findAll(pageable);}
 
     public Optional<Doctor> findById(Long id){ return doctorRepository.findById(id);}
+
     public Page<Doctor> findByIsDeletedFalseAndFullNameContainingIgnoreCase(String keyword, Pageable pageable){ return doctorRepository.findByIsDeletedFalseAndFullNameContainingIgnoreCase(keyword, pageable);}
+
     public int markAsDeleted(Long id){
         return doctorRepository.markAsDeleted(id);
     }
+
     public Page<Doctor> findByIsDeletedFalse(Pageable pageable){ return doctorRepository.findByIsDeletedFalse(pageable);}
 }

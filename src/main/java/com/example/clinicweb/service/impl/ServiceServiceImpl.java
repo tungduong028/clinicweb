@@ -19,18 +19,7 @@ public class ServiceServiceImpl implements ServiceService {
     @Autowired
     ServiceRepository serviceRepository;
 
-    public List<Service> getAllService (Integer pageNo, Integer pageSize, String sortBy) {
-        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
-
-        Page<Service> pagedResult = serviceRepository.findAll(paging);
-
-        if(pagedResult.hasContent()) {
-            return pagedResult.getContent();
-        } else {
-            return new ArrayList<Service>();
-        }
-    }
-
+    @Override
     public void saveService(ServiceDTO service) {
         Service service1 = new Service();
         service1.setServiceName(service.getServiceName());
@@ -41,29 +30,28 @@ public class ServiceServiceImpl implements ServiceService {
         serviceRepository.save(service1);
     }
 
-    public Page<Service> findByServiceNameLikeIgnoreCase(String name, Pageable pageable) {
-        return  serviceRepository.findByServiceNameLikeIgnoreCase(name, pageable);
-    }
-
-    public Page<Service> findByOrderByPriceAsc(double price, Pageable pageable) {
-        return serviceRepository.findByOrderByPriceAsc(price, pageable);
-    }
-
+    @Override
     public Page<Service> findAll(Pageable pageable) {
         return serviceRepository.findAll(pageable);
     }
 
-    public void deleteById(Long id) {
-        serviceRepository.deleteById(id);
-    }
-
+    @Override
     public Optional<Service> findById(Long id) {
         return serviceRepository.findById(id);
     }
 
-    public Page<Service> findByIsDeletedFalseAndServiceNameContainingIgnoreCase(String keyword, Pageable pageable){ return serviceRepository.findByIsDeletedFalseAndServiceNameContainingIgnoreCase(keyword, pageable);}
+    @Override
+    public Page<Service> findByIsDeletedFalseAndServiceNameContainingIgnoreCase(String keyword, Pageable pageable){
+        return serviceRepository.findByIsDeletedFalseAndServiceNameContainingIgnoreCase(keyword, pageable);
+    }
 
-    public int markAsDeleted(Long id) {return serviceRepository.markAsDeleted(id);}
+    @Override
+    public int markAsDeleted(Long id) {
+        return serviceRepository.markAsDeleted(id);
+    }
 
-    public  Page<Service> findByIsDeletedFalse(Pageable pageable){ return serviceRepository.findByIsDeletedFalse(pageable);}
+    @Override
+    public  Page<Service> findByIsDeletedFalse(Pageable pageable){
+        return serviceRepository.findByIsDeletedFalse(pageable);
+    }
 }

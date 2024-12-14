@@ -1,6 +1,5 @@
 package com.example.clinicweb.repository;
 
-import com.example.clinicweb.model.Appointment;
 import com.example.clinicweb.model.WorkingDays;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

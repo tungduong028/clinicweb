@@ -11,11 +11,7 @@ public class IndexController {
         model.addAttribute("title", "About");
         return "about";
     }
-//    @GetMapping("/service")
-//    public String service(Model model) {
-//        model.addAttribute("title", "service");
-//        return "service";
-//    }
+
     @GetMapping("/team")
     public String team(Model model) {
         model.addAttribute("title", "team");

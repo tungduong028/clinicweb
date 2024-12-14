@@ -1,9 +1,8 @@
 package com.example.clinicweb.controller;
 
 import com.example.clinicweb.dto.AppointmentDTO;
-import com.example.clinicweb.model.Patient;
 import com.example.clinicweb.model.Service;
-import com.example.clinicweb.service.ServiceService;
+import com.example.clinicweb.service.*;
 import com.example.clinicweb.service.impl.DoctorServiceImpl;
 import com.example.clinicweb.service.impl.PatientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +20,10 @@ import java.util.List;
 @Controller
 public class HomeController {
     @Autowired
-    private DoctorServiceImpl doctorService;
+    private DoctorService doctorService;
 
     @Autowired
-    private PatientServiceImpl patientService;
+    private PatientService patientService;
 
     @Autowired
     private ServiceService serviceService;
@@ -47,7 +46,6 @@ public class HomeController {
 
             Page<Service> pageTuts;
             pageTuts = serviceService.findByIsDeletedFalse(paging);
-//            pageTuts = patientService.findAll(paging);
 
             services = pageTuts.getContent();
 
