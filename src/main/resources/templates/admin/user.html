@@ -61,6 +61,14 @@
                             <i class="fas fa-procedures"></i> Quản Lý Lịch Khám
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/workingday}">
+                            <i class="fas fa-procedures"></i> Quản Lý ngày làm việc
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/logout}" class="nav-item nav-link">Đăng xuất</a>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -89,11 +97,6 @@
                                 <input type="text" name="keyword" id="searchInput" class="form-control me-2" placeholder="Tìm kiếm theo tên tài khoản" th:value="${keyword}">
                                 <button type="submit" style="width:150px" class="btn btn-secondary me-2">Tìm Kiếm</button>
                             </form>
-                        </div>
-                        <div class="col-md-6 text-end">
-
-                            <!-- Create new user button -->
-                            <a th:href="@{'/admin/user/new'}" class="btn btn-primary">Thêm Tài Khoản</a>
                         </div>
                     </div>
                     <div th:if="${users.size() > 0}" class="block-content block-content-full">

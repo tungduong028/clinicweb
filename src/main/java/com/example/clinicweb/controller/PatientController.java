@@ -1,12 +1,14 @@
 package com.example.clinicweb.controller;
 
 import com.example.clinicweb.dto.PatientDTO;
+import com.example.clinicweb.dto.UsersDTO;
 import com.example.clinicweb.model.Patient;
 import com.example.clinicweb.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -66,8 +68,14 @@ public class PatientController {
     }
 
     @PostMapping("/admin/patient/save")
-    public String savePatient(@ModelAttribute("patient") PatientDTO patientDTO) {
-        patientService.savePatient(patientDTO);
+    public String savePatient(
+            @ModelAttribute("user") UsersDTO usersDTO,
+            @ModelAttribute("patient") PatientDTO patientDTO) {
+
+        // Gọi service để đăng ký người dùng và bệnh nhân
+        userService.register(usersDTO, patientDTO);
+
+        // Sau khi đăng ký thành công, chuyển hướng đến trang login
         return "redirect:/admin/patient";
     }
 
@@ -79,7 +87,18 @@ public class PatientController {
         model.addAttribute("patient", patient);
         model.addAttribute("users", userService.findByRolePatient());
         model.addAttribute("pageTitle", "Sửa thông tin bệnh nhân");
-        return "admin/patient/patient_form";
+        return "admin/patient/patient_form_edit";
+    }
+    @PostMapping("/admin/patient/update")
+    public String updatePatient(@ModelAttribute("patient") PatientDTO patientDto,
+                                @RequestParam("id") Long id,
+                                @ModelAttribute("password") String password,
+                                RedirectAttributes redirectAttributes) {
+        Patient patient = patientService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid patient Id:" + id));
+            patientService.savePatient(patient, patientDto);
+            redirectAttributes.addFlashAttribute("message", "Cập nhật bệnh nhân thành công!");
+        return "redirect:/admin/patient";
     }
 
     @GetMapping("/admin/patient/delete/{id}")

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <title>Admin Dashboard</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+</head>
+
+<body>
+<!-- Topbar Start -->
+<div class="container-fluid sticky-top bg-white shadow-sm">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg bg-white navbar-light py-3">
+      <h1 class="m-0 text-uppercase text-primary">Admin Dashboard</h1>
+    </nav>
+  </div>
+</div>
+<!-- Topbar End -->
+
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+      <div class="sidebar-sticky">
+        <h4>Quản Lý</h4>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" th:href="@{/admin/user}">
+              <i class="fas fa-users"></i> Quản Lý Người Dùng
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/admin/doctor}">
+              <i class="fas fa-user-md"></i> Quản Lý Bác Sĩ
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/admin/service}">
+              <i class="fas fa-concierge-bell"></i> Quản Lý Dịch Vụ
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/admin/patient}">
+              <i class="fas fa-procedures"></i> Quản Lý Bệnh Nhân
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/admin/appointment}">
+              <i class="fas fa-procedures"></i> Quản Lý Lịch Khám
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/admin/workingday}">
+              <i class="fas fa-procedures"></i> Quản Lý ngày làm việc
+            </a>
+          </li>
+          <li>
+            <a th:href="@{/logout}" class="nav-item nav-link">Đăng xuất</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Main content -->
+    <main role="main" class="col-md-9 ms-sm-auto col-lg-10 px-4">
+      <div id="content">
+        <div class="block-header block-header-default">
+          <h2 class="text-center">[[${pageTitle}]]</h2>
+        </div>
+        <div class="block-content block-content-full">
+          <!-- DataTables init on table by adding .js-dataTable-full-pagination class, functionality is initialized in js/pages/be_tables_datatables.min.js which was auto compiled from _js/pages/be_tables_datatables.js -->
+
+        </div>
+        <div class="my-3">
+          <form th:action="@{/admin/patient/update}" method="post" enctype="multipart/form-data"
+                style="max-width: 550px; margin: 0 auto">
+
+            <input type="hidden" name="id" th:value="${patient.patientId}" />
+
+            <div class="form-grid grid-container">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label" for="fullName">Tên</label>
+                <div class="col-sm-9">
+                  <input type="text" id="fullName" name="fullName" required minlength="2" maxlength="128"
+                         class="form-control" th:value="${patient.fullName}"/>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label" for="medicalHistory">Lịch sử bệnh</label>
+                <div class="col-sm-9">
+                <textarea name="medicalHistory" minlength="2" maxlength="256" class="form-control" rows="7"
+                          id="medicalHistory" required>[[${patient.medicalHistory}]]</textarea>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label" for="email">Email</label>
+                <div class="col-sm-9">
+                  <input type="text" name="email" required minlength="2" maxlength="128"
+                         class="form-control" id="email" th:value="${patient.email}" />
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label" for="address">Địa chỉ</label>
+                <div class="col-sm-9">
+                  <input type="text" name="address" required minlength="2" maxlength="128"
+                         class="form-control" id="address" th:value="${patient.address}" />
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label" for="phoneNumber">Số điện thoại</label>
+                <div class="col-sm-9">
+                  <input type="text" name="phoneNumber" required minlength="10" maxlength="10"
+                         class="form-control" id="phoneNumber" th:value="${patient.phoneNumber}" />
+                </div>
+              </div>
+
+<!--              <div class="form-group row">-->
+<!--                <label class="col-sm-3 col-form-label" for="password">Password</label>-->
+<!--                <div class="col-sm-9">-->
+<!--                  <input type="password" name="password" required-->
+<!--                         class="form-control" id="password" />-->
+<!--                </div>-->
+<!--              </div>-->
+
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label" for="gender">Giới tính</label>
+                <div class="col-sm-9">
+                  <select id="gender" name="gender" required>
+                    <option value="MALE" th:selected="${patient.gender == 'MALE'}">Nam</option>
+                    <option value="FEMALE" th:selected="${patient.gender == 'FEMALE'}">Nữ</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label" for="dateOfBirth">Ngày sinh</label>
+                <div class="col-sm-9">
+                  <input type="date" name="dateOfBirth" required class="form-control" id="dateOfBirth"
+                         th:value="${patient.dateOfBirth}" />
+                </div>
+              </div>
+
+              <div class="text-center">
+                <input type="submit" value="Cập nhật" class="btn btn-primary btn-sm mr-2" />
+                <input type="button" value="Hủy" id="btnCancel" th:onclick="|window.location.href='/admin/patient'|"
+                       class="btn btn-secondary btn-sm" />
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+</body>
+</html>

@@ -63,8 +63,11 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/admin/workingday}">
-                            <i class="fas fa-procedures"></i> Quản Lý ngày làm việc
+                            <i class="fas fa-procedures"></i> Quản Lý Ngày Làm Việc
                         </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/logout}" class="nav-item nav-link">Đăng Xuất</a>
                     </li>
                 </ul>
             </div>
@@ -74,11 +77,11 @@
         <main role="main" class="col-md-9 ms-sm-auto col-lg-10 px-4">
             <div id="content">
                 <div class="container-fluid">
-                    <h1 class="mt-4 mb-4">Quản Lý Lịch Khám</h1>
+                    <h1 class="mt-4 mb-4">Quản Lý Ngày Làm Việc</h1>
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <!-- Search Form -->
-                            <form id="searchForm" class="d-flex" th:action="@{/admin/workingDays}" method="get">
+                            <form id="searchForm" class="d-flex" th:action="@{/admin/workingday}" method="get">
                                 <input type="text" name="keyword" id="searchInput" class="form-control me-2" placeholder="Tìm kiếm theo tên dịch vụ" th:value="${keyword}">
                                 <button type="submit" style="width:150px" class="btn btn-secondary me-2">Tìm Kiếm</button>
                             </form>
@@ -86,7 +89,7 @@
                         <div class="col-md-6 text-end">
 
                             <!-- Create new service button -->
-                            <a th:href="@{'/admin/workingDays/new'}" class="btn btn-primary">Thêm Lịch Khám</a>
+                            <a th:href="@{'/admin/workingday/new'}" class="btn btn-primary">Thêm Lịch Khám</a>
                         </div>
                     </div>
                     <div th:if="${workingDays.size() > 0}" class="block-content block-content-full">
@@ -110,7 +113,7 @@
                                 <td th:text="${workingDay.doctor.fullName}">Dr. John Doe</td>
                                 <td th:text="${workingDay.dayOfWeek}">Monday</td>
                                 <td>
-                                    <a th:href="@{'/admin/workingdays/edit/' + ${workingDay.workingId}}" class="btn btn-warning">Sửa</a>
+                                    <a th:href="@{'/admin/workingday/edit/' + ${workingDay.workingId}}" class="btn btn-warning">Sửa</a>
                                     <a data-toggle="modal" th:attr="data-target='#deleteModal' + ${workingDay.workingId}" class="btn btn-danger">Xóa</a>
 
                                     <!-- Modal delete -->
@@ -125,7 +128,7 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Không</button>
-                                                    <form th:action="@{'/admin/workingdays/delete/' + ${workingDay.workingId}}" method="post">
+                                                    <form th:action="@{'/admin/workingday/delete/' + ${workingDay.workingId}}" method="post">
                                                         <button type="submit" class="btn btn-danger">Có</button>
                                                     </form>
                                                 </div>
@@ -137,21 +140,21 @@
                             </tbody>
                         </table>
                     </div>
-                    <div th:unless="${appointments.size() > 0}">
+                    <div th:unless="${workingDays.size() > 0}">
                         <span>No services found!</span>
                     </div>
                     <nav aria-label="Pagination" th:if="${totalPages > 0}">
                         <ul class="pagination justify-content-center">
                             <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
                                 <a class="page-link"
-                                   th:href="@{'/admin/appointment?' + ${keyword!=null && keyword!=''? 'keyword=' + keyword + '&' : ''} + 'page=1' + '&size=' + ${pageSize}}"
+                                   th:href="@{'/admin/workingday?' + ${keyword!=null && keyword!=''? 'keyword=' + keyword + '&' : ''} + 'page=1' + '&size=' + ${pageSize}}"
                                    title="First Page" rel="First Page">
                                     <<
                                 </a>
                             </li>
                             <li class="page-item font-weight-bold" th:classappend="${currentPage == 1} ? 'disabled'">
                                 <a class="page-link"
-                                   th:href="@{'/admin/appointment?' + ${keyword!=null && keyword!=''? 'keyword=' + keyword + '&' : ''} + 'page=' + ${currentPage - 1} + '&size=' + ${pageSize}}"
+                                   th:href="@{'/admin/workingday?' + ${keyword!=null && keyword!=''? 'keyword=' + keyword + '&' : ''} + 'page=' + ${currentPage - 1} + '&size=' + ${pageSize}}"
                                    title="Previous Page" rel="Previous Page">
                                     Prev
                                 </a>
@@ -162,7 +165,7 @@
                             <li class="page-item" th:classappend="${page == currentPage} ? 'active'"
                                 th:each="page : ${#numbers.sequence(currentPage > 2 ? currentPage - 2 : 1, currentPage + 2 < totalPages ? currentPage + 2 : totalPages)}">
                                 <a class="page-link"
-                                   th:href="@{'/admin/appointment?' + ${keyword!=null && keyword!=''? 'keyword=' + keyword + '&' : ''} + 'page=' + ${page} + '&size=' + ${pageSize}}"
+                                   th:href="@{'/admin/workingday?' + ${keyword!=null && keyword!=''? 'keyword=' + keyword + '&' : ''} + 'page=' + ${page} + '&size=' + ${pageSize}}"
                                    title="'Page ' + ${page})" rel="'Page ' + ${page})">
                                     [[${page}]]
                                 </a>
@@ -172,14 +175,14 @@
                             </li>
                             <li class="page-item font-weight-bold" th:classappend="${currentPage == totalPages} ? 'disabled'">
                                 <a class="page-link"
-                                   th:href="@{'/admin/appointment?' + ${keyword!=null && keyword!=''? 'keyword=' + keyword + '&' : ''} + 'page=' + ${currentPage + 1} + '&size=' + ${pageSize}}"
+                                   th:href="@{'/admin/workingday?' + ${keyword!=null && keyword!=''? 'keyword=' + keyword + '&' : ''} + 'page=' + ${currentPage + 1} + '&size=' + ${pageSize}}"
                                    title="Next Page" rel="Next Page">
                                     Next
                                 </a>
                             </li>
                             <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
                                 <a class="page-link"
-                                   th:href="@{'/admin/appointment?' + ${keyword!=null && keyword!=''? 'keyword=' + keyword + '&' : ''} + 'page=' + ${totalPages} + '&size=' + ${pageSize}}"
+                                   th:href="@{'/admin/workingday?' + ${keyword!=null && keyword!=''? 'keyword=' + keyword + '&' : ''} + 'page=' + ${totalPages} + '&size=' + ${pageSize}}"
                                    title="Last Page" rel="Last Page">
                                     >>
                                 </a>

@@ -33,19 +33,22 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public void savePatient(PatientDTO patient) {
-        Patient patient1 = new Patient();
-        patient1.setFullName(patient.getFullName());
-        patient1.setPatientId(patient.getPatientId());
-        patient1.setGender(patient.getGender());
-        patient1.setEmail(patient.getEmail());
-        patient1.setAddress(patient.getAddress());
-        patient1.setMedicalHistory(patient.getMedicalHistory());
-        patient1.setDateOfBirth(patient.getDateOfBirth());
-        patient1.setPhoneNumber(patient.getPhoneNumber());
-        Optional<Users> user = usersRepository.findById(patient.getUserId());
-        user.ifPresent(patient1::setUser);
-        patientRepository.save(patient1);
+    public void savePatient(Patient patient, PatientDTO patientDTO) {
+
+        patient.setFullName(patientDTO.getFullName());
+        patient.setGender(patientDTO.getGender());
+        patient.setEmail(patientDTO.getEmail());
+        patient.setAddress(patientDTO.getAddress());
+        patient.setMedicalHistory(patientDTO.getMedicalHistory());
+        patient.setDateOfBirth(patientDTO.getDateOfBirth());
+        patient.setPhoneNumber(patientDTO.getPhoneNumber());
+        patientRepository.save(patient);
+
+//        Users user = new Users();
+//        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+//        user.setPasswordHash(encoder.encode(newPassword));
+//        usersRepository.save(user);
+
     }
 
     @Override

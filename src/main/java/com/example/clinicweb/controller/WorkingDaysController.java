@@ -21,7 +21,6 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("/admin/workingdays")
 public class WorkingDaysController {
     @Autowired
     private DoctorServiceImpl doctorService;
@@ -29,7 +28,7 @@ public class WorkingDaysController {
     @Autowired
     private WorkingDaysService workingDaysService;
 
-    @GetMapping("/admin/appointment")
+    @GetMapping("/admin/workingday")
     public String getAll(Model model, @RequestParam(required = false) Long keyword
             , @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "3") int size) {
         try {
@@ -54,23 +53,23 @@ public class WorkingDaysController {
             model.addAttribute("message", e.getMessage());
         }
 
-        return "admin/appointment";
+        return "admin/workingday";
     }
 
-    @GetMapping("/new")
+    @GetMapping("/admin/workingday/new")
     public String newWorkingDayForm(Model model) {
         model.addAttribute("workingDays", new WorkingDays());
-        model.addAttribute("doctors", doctorService.findAllDoctors());  // Get danh sách bác sĩ
+        model.addAttribute("workingDays", workingDaysService.findAll());
         return "admin/workingday/workingday_form";
     }
 
-    @PostMapping("/save")
+    @PostMapping("/admin/workingday/save")
     public String saveWorkingDay(@ModelAttribute WorkingDays workingDays) {
         workingDaysService.save(workingDays);
         return "redirect:/admin/workingdays";
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/admin/workingday/edit/{id}")
     public String editWorkingDayForm(@PathVariable("id") Long id, Model model) {
         WorkingDays workingDay = workingDaysService.findById(id);
         model.addAttribute("workingDays", workingDay);
@@ -78,7 +77,7 @@ public class WorkingDaysController {
         return "admin/workingday/workingday_form";
     }
 
-    @PostMapping("/delete/{id}")
+    @PostMapping("/admin/workingday/delete/{id}")
     public String deleteWorkingDay(@PathVariable("id") Integer id) {
         workingDaysService.deleteById(Long.valueOf(id));
         return "redirect:/admin/workingday";

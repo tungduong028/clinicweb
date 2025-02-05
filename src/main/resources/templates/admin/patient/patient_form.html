@@ -50,9 +50,17 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showSection('statistics')">
-                            <i class="fas fa-chart-bar"></i> Thống Kê
+                        <a class="nav-link" th:href="@{/admin/appointment}">
+                            <i class="fas fa-procedures"></i> Quản Lý Lịch Khám
                         </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/workingday}">
+                            <i class="fas fa-procedures"></i> Quản Lý ngày làm việc
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/logout}" class="nav-item nav-link">Đăng xuất</a>
                     </li>
                 </ul>
             </div>
@@ -69,24 +77,23 @@
 
                 </div>
                 <div class="my-3">
-                    <form th:action="@{/admin/patient/save}" method="post" enctype="multipart/form-data" th:object="${patient}"
+                    <form th:action="@{/admin/patient/save}" method="post" enctype="multipart/form-data"
                           style="max-width: 550px; margin: 0 auto">
 
-                        <input type="hidden" th:field="*{patientId}" />
 
                         <div class="form-grid grid-container">
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label" for="fullName">Tên</label>
                                 <div class="col-sm-9">
-                                    <input type="text" th:field="*{fullName}" required minlength="2" maxlength="128" class="form-control"
-                                           id="fullName" />
+                                    <input type="text" id="fullName" name="fullName" required
+                                           minlength="2" maxlength="128" class="form-control"/>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label" for="medicalHistory">Lịch sử bệnh</label>
                                 <div class="col-sm-9">
-                                    <textarea th:field="*{medicalHistory}" minlength="2" maxlength="256" class="form-control" rows="7" cols="50"
+                                    <textarea name="medicalHistory"  minlength="2" maxlength="256" class="form-control" rows="7" cols="50"
                                            id="medicalHistory" required></textarea>
                                 </div>
                             </div>
@@ -94,7 +101,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label" for="email">Email</label>
                                 <div class="col-sm-9">
-                                    <input type="text"  th:field="*{email}" required minlength="2" maxlength="128"
+                                    <input type="text"  name="email" required minlength="2" maxlength="128"
                                            class="form-control" id="email" />
                                 </div>
                             </div>
@@ -102,7 +109,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label" for="address">Địa chỉ</label>
                                 <div class="col-sm-9">
-                                    <input type="text" th:field="*{address}" required minlength="2" maxlength="128"
+                                    <input type="text" name="address" required minlength="2" maxlength="128"
                                            class="form-control" id="address" />
                                 </div>
                             </div>
@@ -110,32 +117,31 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label" for="phoneNumber">Số điện thoại</label>
                                 <div class="col-sm-9">
-                                    <input type="text" th:field="*{phoneNumber}" required minlength="10" maxlength="10"
+                                    <input type="text" name="phoneNumber" required minlength="10" maxlength="10"
                                            class="form-control" id="phoneNumber" />
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label class="col-sm-3 col-form-label" for="userId">Người dùng</label>
+                                <label class="col-sm-3 col-form-label" for="username">Username</label>
                                 <div class="col-sm-9">
-                                    <select name="userId" id="userId" class="form-select bg-white border-0" style="height: 55px;" required>
-                                        <option  selected
-                                                th:each="user : ${users}"
-                                                th:value="${user.userId}"
-                                                th:text="${user.username}"
-                                        >Chọn người dùng</option>
-<!--                                        <option th:each="user : ${users}"-->
-<!--                                                th:value="${userId}"-->
-<!--                                                th:text="${user.username}"-->
-<!--                                                th:if="${userId != null and userId != ''}" selected></option>-->
-                                    </select>
+                                    <input type="text" name="username" required
+                                           class="form-control" id="username" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="password">Password</label>
+                                <div class="col-sm-9">
+                                    <input type="password" name="password" required
+                                           class="form-control" id="password" />
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label" for="gender">Giới tính</label>
                                 <div class="col-sm-9">
-                                    <select id="gender" name="gender" th:field="*{gender}" required>
+                                    <select id="gender" name="gender" required>
                                         <option value="MALE">Nam</option>
                                         <option value="FEMALE">Nữ</option>
                                     </select>
@@ -145,7 +151,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label" for="dateOfBirth">Ngày sinh</label>
                                 <div class="col-sm-9">
-                                    <input type="date" th:field="*{dateOfBirth}" required
+                                    <input type="date" name="dateOfBirth" required
                                            class="form-control" id="dateOfBirth" />
                                 </div>
                             </div>
